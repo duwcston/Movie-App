@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+    --color-midnight: #0f172a;
+}
+
+@layer base {
+    body {
+        @apply bg-midnight;
+    }
+
+    h1 {
+        @apply text-4xl font-bold text-white;
+    }
+
+    h2 {
+        @apply text-3xl font-semibold text-white;
+    }
+
+    h3 {
+        @apply text-2xl font-semibold text-white;
+    }
+
+    p {
+        @apply text-base text-gray-300;
+    }
+
+    input {
+        @apply bg-gray-800 text-white border border-gray-600 rounded-md p-2;
+    }
+
+    button {
+        @apply bg-blue-600 text-white font-semibold py-2 px-4 rounded-md;
+    }
+}
+
+@utility text-gradient {
+    @apply bg-linear-to-r from-[#D6C7FF] to-[#AB8BFF] bg-clip-text text-transparent;
+}
