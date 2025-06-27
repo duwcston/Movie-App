@@ -39,7 +39,7 @@ Contains Express middleware functions:
 
 ### `models/`
 Contains MongoDB/Mongoose data models:
-- **`User.js`**: User schema definition with fields like userName, email, password, and timestamps
+- **`User.js`**: User schema definition with fields like username, email, password, and timestamps
 
 ### `routes/`
 Contains API route definitions:

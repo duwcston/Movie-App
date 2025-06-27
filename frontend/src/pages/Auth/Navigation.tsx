@@ -6,8 +6,7 @@ import {
 } from "react-icons/ai"
 import { MdOutlineLocalMovies } from "react-icons/md"
 import { Link } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 // import { useLoginMutation } from "../../redux/api/users"
 
 const Navigation = () => {
@@ -18,13 +17,16 @@ const Navigation = () => {
         setDropdownOpen(!dropdownOpen)
     }
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const dispatch = useDispatch()
 
-    // const [logoutAPICall] = useLoginMutation()
+    // const logoutAPICall = useLoginMutation()
+
+    const logoutHandler = () => {
+        console.log("Logout clicked")
+    }
 
     return (
-        <div className= "fixed bottom-10 rounded-lg bg-gray-800 text-white w-1/2 max-w-[1200px] mx-auto p-4 z-50 transform -translate-x-1/2 left-1/2">
+        <div className="fixed bottom-10 rounded-lg bg-gray-800 text-white w-1/2 max-w-[1200px] mx-auto p-4 z-50 transform -translate-x-1/2 left-1/2">
             <section className="flex justify-between items-center">
                 <div className="flex justify-between items-center">
                     <Link to="/" className="flex items-center transition-transform transform hover:translate-x-2">
@@ -40,7 +42,7 @@ const Navigation = () => {
                 <div className="relative">
                     <button onClick={toggleDropdown} className="text-gray-800 focus:outline-none">
                         {userInfo ? (
-                            <span className="text-white">{userInfo.name}</span>
+                            <span className="text-white">{userInfo.username}</span>
                         ) : (
                             <></>
                         )}

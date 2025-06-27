@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* @theme {
+@theme {
     --color-midnight: #0f172a;
 }
 
@@ -26,13 +26,13 @@
     }
 
     input {
-        @apply bg-gray-800 text-white border border-gray-600 rounded-md p-2;
+        @apply bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2.5 mt-1 w-full;
     }
 
-    button {
+    /* button {
         @apply bg-blue-600 text-white font-semibold py-2 px-4 rounded-md;
-    }
-} */
+    } */
+}
 
 @utility text-gradient {
     @apply bg-linear-to-r from-[#D6C7FF] to-[#AB8BFF] bg-clip-text text-transparent;

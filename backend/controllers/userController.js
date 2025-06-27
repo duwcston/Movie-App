@@ -4,11 +4,11 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import createToken from '../utils/createToken.js';
 
 const createUser = asyncHandler(async (req, res) => {
-    const { userName, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!userName || !email || !password) {
+    if (!username || !email || !password) {
         res.status(400);
-        throw new Error('Please provide all required fields: name, email, and password');
+        throw new Error('Please provide all required fields: username, email, and password');
     }
 
     const userExists = await User.findOne({ email });
@@ -22,7 +22,7 @@ const createUser = asyncHandler(async (req, res) => {
     const hashPassword = await bcrypt.hash(password, salt)
 
     // Create new User
-    const newUser = new User({ userName, email, password: hashPassword })
+    const newUser = new User({ username, email, password: hashPassword })
 
     // Store User into db
     try {
@@ -31,7 +31,7 @@ const createUser = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             _id: newUser._id,
-            userName: newUser.userName,
+            username: newUser.username,
             email: newUser.email,
             isAdmin: newUser.isAdmin
         })
@@ -56,7 +56,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
             res.status(201).json({
                 _id: userExists._id,
-                userName: userExists.userName,
+                username: userExists.username,
                 email: userExists.email,
                 isAdmin: userExists.isAdmin
             })
@@ -88,7 +88,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
     if (user) {
         res.json({
             _id: user._id,
-            userName: user.userName,
+            username: user.username,
             email: user.email,
         })
     } else {
@@ -101,7 +101,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
 
     if (user) {
-        user.userName = req.body.userName || user.userName;
+        user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
 
         if (req.body.password) {
@@ -114,7 +114,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             _id: updatedUser._id,
-            userName: updatedUser.userName,
+            username: updatedUser.username,
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin
         })
