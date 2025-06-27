@@ -1,21 +1,17 @@
 import './App.css'
-import { Search } from './components/Search'
+import { Outlet } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import Navigation from './pages/Auth/Navigation'
 
 function App() {
   return (
-    <main>
-      <div className="pattern">
-
-      </div>
-
-      <div className="wrapper">
-        <header>
-          <h1>Find <span className='text-gradient'>Movies</span> You'll Enjoy Without the Hassle</h1>
-        </header>
-
-        <Search />
-      </div>
-    </main>
+    <>
+      <ToastContainer />
+      <Navigation />
+      <main>
+        <Outlet />
+      </main>
+    </>
   )
 }
 

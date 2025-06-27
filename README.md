@@ -164,6 +164,10 @@ npm run frontend   # Starts Vite dev server on port 5173
 - [TMDB API](https://www.themoviedb.org/documentation/api)
 - [OMDB API](http://www.omdbapi.com/)
 
+### **Tutorials**
+- [MERN Mastery: Building a Scalable Movies App for Ultimate User Experience](https://www.youtube.com/watch?v=Bd1EBSCu2os) by HuXn WebDev
+- [React JS 19 Full Course 2025 | Build an App and Master React in 2 Hours](https://www.youtube.com/watch?v=dCLhUialKPQ&t=4098s) by JavaScript Mastery
+
 ## 🤝 Contributing & Development
 
 This is a learning project!
@@ -177,11 +181,6 @@ This is a learning project!
 ## 📄 License
 
 This project is created for educational purposes!
-
-## 🖨️ Reference
-
-- [MERN Mastery: Building a Scalable Movies App for Ultimate User Experience](https://www.youtube.com/watch?v=Bd1EBSCu2os) by HuXn WebDev
-- [React JS 19 Full Course 2025 | Build an App and Master React in 2 Hours](https://www.youtube.com/watch?v=dCLhUialKPQ&t=4098s) by JavaScript Mastery
 
 ---
 
