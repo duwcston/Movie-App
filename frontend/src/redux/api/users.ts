@@ -1,3 +1,5 @@
+// RTK Query API slice for user authentication
+// This file defines the API endpoints for user login, registration, and logout.
 import { apiSlice } from "./apiSlice"
 import { USERS_URL } from "../constants"
 
@@ -16,8 +18,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data
             }),
-        })
+        }),
+        logout: builder.mutation({
+            query: () => ({
+                url: `${USERS_URL}/logout`,
+                method: 'POST',
+            }),
+        }),
+        profile: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}/profile`,
+                method: 'PUT',
+                body: data
+            }),
+        }),
     })
 })
 
-export const { useLoginMutation, useRegisterMutation } = userApiSlice
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useProfileMutation } = userApiSlice

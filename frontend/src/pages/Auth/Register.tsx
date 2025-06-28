@@ -5,6 +5,7 @@ import { useRegisterMutation } from "../../redux/api/users"
 import Loader from "../../components/Loader"
 import { toast } from "react-toastify"
 import { setCredentials } from "../../redux/features/auth/authSlice"
+import { RootState } from "../../redux/store"
 
 const Register = () => {
     const [username, setUsername] = useState("")
@@ -17,7 +18,7 @@ const Register = () => {
 
     const [register, { isLoading }] = useRegisterMutation()
 
-    const { userInfo } = useSelector((state: any) => state.auth)
+    const { userInfo } = useSelector((state: RootState) => state.auth)
 
     const { search } = useLocation()
     const sp = new URLSearchParams(search)
@@ -29,7 +30,7 @@ const Register = () => {
         }
     }, [userInfo, redirect, navigate])
 
-    const submitHandler = async (e: any) => {
+    const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (password !== confirmPassword) {
@@ -51,7 +52,7 @@ const Register = () => {
     return (
         <div className="pl-[10rem] flex flex-wrap">
             <div className="mr-[4rem] mt-[5rem]">
-                <h1 className="text-2xl font-semibold mb-4">
+                <h1 className="mb-4">
                     Register
                 </h1>
 
@@ -122,7 +123,7 @@ const Register = () => {
 
                 <div className="mt-4">
                     <p className="text-sm text-gray-500">
-                        Already have an account?{" "}
+                        Already have an account? {" "}
                         <Link to={redirect ? `/login?redirect=${redirect}` : "/login"} className="text-blue-500 hover:underline">
                             Login
                         </Link>
