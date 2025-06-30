@@ -79,7 +79,7 @@ const Navigation = () => {
                     </button>
 
                     {dropdownOpen && userInfo && (
-                        <ul className={`absolute right-0 mt-2 mr-2 w-[8rem] space-y-2 bg-white text-gray-600 ${!userInfo.isAdmin ? "-top-24" : "-top-28"}`}>
+                        <ul className={`absolute right-0 mt-2 mr-2 w-[8rem] space-y-2 bg-white text-gray-600 ${!userInfo.isAdmin ? "-top-24" : "-top-38"}`}>
                             {userInfo.isAdmin && (
                                 <>
                                     <li>

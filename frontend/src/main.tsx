@@ -9,6 +9,8 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import Home from './pages/Home.tsx'
 // Auth
+import AdminRoute from './pages/Admin/AdminRoute.tsx'
+import GenreList from './pages/Admin/GenreList.tsx'
 
 // Restricted
 import Login from './pages/Auth/Login.tsx'
@@ -24,6 +26,10 @@ const router = createBrowserRouter(
       <Route path='/register' element={<Register />} />
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<Profile />} />
+      </Route>
+
+      <Route path='' element={<AdminRoute />}>
+        <Route path='/admin/movies/genre' element={<GenreList />} />
       </Route>
     </Route>
   )
