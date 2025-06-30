@@ -6,6 +6,6 @@ const PrivateRoute = () => {
     const { userInfo } = useSelector((state: RootState) => state.auth);
 
     return userInfo ? <Outlet /> : <Navigate to="/login" replace />;
-}
+};
 
 export default PrivateRoute;
