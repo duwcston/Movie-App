@@ -7,22 +7,22 @@
 
 ### Backend Development
 - [ ] **Movie API Integration**
-  - [ ] Create Movie model/schema
+  - [x] Create Movie model/schema
   - [ ] Integrate with external movie API (TMDB, OMDB, or similar)
-  - [ ] Create movie controller with CRUD operations
+  - [x] Create movie controller with CRUD operations
   - [ ] Add movie routes (search, details, trending, popular)
   - [ ] Implement movie data caching strategy
 
 - [ ] **Enhanced User Features**
   - [ ] Add user favorites/watchlist functionality
-  - [ ] Create rating and review system
+  - [x] Create rating and review system
   - [ ] Implement user movie recommendations
   - [ ] Add user profile picture upload (using multer)
 
 - [ ] **API Improvements**
-  - [ ] Add CORS configuration for frontend integration
+  - [x] Add CORS configuration for frontend integration
   - [ ] Implement API rate limiting
-  - [ ] Add request validation middleware
+  - [x] Add request validation middleware
   - [ ] Create comprehensive error handling
   - [ ] Add API documentation (Swagger/OpenAPI)
 
@@ -35,15 +35,15 @@
   - [ ] Implement pagination for search results
 
 - [ ] **User Interface**
-  - [ ] Create user authentication pages (login/register)
+  - [x] Create user authentication pages (login/register)
   - [ ] Build user dashboard/profile page
-  - [ ] Add navigation menu/header component
+  - [x] Add navigation menu/header component
   - [ ] Create responsive layout for mobile devices
-  - [ ] Implement loading states and error handling
+  - [x] Implement loading states and error handling
 
 - [ ] **State Management**
-  - [ ] Set up Redux store structure
-  - [ ] Create user authentication slice
+  - [x] Set up Redux store structure
+  - [x] Create user authentication slice
   - [ ] Add movie data management slice
   - [ ] Implement favorites/watchlist slice
 
@@ -69,7 +69,7 @@
   - [ ] Add image lazy loading
   - [ ] Implement infinite scroll
   - [ ] Create advanced search filters modal
-  - [ ] Add toast notifications (react-toastify)
+  - [x] Add toast notifications (react-toastify)
 
 - [ ] **User Experience**
   - [ ] Add search history

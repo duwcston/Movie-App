@@ -137,11 +137,11 @@ npm run frontend   # Starts Vite dev server on port 5173
 - [x] Tailwind CSS styling system
 
 ### **Phase 2: Core Features** 🔄
-- [ ] Movie data model and API integration
+- [x] Movie data model and API integration
 - [ ] Search functionality implementation
 - [ ] Video streaming capabilities
 - [ ] User interface components
-- [ ] State management with Redux
+- [x] State management with Redux
 
 ### **Phase 3: Advanced Features** 📋
 - [ ] Data crawling implementation
