@@ -1,3 +1,8 @@
+export interface GenreProps {
+    _id: string;
+    name: string;
+}
+
 import React, { useState } from "react";
 import {
     useCreateGenreMutation,
@@ -12,7 +17,7 @@ import Modal from "../../components/Modal";
 const GenreList = () => {
     const { data: genres, refetch } = useGetGenresQuery({});
     const [name, setName] = useState("");
-    const [selectedGenre, setSelectedGenre] = useState(null);
+    const [selectedGenre, setSelectedGenre] = useState(null as string | null);
     const [updatingName, setUpdatingName] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -88,7 +93,7 @@ const GenreList = () => {
                 <br />
                 <div className="flex flex-wrap">
                     {genres &&
-                        genres.map((genre) => (
+                        genres.map((genre: GenreProps) => (
                             <div key={genre._id}>
                                 <button
                                     className="bg-gray-200 text-black py-2 px-4 rounded-lg m-2 hover:bg-gray-300 transition-colors"

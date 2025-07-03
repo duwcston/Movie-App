@@ -11,6 +11,9 @@ import Home from "./pages/Home.tsx";
 // Auth
 import AdminRoute from "./pages/Admin/AdminRoute.tsx";
 import GenreList from "./pages/Admin/GenreList.tsx";
+import CreateMovies from "./pages/Admin/CreateMovies.tsx";
+import AdminMoviesList from "./pages/Admin/AdminMoviesList.tsx";
+import UpdateMovie from "./pages/Admin/UpdateMovie.tsx";
 
 // Restricted
 import Login from "./pages/Auth/Login.tsx";
@@ -30,6 +33,9 @@ const router = createBrowserRouter(
 
             <Route path="" element={<AdminRoute />}>
                 <Route path="/admin/movies/genre" element={<GenreList />} />
+                <Route path="/admin/movies/create" element={<CreateMovies />} />
+                <Route path="/admin/movies-list" element={<AdminMoviesList />} />
+                <Route path="/admin/movies/update/:id" element={<UpdateMovie />} />
             </Route>
         </Route>
     )

@@ -1,7 +1,7 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Movie from "../models/Movie.js";
 
-const createMovie = asyncHandler(async (req, res) => {
+const createMovie = async (req, res) => {
     try {
         const newMovie = new Movie(req.body);
         const savedMovie = await newMovie.save();
@@ -10,19 +10,19 @@ const createMovie = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-});
+};
 
 
-const getAllMovies = asyncHandler(async (req, res) => {
+const getAllMovies = async (req, res) => {
     try {
         const movies = await Movie.find();
         res.status(200).json(movies);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-});
+};
 
-const getMovie = asyncHandler(async (req, res) => {
+const getMovie = async (req, res) => {
     try {
         const { id } = req.params;
         const movie = await Movie.findById(id);
@@ -33,10 +33,9 @@ const getMovie = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
+};
 
-})
-
-const updateMovie = asyncHandler(async (req, res) => {
+const updateMovie = async (req, res) => {
     try {
         const { id } = req.params;
         const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
@@ -47,9 +46,9 @@ const updateMovie = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-})
+};
 
-const deleteMovie = asyncHandler(async (req, res) => {
+const deleteMovie = async (req, res) => {
     try {
         const { id } = req.params;
         const deletedMovie = await Movie.findByIdAndDelete(id);
@@ -60,9 +59,9 @@ const deleteMovie = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-})
+};
 
-const reviewMovie = asyncHandler(async (req, res) => {
+const reviewMovie = async (req, res) => {
     try {
         const { id } = req.params;
         const { rating, comment } = req.body;
@@ -95,9 +94,9 @@ const reviewMovie = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-});
+};
 
-const deleteComment = asyncHandler(async (req, res) => {
+const deleteComment = async (req, res) => {
     try {
         const { movieId, commentId } = req.body;
 
@@ -120,27 +119,27 @@ const deleteComment = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-})
+};
 
-const getNewMovies = asyncHandler(async (req, res) => {
+const getNewMovies = async (req, res) => {
     try {
         const newMovies = await Movie.find().sort({ createdAt: -1 }).limit(10);
         res.status(200).json(newMovies);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-});
+};
 
-const getTopMovies = asyncHandler(async (req, res) => {
+const getTopMovies = async (req, res) => {
     try {
         const topMovies = await Movie.find().sort({ rating: -1 }).limit(10);
         res.status(200).json(topMovies);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-});
+};
 
-const getRandomMovies = asyncHandler(async (req, res) => {
+const getRandomMovies = async (req, res) => {
     try {
         const count = await Movie.countDocuments();
         const random = Math.floor(Math.random() * count);
@@ -149,6 +148,6 @@ const getRandomMovies = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
-});
+};
 
 export { createMovie, getAllMovies, getMovie, updateMovie, deleteMovie, reviewMovie, deleteComment, getNewMovies, getTopMovies, getRandomMovies };

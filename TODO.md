@@ -1,5 +1,5 @@
 # Movie Application TODO List
-*Last Updated: June 4, 2025*
+*Last Updated: July 3, 2025*
 
 *Created by: Claude Sonnet 4*
 
@@ -38,7 +38,6 @@
   - [x] Create user authentication pages (login/register)
   - [ ] Build user dashboard/profile page
   - [x] Add navigation menu/header component
-  - [ ] Create responsive layout for mobile devices
   - [x] Implement loading states and error handling
 
 - [ ] **State Management**
@@ -95,6 +94,7 @@
 
 ### Technical Improvements
 - [ ] **Testing**
+  - [ ] Test responsive layout for mobile devices
   - [ ] Write unit tests for backend controllers
   - [ ] Add integration tests for API endpoints
   - [ ] Create frontend component tests
@@ -119,12 +119,12 @@
 - [ ] Add API documentation
 - [ ] Create contribution guidelines
 - [ ] Add code comments and JSDoc
-- [ ] Create deployment guide
+- [ ] Create deployment documents
 
 ## 🔄 Current Status
-**Backend**: ✅ User authentication system complete  
+**Backend**: ✅ User authentication system, Movie CRUD controller  
 **Frontend**: 🔄 Basic UI structure  
-**Database**: ✅ MongoDB connection and User model ready  
+**Database**: ✅ MongoDB connection and User, Movie model ready  
 **Styling**: ✅ Tailwind CSS configured with custom theme  
 
 ---
