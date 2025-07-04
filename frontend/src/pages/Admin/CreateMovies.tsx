@@ -90,24 +90,24 @@ const CreateMovies = () => {
                     toast.error("Image upload failed.");
                     return;
                 }
-            }
 
-            await createMovie({
-                ...movieData,
-                image: uploadImagePath,
-            });
-            navigate("/admin/movies-list");
-            setMovieData({
-                name: "",
-                year: 0,
-                detail: "",
-                genre: "",
-                image: null,
-                cast: [],
-                rating: 0,
-            });
-            setSelectedImage(null);
-            toast.success("Movie created successfully!");
+                await createMovie({
+                    ...movieData,
+                    image: uploadImagePath,
+                });
+                navigate("/admin/movies-list");
+                setMovieData({
+                    name: "",
+                    year: 0,
+                    detail: "",
+                    genre: "",
+                    image: null,
+                    cast: [],
+                    rating: 0,
+                });
+                setSelectedImage(null);
+                toast.success("Movie created successfully!");
+            }
         } catch (error) {
             console.error("Error creating movie:", error);
             toast.error("Failed to create movie.");

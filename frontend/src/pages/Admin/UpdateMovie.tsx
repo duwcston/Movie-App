@@ -103,7 +103,10 @@ const UpdateMovie = () => {
                     uploadImagePath = uploadResponse.data.image;
                 }
             }
-
+            if (!uploadImagePath) {
+                toast.error("Image upload failed.");
+                return;
+            }
             const updatedMovie = {
                 ...movieData,
                 image: uploadImagePath,
@@ -162,7 +165,7 @@ const UpdateMovie = () => {
                         value={movieData.detail}
                         name="detail"
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded bg-white"
+                        className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                         required
                     />
                 </div>
