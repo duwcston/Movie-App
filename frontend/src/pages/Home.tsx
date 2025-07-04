@@ -1,5 +1,11 @@
+import Header from "./Movies/Header";
+
 const Home = () => {
-    return <h1>Home</h1>;
+    return (
+        <>
+            <Header />
+        </>
+    );
 };
 
 export default Home;
