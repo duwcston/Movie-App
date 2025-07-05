@@ -141,12 +141,10 @@ const getTopMovies = async (req, res) => {
 
 const getRandomMovies = async (req, res) => {
     try {
-        const count = await Movie.countDocuments();
-        const random = Math.floor(Math.random() * count);
-        const randomMovies = await Movie.find().skip(random).limit(10);
-        res.status(200).json(randomMovies);
+        const randomMovies = await Movie.aggregate([{ $sample: { size: 10 } }]);
+        res.json(randomMovies);
     } catch (error) {
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ error: error.message });
     }
 };
 

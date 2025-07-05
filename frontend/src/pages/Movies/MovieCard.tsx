@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { MovieProps } from "../../types/movieTypes";
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie }: { movie: MovieProps }) => {
     return (
         <div key={movie._id} className="relative group m-[2rem]">
             <Link to={`/movies/${movie._id}`}>

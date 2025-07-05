@@ -11,48 +11,47 @@ interface MovieProps {
 
 import { Link } from "react-router-dom";
 import { useGetAllMoviesQuery } from "../../redux/api/movies";
+import Sidebar from "./Dashboard/Sidebar/Sidebar";
 
 const AdminMoviesList = () => {
     const { data: movies } = useGetAllMoviesQuery({});
 
     return (
-        <div className="containter mx-[9rem]">
-            <div className="flex flex-col items-center justify-center md:flex-row md:justify-between">
+        <div className="flex">
+            <Sidebar />
+            <div className="flex-1 p-6 ml-64">
                 <div className="p-3">
-                    <div className="ml-[2rem] text-xl font-bold h-12 text-white">
+                    <div className="text-xl font-bold text-white mb-6">
                         Movies List ({movies?.length})
                     </div>
-                    <div className="flex flex-wrap justify-around items-center p-[2rem]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {movies?.map((movie: MovieProps) => (
-                            <div className="flex justify-center items-center" key={movie._id}>
-                                <div
-                                    key={movie._id}
-                                    className="max-w-sm m-[2rem] rounded overflow-hidden shadow-lg"
-                                >
-                                    <img
-                                        // src={`http://localhost:5173/${movie.image}`}
-                                        src={movie.image}
-                                        alt={movie.name}
-                                        className="w-full h-48 object-cover"
-                                    />
-                                    <div className="px-4 py-2 border border-none border-gray-400">
-                                        <div className="font-bold text-xl mb-2 text-white">
-                                            {movie.name}
-                                        </div>
+                            <div
+                                key={movie._id}
+                                className="bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-gray-700"
+                            >
+                                <img
+                                    src={movie.image}
+                                    alt={movie.name}
+                                    className="w-full h-64 object-cover"
+                                />
+                                <div className="p-4">
+                                    <div className="font-bold text-xl mb-3 text-white">
+                                        {movie.name}
                                     </div>
-                                    <p className="text-gray-700 text-base px-4 py-2">
+                                    <p className="text-gray-300 text-sm mb-4 leading-relaxed">
                                         {movie.detail.length > 100
                                             ? `${movie.detail.substring(0, 100)}...`
                                             : movie.detail}
                                     </p>
-                                    <button className="mt-[2rem] mb-[1rem]">
+                                    <div className="pt-2">
                                         <Link
                                             to={`/admin/movies/update/${movie._id}`}
-                                            className="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+                                            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 w-full text-center"
                                         >
                                             Update Movie
                                         </Link>
-                                    </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}

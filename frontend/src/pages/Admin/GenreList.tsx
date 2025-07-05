@@ -1,8 +1,3 @@
-export interface GenreProps {
-    _id: string;
-    name: string;
-}
-
 import React, { useState } from "react";
 import {
     useCreateGenreMutation,
@@ -13,6 +8,8 @@ import {
 import { toast } from "react-toastify";
 import GenreForm from "../../components/GenreForm";
 import Modal from "../../components/Modal";
+import { GenreProps } from "../../types/genreTypes";
+import Sidebar from "./Dashboard/Sidebar/Sidebar";
 
 const GenreList = () => {
     const { data: genres, refetch } = useGetGenresQuery({});
@@ -82,46 +79,42 @@ const GenreList = () => {
     };
 
     return (
-        <div className="ml-[10rem] flex flex-col items-center justify-center md:flex-row">
-            <div className="md:w-3/4 p-3">
-                <h1 className="h-12">Manage Genres</h1>
-                <GenreForm
-                    value={name}
-                    setValue={setName}
-                    handleSubmit={handleCreateGenre}
-                />
-                <br />
-                <div className="flex flex-wrap">
-                    {genres &&
-                        genres.map((genre: GenreProps) => (
-                            <div key={genre._id}>
-                                <button
-                                    className="bg-gray-200 text-black py-2 px-4 rounded-lg m-2 hover:bg-gray-300 transition-colors"
-                                    onClick={() => {
-                                        setModalVisible(true);
-                                        setSelectedGenre(genre._id);
-                                        setUpdatingName(genre.name);
-                                    }}
-                                >
-                                    {genre.name}
-                                </button>
-                            </div>
-                        ))}
-                    <Modal
-                        isOpen={modalVisible}
-                        onClose={() => setModalVisible(false)}
-                    >
-                        <GenreForm
-                            value={updatingName}
-                            setValue={(value) => setUpdatingName(value)}
-                            handleSubmit={handleUpdateGenre}
-                            buttonText="Update"
-                            handleDelete={handleDeleteGenre}
-                        ></GenreForm>
-                    </Modal>
+        <>
+            <Sidebar />
+            <div className="ml-[10rem] flex flex-col items-center justify-center md:flex-row">
+                <div className="md:w-3/4 p-3">
+                    <h1 className="h-12">Manage Genres</h1>
+                    <GenreForm value={name} setValue={setName} handleSubmit={handleCreateGenre} />
+                    <br />
+                    <div className="flex flex-wrap">
+                        {genres &&
+                            genres.map((genre: GenreProps) => (
+                                <div key={genre._id}>
+                                    <button
+                                        className="bg-gray-200 text-black py-2 px-4 rounded-lg m-2 hover:bg-gray-300 transition-colors"
+                                        onClick={() => {
+                                            setModalVisible(true);
+                                            setSelectedGenre(genre._id);
+                                            setUpdatingName(genre.name);
+                                        }}
+                                    >
+                                        {genre.name}
+                                    </button>
+                                </div>
+                            ))}
+                        <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+                            <GenreForm
+                                value={updatingName}
+                                setValue={(value) => setUpdatingName(value)}
+                                handleSubmit={handleUpdateGenre}
+                                buttonText="Update"
+                                handleDelete={handleDeleteGenre}
+                            ></GenreForm>
+                        </Modal>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

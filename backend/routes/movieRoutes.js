@@ -25,7 +25,7 @@ router.get('/all-movies', getAllMovies);
 router.get('/movie/:id', getMovie);
 router.get('/new-movies', getNewMovies);
 router.get('/top-movies', getTopMovies);
-router.get('/random-movie', getRandomMovies);
+router.get('/random-movies', getRandomMovies);
 
 // Private Routes
 router.post('/:id/review', authenticated, checkId, reviewMovie);

@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useCreateMovieMutation, useUploadMovieImageMutation } from "../../redux/api/movies";
 import { useGetGenresQuery } from "../../redux/api/genre";
 import { toast } from "react-toastify";
-import { GenreProps } from "./GenreList";
+import { GenreProps } from "../../types/genreTypes";
+import Sidebar from "./Dashboard/Sidebar/Sidebar";
 
 const CreateMovies = () => {
     const navigate = useNavigate();
@@ -115,108 +116,111 @@ const CreateMovies = () => {
     };
 
     return (
-        <div className="container flex flex-col justify-center items-center mt-4">
-            <form onSubmit={handleCreateMovie} className="w-full max-w-md">
-                <h1 className="mb-4">Create Movie</h1>
-                <div className="mb-4">
-                    <label className="block mb-2 text-sm font-medium text-white">
-                        Name:
-                        <input
-                            type="text"
-                            name="name"
-                            value={movieData.name}
-                            onChange={handleChange}
-                            placeholder="Enter movie name"
-                            className="border p-2 w-full"
-                        />
-                    </label>
-                    <label className="block mb-2 text-sm font-medium text-white">
-                        Year:
-                        <input
-                            type="number"
-                            name="year"
-                            value={movieData.year}
-                            onChange={handleChange}
-                            className="border p-2 w-full"
-                        />
-                    </label>
-                    <label className="block mb-2 text-sm font-medium text-white">
-                        Detail:
-                        <textarea
-                            name="detail"
-                            value={movieData.detail}
-                            onChange={handleChange}
-                            className="border p-2 w-full bg-white text-black"
-                            placeholder="Enter movie details"
-                            rows={4}
-                        ></textarea>
-                    </label>
-                    <label className="block mb-2 text-sm font-medium text-white">
-                        Cast:
-                        <input
-                            type="text"
-                            name="cast"
-                            placeholder="Enter cast separated by commas"
-                            value={movieData.cast.join(", ")}
-                            onChange={(e) =>
-                                setMovieData({
-                                    ...movieData,
-                                    cast: e.target.value.split(", "),
-                                })
-                            }
-                            className="border p-2 w-full"
-                        />
-                    </label>
-                    <label className="block mb-2 text-sm font-medium text-white">
-                        Genre:
-                        <select
-                            name="genre"
-                            value={movieData.genre}
-                            className={`border p-2 w-full bg-white ${
-                                movieData.genre === "" ? "text-gray-500" : "text-black"
-                            }`}
-                            onChange={handleChange}
-                        >
-                            <option value="" className="text-gray-500">
-                                Select a genre
-                            </option>
-                            {isLoadingGenres ? (
-                                <option>Loading genres...</option>
-                            ) : (
-                                genres?.map((genre: GenreProps) => (
-                                    <option key={genre._id} value={genre._id}>
-                                        {genre.name}
-                                    </option>
-                                ))
-                            )}
-                        </select>
-                    </label>
-                </div>
+        <>
+            <Sidebar />
+            <div className="container flex flex-col justify-center items-center mt-4">
+                <form onSubmit={handleCreateMovie} className="w-full max-w-md">
+                    <h1 className="mb-4">Create Movie</h1>
+                    <div className="mb-4">
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Name:
+                            <input
+                                type="text"
+                                name="name"
+                                value={movieData.name}
+                                onChange={handleChange}
+                                placeholder="Enter movie name"
+                                className="border p-2 w-full"
+                            />
+                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Year:
+                            <input
+                                type="number"
+                                name="year"
+                                value={movieData.year}
+                                onChange={handleChange}
+                                className="border p-2 w-full"
+                            />
+                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Detail:
+                            <textarea
+                                name="detail"
+                                value={movieData.detail}
+                                onChange={handleChange}
+                                className="border p-2 w-full bg-white text-black"
+                                placeholder="Enter movie details"
+                                rows={4}
+                            ></textarea>
+                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Cast:
+                            <input
+                                type="text"
+                                name="cast"
+                                placeholder="Enter cast separated by commas"
+                                value={movieData.cast.join(", ")}
+                                onChange={(e) =>
+                                    setMovieData({
+                                        ...movieData,
+                                        cast: e.target.value.split(", "),
+                                    })
+                                }
+                                className="border p-2 w-full"
+                            />
+                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Genre:
+                            <select
+                                name="genre"
+                                value={movieData.genre}
+                                className={`border p-2 w-full bg-white ${
+                                    movieData.genre === "" ? "text-gray-500" : "text-black"
+                                }`}
+                                onChange={handleChange}
+                            >
+                                <option value="" className="text-gray-500">
+                                    Select a genre
+                                </option>
+                                {isLoadingGenres ? (
+                                    <option>Loading genres...</option>
+                                ) : (
+                                    genres?.map((genre: GenreProps) => (
+                                        <option key={genre._id} value={genre._id}>
+                                            {genre.name}
+                                        </option>
+                                    ))
+                                )}
+                            </select>
+                        </label>
+                    </div>
 
-                <div className="mb-4">
-                    <label className="block mb-2 text-sm font-medium text-white">
-                        Image
-                        <input
-                            type="file"
-                            accept="image/*"
-                            name="image"
-                            onChange={handleImageChange}
-                            className={`w-full p-2 border border-gray-300 rounded ${
-                                !selectedImage ? "text-gray-500" : "text-black"
-                            }`}
-                        />
-                    </label>
-                </div>
+                    <div className="mb-4">
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Image
+                            <input
+                                type="file"
+                                accept="image/*"
+                                name="image"
+                                onChange={handleImageChange}
+                                className={`w-full p-2 border border-gray-300 rounded ${
+                                    !selectedImage ? "text-gray-500" : "text-black"
+                                }`}
+                            />
+                        </label>
+                    </div>
 
-                <button
-                    type="submit"
-                    className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer"
-                    disabled={isCreatingMovie || isUploadingImage}
-                >
-                    {isCreatingMovie || isUploadingImage ? "Creating..." : "Create Movie"}
-                </button>
-            </form>
-        </div>
+                    <button
+                        type="submit"
+                        className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer"
+                        disabled={isCreatingMovie || isUploadingImage}
+                    >
+                        {isCreatingMovie || isUploadingImage ? "Creating..." : "Create Movie"}
+                    </button>
+                </form>
+            </div>
+        </>
     );
 };
 

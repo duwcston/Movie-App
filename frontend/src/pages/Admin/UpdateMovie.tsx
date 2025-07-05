@@ -8,7 +8,7 @@ import {
 } from "../../redux/api/movies";
 import { toast } from "react-toastify";
 import { useGetGenresQuery } from "../../redux/api/genre";
-import { GenreProps } from "./GenreList";
+import { GenreProps } from "../../types/genreTypes";
 
 const UpdateMovie = () => {
     const { id } = useParams<{ id: string }>();

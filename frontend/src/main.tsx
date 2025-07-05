@@ -14,12 +14,16 @@ import GenreList from "./pages/Admin/GenreList.tsx";
 import CreateMovies from "./pages/Admin/CreateMovies.tsx";
 import AdminMoviesList from "./pages/Admin/AdminMoviesList.tsx";
 import UpdateMovie from "./pages/Admin/UpdateMovie.tsx";
+import AllComments from "./pages/Admin/AllComments.tsx";
+import AdminDashBoard from "./pages/Admin/Dashboard/AdminDashBoard.tsx";
 
 // Restricted
 import Login from "./pages/Auth/Login.tsx";
 import Register from "./pages/Auth/Register.tsx";
 import PrivateRoute from "./pages/Auth/PrivateRoute.tsx";
 import Profile from "./pages/User/Profile.tsx";
+import AllMovies from "./pages/Movies/AllMovies.tsx";
+import MovieDetails from "./pages/Movies/MovieDetails.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -27,6 +31,8 @@ const router = createBrowserRouter(
             <Route index={true} path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/movies" element={<AllMovies />} />
+            <Route path="/movies/:id" element={<MovieDetails />} />
             <Route path="" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
             </Route>
@@ -36,6 +42,8 @@ const router = createBrowserRouter(
                 <Route path="/admin/movies/create" element={<CreateMovies />} />
                 <Route path="/admin/movies-list" element={<AdminMoviesList />} />
                 <Route path="/admin/movies/update/:id" element={<UpdateMovie />} />
+                <Route path="/admin/movies/comments" element={<AllComments />} />
+                <Route path="/admin/movies/dashboard" element={<AdminDashBoard />} />
             </Route>
         </Route>
     )
