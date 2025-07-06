@@ -1,17 +1,7 @@
-interface MovieProps {
-    _id: string;
-    name: string;
-    year: number;
-    detail: string;
-    genre: string;
-    image: string;
-    cast: string[];
-    rating: number;
-}
-
 import { Link } from "react-router-dom";
 import { useGetAllMoviesQuery } from "../../redux/api/movies";
 import Sidebar from "./Dashboard/Sidebar/Sidebar";
+import { MovieProps } from "../../types/movieTypes";
 
 const AdminMoviesList = () => {
     const { data: movies } = useGetAllMoviesQuery({});
@@ -28,26 +18,29 @@ const AdminMoviesList = () => {
                         {movies?.map((movie: MovieProps) => (
                             <div
                                 key={movie._id}
-                                className="bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-gray-700"
+                                className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-700"
                             >
-                                <img
-                                    src={movie.image}
-                                    alt={movie.name}
-                                    className="w-full h-64 object-cover"
-                                />
-                                <div className="p-4">
-                                    <div className="font-bold text-xl mb-3 text-white">
+                                <div className="relative">
+                                    <img
+                                        src={movie.image}
+                                        alt={movie.name}
+                                        className="w-full h-72 object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                                </div>
+                                <div className="p-5">
+                                    <h3 className="font-bold text-lg mb-2 text-white truncate">
                                         {movie.name}
-                                    </div>
-                                    <p className="text-gray-300 text-sm mb-4 leading-relaxed">
-                                        {movie.detail.length > 100
-                                            ? `${movie.detail.substring(0, 100)}...`
+                                    </h3>
+                                    <p className="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-3">
+                                        {movie.detail.length > 120
+                                            ? `${movie.detail.substring(0, 120)}...`
                                             : movie.detail}
                                     </p>
-                                    <div className="pt-2">
+                                    <div className="mt-auto">
                                         <Link
                                             to={`/admin/movies/update/${movie._id}`}
-                                            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 w-full text-center"
+                                            className="block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-center text-sm"
                                         >
                                             Update Movie
                                         </Link>

@@ -11,7 +11,7 @@ const Sidebar = () => {
                     <NavLink
                         to="/admin/movies/dashboard"
                         className={({ isActive }) =>
-                            `flex items-center px-4 py-3 text-white rounded-lg shadow-md transition-all duration-200 hover:shadow-lg ${
+                            `flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:shadow-md ${
                                 isActive
                                     ? "bg-blue-600 hover:bg-blue-700"
                                     : "text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -19,18 +19,6 @@ const Sidebar = () => {
                         }
                     >
                         <span className="text-lg font-medium">Dashboard</span>
-                    </NavLink>
-                    <NavLink
-                        to="/admin/movies/create"
-                        className={({ isActive }) =>
-                            `flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:shadow-md ${
-                                isActive
-                                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                                    : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                            }`
-                        }
-                    >
-                        <span className="text-lg font-medium">Create Movie</span>
                     </NavLink>
                     <NavLink
                         to="/admin/movies/genre"
@@ -43,6 +31,18 @@ const Sidebar = () => {
                         }
                     >
                         <span className="text-lg font-medium">Create Genre</span>
+                    </NavLink>
+                    <NavLink
+                        to="/admin/movies/create"
+                        className={({ isActive }) =>
+                            `flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:shadow-md ${
+                                isActive
+                                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                                    : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                            }`
+                        }
+                    >
+                        <span className="text-lg font-medium">Create Movie</span>
                     </NavLink>
                     <NavLink
                         to="/admin/movies-list"
@@ -66,7 +66,7 @@ const Sidebar = () => {
                             }`
                         }
                     >
-                        <span className="text-lg font-medium">Comments</span>
+                        <span className="text-lg font-medium">All Comments</span>
                     </NavLink>
                 </nav>
             </aside>

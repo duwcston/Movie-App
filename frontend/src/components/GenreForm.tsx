@@ -10,7 +10,7 @@ const GenreForm = ({
     value,
     setValue,
     handleSubmit,
-    buttonText = "Submit",
+    buttonText = "Create",
     handleDelete,
 }: GenreFormProps) => {
     return (
@@ -25,7 +25,7 @@ const GenreForm = ({
                 />
 
                 <div className="flex justify-between">
-                    <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                    <button className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors">
                         {buttonText}
                     </button>
 

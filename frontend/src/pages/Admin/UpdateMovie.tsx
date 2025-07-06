@@ -112,7 +112,7 @@ const UpdateMovie = () => {
                 image: uploadImagePath,
             };
             await updateMovie({ id: id, updatedMovie: updatedMovie });
-            navigate("/movies");
+            navigate("/admin/movies-list");
             toast.success("Movie updated successfully!");
         } catch (error) {
             toast.error("Failed to update movie: " + error);
@@ -124,7 +124,7 @@ const UpdateMovie = () => {
         if (window.confirm("Are you sure you want to delete this movie?")) {
             try {
                 await deleteMovie(id!);
-                navigate("/movies");
+                navigate("/admin/movies-list");
                 toast.success("Movie deleted successfully!");
             } catch (error) {
                 toast.error("Failed to delete movie: " + error);

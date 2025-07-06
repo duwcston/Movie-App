@@ -1,59 +1,63 @@
-// import { useState } from "react";
 import {
     useGetNewMoviesQuery,
     useGetTopMoviesQuery,
     useGetRandomMoviesQuery,
 } from "../../redux/api/movies";
-// import { useGetGenresQuery } from "../../redux/api/genre";
 import SliderUtil from "../../components/SlideUtil";
-// import { GenreProps } from "../../types/genreTypes";
 
 const MoviesContainerPage = () => {
     const { data: newMovies } = useGetNewMoviesQuery({});
     const { data: topMovies } = useGetTopMoviesQuery({});
     const { data: randomMovies } = useGetRandomMoviesQuery({});
-    // const { data: genres } = useGetGenresQuery({});
-
-    // const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-
-    // const handleGenreClick = (genreId) => {
-    //     setSelectedGenre(genreId);
-    // };
-
-    // const filteredMovies = newMovies?.filter(
-    //     (movie) => selectedGenre === null || movie.genre === selectedGenre
-    // );
 
     return (
-        <div className="flex flex-col lg:flex-row lg:justify-between items-center">
-            {/* <nav className=" ml-[4rem] flex flex-row xl:flex-col lg:flex-col md:flex-row sm:flex-row">
-                {genres?.map((genre: GenreProps) => (
-                    <button
-                        key={genre._id}
-                        className={`transition duration-300 ease-in-out hover:bg-gray-200 block p-2 rounded mb-[1rem] text-lg ${
-                            selectedGenre === genre._id ? "bg-gray-200" : ""
-                        }`}
-                        onClick={() => handleGenreClick(genre._id)}
-                    >
-                        {genre.name}
-                    </button>
-                ))}
-            </nav> */}
-
-            <section className="flex flex-col justify-center items-center w-full lg:w-[80%] mx-auto mt-8 lg:mt-0">
-                <div className="w-full mb-8">
-                    <h2 className="text-2xl font-bold mb-4">New Movies</h2>
-                    <SliderUtil data={newMovies || []} />
+        <div className="max-w-[1400px] mx-auto px-4 py-8 bg-gray-900">
+            <section className="space-y-12">
+                <div className="movie-section">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl md:text-3xl font-bold text-white">New Releases</h2>
+                        <a
+                            href="/movies"
+                            className="text-blue-400 hover:text-blue-300 text-sm md:text-base"
+                        >
+                            View All →
+                        </a>
+                    </div>
+                    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
+                        <SliderUtil data={newMovies || []} />
+                    </div>
                 </div>
 
-                <div className="w-full mb-8">
-                    <h2 className="text-2xl font-bold mb-4">Top Movies</h2>
-                    <SliderUtil data={topMovies || []} />
+                <div className="movie-section">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl md:text-3xl font-bold text-white">Top Rated</h2>
+                        <a
+                            href="/movies"
+                            className="text-blue-400 hover:text-blue-300 text-sm md:text-base"
+                        >
+                            View All →
+                        </a>
+                    </div>
+                    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
+                        <SliderUtil data={topMovies || []} />
+                    </div>
                 </div>
 
-                <div className="w-full mb-8">
-                    <h2 className="text-2xl font-bold mb-4">Choose for you</h2>
-                    <SliderUtil data={randomMovies || []} />
+                <div className="movie-section">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl md:text-3xl font-bold text-white">
+                            Recommended For You
+                        </h2>
+                        <a
+                            href="/movies"
+                            className="text-blue-400 hover:text-blue-300 text-sm md:text-base"
+                        >
+                            View All →
+                        </a>
+                    </div>
+                    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
+                        <SliderUtil data={randomMovies || []} />
+                    </div>
                 </div>
             </section>
         </div>

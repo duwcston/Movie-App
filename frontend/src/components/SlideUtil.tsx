@@ -10,14 +10,47 @@ const SliderUtil = ({ data }: { data: MovieProps[] }) => {
         infinite: true,
         speed: 500,
         slidesToShow: 4,
-        slidesToScroll: 2,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        pauseOnHover: true,
+        cssEase: "ease-in-out",
+        responsive: [
+            {
+                breakpoint: 1280,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 640,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false,
+                },
+            },
+        ],
     };
+
     return (
-        <Slider {...settings}>
-            {data?.map((movie: MovieProps) => (
-                <MovieCard key={movie._id} movie={movie} />
-            ))}
-        </Slider>
+        <div className="slider-container">
+            <Slider {...settings}>
+                {data?.map((movie: MovieProps) => (
+                    <div key={movie._id} className="px-2">
+                        <MovieCard movie={movie} />
+                    </div>
+                ))}
+            </Slider>
+        </div>
     );
 };
 

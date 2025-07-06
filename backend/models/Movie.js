@@ -42,14 +42,18 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    genre: {
+    genre: [{
         type: ObjectId,
         ref: "Genre",
         required: true,
-    },
+    }],
     cast: [{
         type: String
     }],
+    director: {
+        type: String,
+        required: true,
+    },
     reviews: [reviewSchema],
     numReviews: {
         type: Number,

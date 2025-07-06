@@ -11,10 +11,11 @@ const CreateMovies = () => {
 
     const [movieData, setMovieData] = useState({
         name: "",
-        year: 0,
+        year: 2000,
         detail: "",
-        genre: "",
+        genre: [] as string[],
         image: null,
+        director: "",
         cast: [] as string[],
         rating: 0,
     });
@@ -35,7 +36,7 @@ const CreateMovies = () => {
         if (genres) {
             setMovieData((prevData) => ({
                 ...prevData,
-                genre: genres[0]?.id || "",
+                genre: genres[0]?.id ? [genres[0].id] : [],
             }));
         }
     }, [createMovieError, uploadImageError, genres]);
@@ -48,7 +49,7 @@ const CreateMovies = () => {
         if (name === "genre") {
             setMovieData((prevData) => ({
                 ...prevData,
-                genre: value,
+                genre: [value],
             }));
         } else {
             setMovieData((prevData) => ({
@@ -101,8 +102,9 @@ const CreateMovies = () => {
                     name: "",
                     year: 0,
                     detail: "",
-                    genre: "",
+                    genre: [],
                     image: null,
+                    director: "",
                     cast: [],
                     rating: 0,
                 });
@@ -140,7 +142,9 @@ const CreateMovies = () => {
                                 name="year"
                                 value={movieData.year}
                                 onChange={handleChange}
-                                className="border p-2 w-full"
+                                min="2000"
+                                max="2030"
+                                className="border p-1 w-full"
                             />
                         </label>
                         <label className="block mb-2 text-sm font-medium text-white">
@@ -149,10 +153,26 @@ const CreateMovies = () => {
                                 name="detail"
                                 value={movieData.detail}
                                 onChange={handleChange}
-                                className="border p-2 w-full bg-white text-black"
+                                className="border p-2 w-full bg-white text-black rounded-md"
                                 placeholder="Enter movie details"
-                                rows={4}
+                                rows={2}
                             ></textarea>
+                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Director:
+                            <input
+                                type="text"
+                                name="director"
+                                value={movieData.director || ""}
+                                onChange={(e) =>
+                                    setMovieData({
+                                        ...movieData,
+                                        director: e.target.value,
+                                    })
+                                }
+                                className="border p-2 w-full"
+                                placeholder="Enter director's name"
+                            />
                         </label>
                         <label className="block mb-2 text-sm font-medium text-white">
                             Cast:
@@ -170,30 +190,67 @@ const CreateMovies = () => {
                                 className="border p-2 w-full"
                             />
                         </label>
-                        <label className="block mb-2 text-sm font-medium text-white">
-                            Genre:
-                            <select
-                                name="genre"
-                                value={movieData.genre}
-                                className={`border p-2 w-full bg-white ${
-                                    movieData.genre === "" ? "text-gray-500" : "text-black"
-                                }`}
-                                onChange={handleChange}
-                            >
-                                <option value="" className="text-gray-500">
-                                    Select a genre
-                                </option>
-                                {isLoadingGenres ? (
-                                    <option>Loading genres...</option>
-                                ) : (
-                                    genres?.map((genre: GenreProps) => (
-                                        <option key={genre._id} value={genre._id}>
-                                            {genre.name}
-                                        </option>
-                                    ))
-                                )}
-                            </select>
-                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">Genres:</label>
+                        <select
+                            name="genre"
+                            className="border p-1 w-full bg-white text-black rounded-md"
+                            onChange={(e) => {
+                                const selectedGenreId = e.target.value;
+                                const selectedGenre = genres?.find(
+                                    (g: GenreProps) => g._id === selectedGenreId
+                                );
+                                if (selectedGenre && !movieData.genre.includes(selectedGenreId)) {
+                                    setMovieData({
+                                        ...movieData,
+                                        genre: [
+                                            ...(Array.isArray(movieData.genre)
+                                                ? movieData.genre
+                                                : []),
+                                            selectedGenreId,
+                                        ],
+                                    });
+                                }
+                            }}
+                        >
+                            {/* <option value="">Select a genre</option> */}
+                            {isLoadingGenres ? (
+                                <option>Loading genres...</option>
+                            ) : (
+                                genres?.map((genre: GenreProps) => (
+                                    <option key={genre._id} value={genre._id}>
+                                        {genre.name}
+                                    </option>
+                                ))
+                            )}
+                        </select>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {Array.isArray(movieData.genre) &&
+                            movieData.genre.map((genreId: string) => {
+                                const genre = genres?.find((g: GenreProps) => g._id === genreId);
+                                return (
+                                    <div
+                                        key={genreId}
+                                        className="bg-transparent border text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 mb-2"
+                                    >
+                                        <span>{genre?.name}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setMovieData({
+                                                    ...movieData,
+                                                    genre: movieData.genre.filter(
+                                                        (id: string) => id !== genreId
+                                                    ),
+                                                });
+                                            }}
+                                            className="bg-transparent hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                                        >
+                                            X
+                                        </button>
+                                    </div>
+                                );
+                            })}
                     </div>
 
                     <div className="mb-4">

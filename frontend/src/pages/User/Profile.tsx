@@ -1,33 +1,33 @@
-import { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { toast } from "react-toastify"
-import Loader from "../../components/Loader"
-import { setCredentials } from "../../redux/features/auth/authSlice"
-import { useProfileMutation } from "../../redux/api/users"
-import { RootState } from "../../redux/store"
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import Loader from "../../components/Loader";
+import { setCredentials } from "../../redux/features/auth/authSlice";
+import { useProfileMutation } from "../../redux/api/users";
+import { RootState } from "../../redux/store";
 
 const Profile = () => {
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const { userInfo } = useSelector((state: RootState) => state.auth)
+    const { userInfo } = useSelector((state: RootState) => state.auth);
 
-    const [updateProfile, { isLoading: loadingUpdateProfile }] = useProfileMutation()
+    const [updateProfile, { isLoading: loadingUpdateProfile }] = useProfileMutation();
 
     useEffect(() => {
-        setUsername(userInfo.username)
-        setEmail(userInfo.email)
-    }, [userInfo.username, userInfo.email])
+        setUsername(userInfo.username);
+        setEmail(userInfo.email);
+    }, [userInfo.username, userInfo.email]);
 
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         if (password !== confirmPassword) {
-            toast.error("Passwords do not match")
-            return
+            toast.error("Passwords do not match");
+            return;
         }
         try {
             const res = await updateProfile({
@@ -35,14 +35,14 @@ const Profile = () => {
                 username,
                 email,
                 password,
-            }).unwrap()
-            dispatch(setCredentials({ ...res }))
-            toast.success("Profile updated successfully!")
+            }).unwrap();
+            dispatch(setCredentials({ ...res }));
+            toast.success("Profile updated successfully!");
         } catch (error) {
-            console.error("Profile update failed:", error)
-            toast.error("Failed to update profile.")
+            console.error("Profile update failed:", error);
+            toast.error("Failed to update profile.");
         }
-    }
+    };
 
     return (
         <div>
@@ -106,7 +106,10 @@ const Profile = () => {
                                 />
                             </div>
                             <div className="flex justify-center">
-                                <button disabled={loadingUpdateProfile} className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer my-[1rem] w-[10rem]">
+                                <button
+                                    disabled={loadingUpdateProfile}
+                                    className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer my-[1rem] w-[10rem]"
+                                >
                                     {loadingUpdateProfile ? <Loader /> : "Update"}
                                 </button>
                             </div>
@@ -115,7 +118,7 @@ const Profile = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Profile
+export default Profile;

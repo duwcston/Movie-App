@@ -54,16 +54,19 @@ const AllMovies = () => {
     };
 
     const handleGenreClick = (genreId: string) => {
+        dispatch(setMoviesFilter({ ...moviesFilter, selectedGenre: genreId }));
         const filterByGenre = data.filter((movie: { genre: string }) => movie.genre === genreId);
         dispatch(setFilteredMovies(filterByGenre));
     };
 
     const handleYearChange = (year: string) => {
+        dispatch(setMoviesFilter({ ...moviesFilter, selectedYear: year }));
         const filterByYear = data.filter((movie: { year: number }) => movie.year === +year);
         dispatch(setFilteredMovies(filterByYear));
     };
 
     const handleSortChange = (sortOption: string) => {
+        dispatch(setMoviesFilter({ ...moviesFilter, selectedSort: sortOption }));
         switch (sortOption) {
             case "new":
                 dispatch(setFilteredMovies(newMovies));
@@ -74,106 +77,96 @@ const AllMovies = () => {
             case "random":
                 dispatch(setFilteredMovies(randomMovies));
                 break;
-
             default:
-                dispatch(setFilteredMovies([]));
+                dispatch(setFilteredMovies(data || []));
                 break;
         }
     };
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 -translate-y-[5rem] overflow-hidden">
-            <>
-                <section>
-                    <div
-                        className="relative h-screen w-screen flex items-center justify-center bg-cover"
-                        style={{ backgroundImage: `url(${banner})` }}
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-black opacity-60"></div>
+        <div className="min-h-screen bg-gray-900">
+            <div
+                className="relative h-[70vh] w-full flex items-center justify-center bg-cover bg-center"
+                style={{ backgroundImage: `url(${banner})` }}
+            >
+                <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-black opacity-70"></div>
 
-                        <div className="relative z-10 text-center text-white mt-[5rem]">
-                            <h1 className="text-8xl font-bold mb-4">The Movies Hub</h1>
-                            <p className="text-2xl">
-                                Cinematic Odyssey: Unveiling the Magic of Movies
-                            </p>
-                        </div>
+                <div className="relative z-10 text-center text-white px-4">
+                    <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-4">
+                        The Movies Hub
+                    </h1>
+                    <p className="text-lg md:text-2xl">
+                        Cinematic Odyssey: Unveiling the Magic of Movies
+                    </p>
+                </div>
+            </div>
 
-                        <section className="absolute bottom-[2rem]">
-                            <input
-                                type="text"
-                                className="w-[100%] border px-4 py-2 outline-none rounded text-black"
-                                placeholder="Search Movie"
-                                value={moviesFilter.searchTerm}
-                                onChange={handleSearchChange}
-                            />
-                            <section className="sorts-container mt-[2rem] ml-[10rem] w-[30rem] text-white">
-                                <select
-                                    className="border-2 p-2 rounded w-fit"
-                                    value={moviesFilter.selectedGenre}
-                                    onChange={(e) => handleGenreClick(e.target.value)}
-                                >
-                                    <option value="" className="text-black">
-                                        Genres
-                                    </option>
-                                    {genres?.map((genre: GenreProps) => (
-                                        <option
-                                            key={genre._id}
-                                            value={genre._id}
-                                            className="text-black"
-                                        >
-                                            {genre.name}
-                                        </option>
-                                    ))}
-                                </select>
-
-                                <select
-                                    className="border-2 p-2 rounded ml-4 w-fit"
-                                    value={moviesFilter.selectedYear}
-                                    onChange={(e) => handleYearChange(e.target.value)}
-                                >
-                                    <option value="" className="text-black">
-                                        Year
-                                    </option>
-                                    {uniqueYears.map((year) => (
-                                        <option
-                                            key={year as string}
-                                            value={year as string}
-                                            className="text-black"
-                                        >
-                                            {year as string}
-                                        </option>
-                                    ))}
-                                </select>
-
-                                <select
-                                    className="border-2 p-2 rounded ml-4 w-fit"
-                                    value={moviesFilter.selectedSort}
-                                    onChange={(e) => handleSortChange(e.target.value)}
-                                >
-                                    <option className="text-black" value="">
-                                        Sort By
-                                    </option>
-                                    <option className="text-black" value="new">
-                                        New Movies
-                                    </option>
-                                    <option className="text-black" value="top">
-                                        Top Movies
-                                    </option>
-                                    <option className="text-black" value="random">
-                                        Random Movies
-                                    </option>
-                                </select>
-                            </section>
-                        </section>
+            <div className="bg-gray-800 py-6 px-4 shadow-lg sticky top-0 z-20">
+                <div className="max-w-7xl mx-auto">
+                    <div className="mb-4 flex justify-center">
+                        <input
+                            type="text"
+                            className="w-[100vh] border px-4 py-3 outline-none rounded-lg text-black bg-white"
+                            placeholder="Search Movie"
+                            value={moviesFilter.searchTerm}
+                            onChange={handleSearchChange}
+                        />
                     </div>
+                    <div className="flex flex-wrap gap-3 justify-center">
+                        <select
+                            className="border-2 p-2 rounded-lg bg-white text-black cursor-pointer"
+                            value={moviesFilter.selectedGenre}
+                            onChange={(e) => handleGenreClick(e.target.value)}
+                        >
+                            <option value="">All Genres</option>
+                            {genres?.map((genre: GenreProps) => (
+                                <option key={genre._id} value={genre._id}>
+                                    {genre.name}
+                                </option>
+                            ))}
+                        </select>
 
-                    <section className="flex flex-wrap justify-center items-center mt-8 w-screen mx-auto">
-                        {filteredMovies?.map((movie: MovieProps) => (
+                        <select
+                            className="border-2 p-2 rounded-lg bg-white text-black cursor-pointer"
+                            value={moviesFilter.selectedYear}
+                            onChange={(e) => handleYearChange(e.target.value)}
+                        >
+                            <option value="">All Years</option>
+                            {uniqueYears.map((year) => (
+                                <option key={year as string} value={year as string}>
+                                    {year as string}
+                                </option>
+                            ))}
+                        </select>
+
+                        <select
+                            className="border-2 p-2 rounded-lg bg-white text-black cursor-pointer"
+                            value={moviesFilter.selectedSort}
+                            onChange={(e) => handleSortChange(e.target.value)}
+                        >
+                            <option value="">Sort By</option>
+                            <option value="new">New Movies</option>
+                            <option value="top">Top Movies</option>
+                            <option value="random">Random Movies</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                {filteredMovies && filteredMovies.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {filteredMovies.map((movie: MovieProps) => (
                             <MovieCard key={movie._id} movie={movie} />
                         ))}
-                    </section>
-                </section>
-            </>
+                    </div>
+                ) : (
+                    <div className="text-center text-white py-16">
+                        <h3 className="text-2xl font-semibold">No movies found</h3>
+                        <p className="mt-2">Try adjusting your search or filter criteria</p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

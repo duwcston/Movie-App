@@ -6,7 +6,7 @@ interface VideoCardProps {
     rating: number;
 }
 
-const VideoCard = ({ image, title, date, commentsNumber, rating }: VideoCardProps) => {
+const VideoCard = ({ image, title, date, commentsNumber }: VideoCardProps) => {
     return (
         <>
             <div className="flex items-center w-[90%] mt-5">
@@ -16,7 +16,7 @@ const VideoCard = ({ image, title, date, commentsNumber, rating }: VideoCardProp
 
                 <div className="ml-4">
                     <h2 className="text-lg text-white">
-                        {title} ({rating})
+                        {title}
                     </h2>
                     <p className="text-gray-500 mb-3">{date}</p>
                 </div>

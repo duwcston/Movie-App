@@ -13,9 +13,9 @@ interface ReviewProps {
 export interface MovieProps {
     _id: string;
     name: string;
-    description: string;
+    detail: string;
     year: string;
-    genre: string;
+    genre: [];
     rating: number;
     image: string;
     reviews: ReviewProps[];

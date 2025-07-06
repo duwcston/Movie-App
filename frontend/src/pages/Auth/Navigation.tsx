@@ -1,9 +1,5 @@
-import { useState } from "react";
-import {
-    AiOutlineHome,
-    AiOutlineLogin,
-    AiOutlineUserAdd,
-} from "react-icons/ai";
+import { useState, useEffect } from "react";
+import { AiOutlineHome, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
 import { MdOutlineLocalMovies } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +11,24 @@ import { RootState } from "../../redux/store";
 const Navigation = () => {
     const { userInfo } = useSelector((state: RootState) => state.auth);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const handleMouseMove = (event: MouseEvent) => {
+            let threshold = 100;
+            if (userInfo.isAdmin) {
+                threshold = 250;
+            }
+            const isNearBottom = window.innerHeight - event.clientY <= threshold;
+            setIsVisible(isNearBottom);
+        };
+
+        window.addEventListener("mousemove", handleMouseMove);
+
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+        };
+    }, [userInfo.isAdmin]);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -39,7 +53,11 @@ const Navigation = () => {
     };
 
     return (
-        <div className="fixed bottom-10 rounded-lg bg-gray-800 text-white w-1/3 max-w-[800px] mx-auto p-4 z-50 transform -translate-x-1/2 left-1/2">
+        <div
+            className={`fixed bottom-10 rounded-lg bg-gray-800 text-white w-1/3 max-w-[800px] mx-auto p-4 z-50 transform -translate-x-1/2 left-1/2 transition-opacity duration-300 ${
+                isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+        >
             <section className="flex justify-between items-center">
                 <div className="flex justify-between items-center">
                     <Link
@@ -47,9 +65,7 @@ const Navigation = () => {
                         className="flex items-center transition-transform transform hover:-translate-y-2"
                     >
                         <AiOutlineHome className="mr-2 mt-[4px]" size={26} />
-                        <span className="hidden nav-item-name mt-[3rem]">
-                            Home
-                        </span>
+                        <span className="hidden nav-item-name mt-[3rem]">Home</span>
                     </Link>
 
                     <Link
@@ -57,9 +73,7 @@ const Navigation = () => {
                         className="flex items-center transition-transform transform hover:-translate-y-2 ml-[1rem]"
                     >
                         <MdOutlineLocalMovies className="" size={26} />
-                        <span className="hidden nav-item-name mt-[3rem]">
-                            Shop
-                        </span>
+                        <span className="hidden nav-item-name mt-[3rem]">Shop</span>
                     </Link>
                 </div>
                 <div className="relative">
@@ -67,13 +81,7 @@ const Navigation = () => {
                         onClick={toggleDropdown}
                         className="text-gray-800 focus:outline-none flex items-center"
                     >
-                        {userInfo ? (
-                            <span className="text-white">
-                                {userInfo.username}
-                            </span>
-                        ) : (
-                            <></>
-                        )}
+                        {userInfo ? <span className="text-white">{userInfo.username}</span> : <></>}
 
                         {userInfo && (
                             <svg
@@ -87,11 +95,7 @@ const Navigation = () => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d={
-                                        dropdownOpen
-                                            ? "M5 15l7-7 7 7"
-                                            : "M19 9l-7 7-7-7"
-                                    }
+                                    d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
                                 />
                             </svg>
                         )}
@@ -108,7 +112,7 @@ const Navigation = () => {
                                     <li>
                                         <Link
                                             to="/admin/movies/dashboard"
-                                            className="block px-4 py-2 hover:bg-gray-100"
+                                            className="block px-4 py-2 hover:bg-gray-200"
                                         >
                                             Dashboard
                                         </Link>
@@ -117,10 +121,7 @@ const Navigation = () => {
                             )}
 
                             <li>
-                                <Link
-                                    to="/profile"
-                                    className="block px-4 py-2 hover:bg-gray-100"
-                                >
+                                <Link to="/profile" className="block px-4 py-2 hover:bg-gray-200">
                                     Profile
                                 </Link>
                             </li>
@@ -128,7 +129,7 @@ const Navigation = () => {
                             <li>
                                 <button
                                     onClick={logoutHandler}
-                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                                 >
                                     Logout
                                 </button>
@@ -143,13 +144,8 @@ const Navigation = () => {
                                     to="/login"
                                     className="flex items-center transition-transform transform hover:-translate-y-2"
                                 >
-                                    <AiOutlineLogin
-                                        className="mr-2 mt-[4px]"
-                                        size={26}
-                                    />
-                                    <span className="hidden nav-item-name">
-                                        Login
-                                    </span>
+                                    <AiOutlineLogin className="mr-2 mt-[4px]" size={26} />
+                                    <span className="hidden nav-item-name">Login</span>
                                 </Link>
                             </li>
 
@@ -159,9 +155,7 @@ const Navigation = () => {
                                     className="flex items-center transition-transform transform hover:-translate-y-2"
                                 >
                                     <AiOutlineUserAdd size={26} />
-                                    <span className="hidden nav-item-name">
-                                        Register
-                                    </span>
+                                    <span className="hidden nav-item-name">Register</span>
                                 </Link>
                             </li>
                         </ul>

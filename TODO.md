@@ -8,7 +8,7 @@
 ### Backend Development
 - [ ] **Movie API Integration**
   - [x] Create Movie model/schema
-  - [ ] Integrate with external movie API (TMDB, OMDB, or similar)
+  - [ ] Integrate with external movie API (TMDB)
   - [x] Create movie controller with CRUD operations
   - [x] Add movie routes (search, details, trending, popular)
   - [ ] Implement movie data caching strategy
@@ -83,7 +83,6 @@
 - [ ] **Social Features**
   - [x] User movie reviews and ratings
   - [ ] Social sharing functionality
-  - [ ] Follow other users
   - [ ] Create movie discussion forums
 
 - [ ] **Content Management**
@@ -126,17 +125,3 @@
 **Frontend**: 🔄 Basic UI structure  
 **Database**: ✅ MongoDB connection and User, Movie model ready  
 **Styling**: ✅ Tailwind CSS configured with custom theme  
-
----
-
-## 🎯 Next Steps (Recommended Order)
-1. Create Movie model and integrate external movie API
-2. Implement functional search in frontend
-3. Create movie display components
-4. Connect frontend to backend APIs
-5. Add user favorites functionality
-6. Implement Redux state management
-7. Polish UI and add responsive design
-8. Add comprehensive testing
-
-**Priority Focus**: Get the core movie search and display functionality working first, then enhance with user features.

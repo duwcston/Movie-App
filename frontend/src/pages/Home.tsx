@@ -3,13 +3,12 @@ import MoviesContainerPage from "./Movies/MoviesContainerPage";
 
 const Home = () => {
     return (
-        <>
-            <Header />
-
-            <section className="mt-[10rem]">
-                <MoviesContainerPage />
-            </section>
-        </>
+        <div className="bg-gray-900 min-h-screen text-white">
+            <div className="pt-6 pb-10">
+                <Header />
+            </div>
+            <MoviesContainerPage />
+        </div>
     );
 };
 
