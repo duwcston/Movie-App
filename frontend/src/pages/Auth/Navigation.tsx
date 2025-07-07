@@ -16,7 +16,7 @@ const Navigation = () => {
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             let threshold = 100;
-            if (userInfo.isAdmin) {
+            if (userInfo && userInfo.isAdmin) {
                 threshold = 250;
             }
             const isNearBottom = window.innerHeight - event.clientY <= threshold;
@@ -28,7 +28,7 @@ const Navigation = () => {
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
         };
-    }, [userInfo.isAdmin]);
+    }, [userInfo]);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -62,18 +62,26 @@ const Navigation = () => {
                 <div className="flex justify-between items-center">
                     <Link
                         to="/"
-                        className="flex items-center transition-transform transform hover:-translate-y-2"
+                        className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
+                        onClick={() => setDropdownOpen(false)}
                     >
-                        <AiOutlineHome className="mr-2 mt-[4px]" size={26} />
+                        <AiOutlineHome size={26} />
                         <span className="hidden nav-item-name mt-[3rem]">Home</span>
+                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                            Home
+                        </span>
                     </Link>
 
                     <Link
                         to="/movies"
-                        className="flex items-center transition-transform transform hover:-translate-y-2 ml-[1rem]"
+                        className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
+                        onClick={() => setDropdownOpen(false)}
                     >
-                        <MdOutlineLocalMovies className="" size={26} />
-                        <span className="hidden nav-item-name mt-[3rem]">Shop</span>
+                        <MdOutlineLocalMovies className="ml-2" size={26} />
+                        <span className="hidden nav-item-name mt-[3rem]">Movies</span>
+                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                            Movies
+                        </span>
                     </Link>
                 </div>
                 <div className="relative">
@@ -113,6 +121,7 @@ const Navigation = () => {
                                         <Link
                                             to="/admin/movies/dashboard"
                                             className="block px-4 py-2 hover:bg-gray-200"
+                                            onClick={() => setDropdownOpen(false)}
                                         >
                                             Dashboard
                                         </Link>
@@ -121,7 +130,11 @@ const Navigation = () => {
                             )}
 
                             <li>
-                                <Link to="/profile" className="block px-4 py-2 hover:bg-gray-200">
+                                <Link
+                                    to="/profile"
+                                    className="block px-4 py-2 hover:bg-gray-200"
+                                    onClick={() => setDropdownOpen(false)}
+                                >
                                     Profile
                                 </Link>
                             </li>
@@ -142,20 +155,26 @@ const Navigation = () => {
                             <li>
                                 <Link
                                     to="/login"
-                                    className="flex items-center transition-transform transform hover:-translate-y-2"
+                                    className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
                                 >
-                                    <AiOutlineLogin className="mr-2 mt-[4px]" size={26} />
+                                    <AiOutlineLogin size={26} />
                                     <span className="hidden nav-item-name">Login</span>
+                                    <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                        Login
+                                    </span>
                                 </Link>
                             </li>
 
                             <li>
                                 <Link
                                     to="/register"
-                                    className="flex items-center transition-transform transform hover:-translate-y-2"
+                                    className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
                                 >
-                                    <AiOutlineUserAdd size={26} />
+                                    <AiOutlineUserAdd className="ml-2" size={26} />
                                     <span className="hidden nav-item-name">Register</span>
+                                    <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                        Register
+                                    </span>
                                 </Link>
                             </li>
                         </ul>

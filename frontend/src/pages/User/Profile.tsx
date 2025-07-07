@@ -52,7 +52,7 @@ const Profile = () => {
                         <h2 className="mb-4">Update Profile</h2>
                         <form onSubmit={submitHandler}>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium text-white">
                                     Username
                                 </label>
                                 <input
@@ -66,7 +66,7 @@ const Profile = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mt-4">
+                                <label className="block text-sm font-medium text-white mt-4">
                                     Email
                                 </label>
                                 <input
@@ -80,7 +80,7 @@ const Profile = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mt-4">
+                                <label className="block text-sm font-medium text-white mt-4">
                                     Password
                                 </label>
                                 <input
@@ -93,7 +93,7 @@ const Profile = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mt-4">
+                                <label className="block text-sm font-medium text-white mt-4">
                                     Confirm Password
                                 </label>
                                 <input

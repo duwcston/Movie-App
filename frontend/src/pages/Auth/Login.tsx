@@ -6,6 +6,7 @@ import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { RootState } from "../../redux/store";
+import loginImage from "../../assets/login.png";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -44,76 +45,75 @@ const Login = () => {
 
     return (
         <div>
-            <section className="pl-[10rem] flex flex-wrap">
-                <div className="mr-[4rem] mt-[5rem]">
-                    <h1 className="mb-4">Sign In</h1>
-                    <form
-                        className="container w-[40rem]"
-                        onSubmit={submitHandler}
-                    >
-                        <div className="my-[2rem]">
-                            <label
-                                htmlFor="email"
-                                className="block text-sm font-medium text-white"
+            <section className="lg:pl-[10rem] pl-8 flex flex-col lg:flex-row items-center min-h-screen">
+                <div className="w-full lg:w-1/2 lg:mr-[4rem] flex flex-col justify-center items-center">
+                    <div className="w-full max-w-[40rem]">
+                        <h1 className="mb-4">Sign In</h1>
+                        <form className="container w-full" onSubmit={submitHandler}>
+                            <div className="my-[2rem]">
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium text-white"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="text-sm focus:ring-blue-500 focus:border-blue-500 block"
+                                    placeholder="Email"
+                                    required
+                                />
+                            </div>
+                            <div className="my-[2rem]">
+                                <label
+                                    htmlFor="password"
+                                    className="block text-sm font-medium text-white"
+                                >
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="text-sm focus:ring-blue-500 focus:border-blue-500 block"
+                                    placeholder="Password"
+                                    required
+                                />
+                            </div>
+                            <button
+                                disabled={isLoading}
+                                type="submit"
+                                className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer w-full"
                             >
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="text-sm focus:ring-blue-500 focus:border-blue-500 block"
-                                placeholder="Enter email"
-                                required
-                            />
+                                {isLoading ? "Signing in..." : "Sign In"}
+                            </button>
+                            {isLoading && <Loader />}{" "}
+                        </form>
+                        <div className="mt-4">
+                            <p className="text-md text-gray-400 text-center">
+                                Don't have an account?{" "}
+                                <Link
+                                    to={redirect ? `/register?redirect=${redirect}` : "/register"}
+                                    className="text-blue-500 hover:underline ml-2"
+                                >
+                                    Sign Up
+                                </Link>
+                            </p>
                         </div>
-                        <div className="my-[2rem]">
-                            <label
-                                htmlFor="password"
-                                className="block text-sm font-medium text-white"
-                            >
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="text-sm focus:ring-blue-500 focus:border-blue-500 block"
-                                placeholder="Enter password"
-                                required
-                            />
-                        </div>
-
-                        <button
-                            disabled={isLoading}
-                            type="submit"
-                            className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer"
-                        >
-                            {isLoading ? "Signing in..." : "Sign In"}
-                        </button>
-
-                        {isLoading && <Loader />}
-                    </form>
-                    <div className="mt-4">
-                        <p className="text-sm text-gray-500">
-                            New customer?{" "}
-                            <Link
-                                to={
-                                    redirect
-                                        ? `/register?redirect=${redirect}`
-                                        : "/register"
-                                }
-                                className="text-blue-500 hover:underline"
-                            >
-                                Sign Up
-                            </Link>
-                        </p>
                     </div>
                 </div>
 
-                {/* <img src="" alt="" className="h-[65rem] w-[55%] xl:block md:hidden sm:hidden rounded:lg" /> */}
+                <div className="hidden lg:flex lg:w-1/2 h-screen items-center justify-center">
+                    <img
+                        src={loginImage}
+                        alt="Login illustration"
+                        className="max-w-full max-h-full object-contain"
+                    />
+                </div>
             </section>
         </div>
     );

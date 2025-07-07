@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCreateMovieMutation, useUploadMovieImageMutation } from "../../redux/api/movies";
+import {
+    useCreateMovieMutation,
+    useUploadMovieImageMutation,
+    useGetAllMoviesQuery,
+} from "../../redux/api/movies";
 import { useGetGenresQuery } from "../../redux/api/genre";
 import { toast } from "react-toastify";
 import { GenreProps } from "../../types/genreTypes";
@@ -24,6 +28,7 @@ const CreateMovies = () => {
         useCreateMovieMutation();
     const [uploadMovieImage, { isLoading: isUploadingImage, error: uploadImageError }] =
         useUploadMovieImageMutation();
+    const { refetch } = useGetAllMoviesQuery({});
     const { data: genres, isLoading: isLoadingGenres } = useGetGenresQuery({});
 
     useEffect(() => {
@@ -98,6 +103,7 @@ const CreateMovies = () => {
                     image: uploadImagePath,
                 });
                 navigate("/admin/movies-list");
+                refetch();
                 setMovieData({
                     name: "",
                     year: 0,
