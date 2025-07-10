@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
+    useGetAllMoviesQuery,
     useGetMovieByIdQuery,
     useUpdateMovieMutation,
     useDeleteMovieMutation,
@@ -20,16 +21,22 @@ const UpdateMovie = () => {
         detail: "",
         genre: "",
         image: null,
+        coverImage: null,
+        director: "",
         cast: [] as string[],
         rating: 0,
     });
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [selectedCoverImage, setSelectedCoverImage] = useState<File | null>(null);
+    const { refetch } = useGetAllMoviesQuery({});
     const { data: initialMovieData, isLoading: isLoadingMovie } = useGetMovieByIdQuery(id!);
     const [updateMovie, { isLoading: isUpdatingMovie, error: updateMovieError }] =
         useUpdateMovieMutation();
     const [deleteMovie, { isLoading: isDeletingMovie, error: deleteMovieError }] =
         useDeleteMovieMutation();
     const [uploadMovieImage, { isLoading: isUploadingImage, error: uploadImage }] =
+        useUploadMovieImageMutation();
+    const [uploadMovieCoverImage, { isLoading: isUploadingCoverImage, error: uploadCoverImage }] =
         useUploadMovieImageMutation();
     const { data: genres, isLoading: isLoadingGenres } = useGetGenresQuery({});
 
@@ -41,6 +48,8 @@ const UpdateMovie = () => {
                 detail: initialMovieData.detail,
                 genre: initialMovieData.genre,
                 image: initialMovieData.image,
+                coverImage: initialMovieData.coverImage,
+                director: initialMovieData.director,
                 cast: initialMovieData.cast,
                 rating: initialMovieData.rating,
             });
@@ -54,7 +63,10 @@ const UpdateMovie = () => {
         if (uploadImage) {
             toast.error("Failed to upload image: " + uploadImage);
         }
-    }, [initialMovieData, updateMovieError, deleteMovieError, uploadImage]);
+        if (uploadCoverImage) {
+            toast.error("Failed to upload cover image: " + uploadCoverImage);
+        }
+    }, [initialMovieData, updateMovieError, deleteMovieError, uploadImage, uploadCoverImage]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -81,6 +93,13 @@ const UpdateMovie = () => {
         }
     };
 
+    const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedCoverImage(file);
+        }
+    };
+
     const handleUpdateMovie = async () => {
         try {
             if (
@@ -88,31 +107,56 @@ const UpdateMovie = () => {
                 !movieData.year ||
                 !movieData.detail ||
                 !movieData.genre ||
-                !movieData.cast
+                !movieData.cast ||
+                !movieData.director
             ) {
                 toast.error("Please fill in all required fields.");
                 return;
             }
 
             let uploadImagePath = movieData.image;
+            let uploadCoverImagePath = movieData.coverImage;
+
             if (selectedImage) {
-                const formData = new FormData();
-                formData.append("image", selectedImage);
-                const uploadResponse = await uploadMovieImage(formData);
+                const formData1 = new FormData();
+                formData1.append("image", selectedImage);
+                const uploadResponse = await uploadMovieImage(formData1);
                 if (uploadResponse.data) {
                     uploadImagePath = uploadResponse.data.image;
+                } else {
+                    toast.error("Image upload failed.");
+                    return;
                 }
             }
+
+            if (selectedCoverImage) {
+                const formData2 = new FormData();
+                formData2.append("image", selectedCoverImage);
+                const uploadCoverResponse = await uploadMovieCoverImage(formData2);
+                if (uploadCoverResponse.data) {
+                    uploadCoverImagePath = uploadCoverResponse.data.image;
+                } else {
+                    toast.error("Cover image upload failed.");
+                    return;
+                }
+            }
+
             if (!uploadImagePath) {
-                toast.error("Image upload failed.");
+                toast.error("Movie must have an image.");
+                return;
+            }
+            if (!uploadCoverImagePath) {
+                toast.error("Movie must have a cover image.");
                 return;
             }
             const updatedMovie = {
                 ...movieData,
                 image: uploadImagePath,
+                coverImage: uploadCoverImagePath,
             };
             await updateMovie({ id: id, updatedMovie: updatedMovie });
             navigate("/admin/movies-list");
+            refetch();
             toast.success("Movie updated successfully!");
         } catch (error) {
             toast.error("Failed to update movie: " + error);
@@ -125,6 +169,7 @@ const UpdateMovie = () => {
             try {
                 await deleteMovie(id!);
                 navigate("/admin/movies-list");
+                refetch();
                 toast.success("Movie deleted successfully!");
             } catch (error) {
                 toast.error("Failed to delete movie: " + error);
@@ -134,7 +179,7 @@ const UpdateMovie = () => {
     };
 
     return (
-        <div className="container flex flex-col items-center justify-center mt-4 w-full">
+        <div className="container flex flex-col items-center justify-center mt-4 w-full pt-12 min-w-screen">
             <form>
                 <h1 className="mb-2">Update Movie</h1>
                 <div className="mb-2">
@@ -166,6 +211,34 @@ const UpdateMovie = () => {
                         name="detail"
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded bg-white text-black"
+                        rows={4}
+                        required
+                    />
+                </div>
+                <div className="mb-2">
+                    <label className="block text-white">Director</label>
+                    <input
+                        type="text"
+                        name="director"
+                        value={movieData.director}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                </div>
+                <div className="mb-2">
+                    <label className="block text-white">Cast (comma separated)</label>
+                    <input
+                        type="text"
+                        name="cast"
+                        value={movieData.cast.join(", ")}
+                        onChange={(e) =>
+                            setMovieData({
+                                ...movieData,
+                                cast: e.target.value.split(", "),
+                            })
+                        }
+                        className="w-full p-2 border border-gray-300 rounded"
                         required
                     />
                 </div>
@@ -191,22 +264,6 @@ const UpdateMovie = () => {
                     </label>
                 </div>
                 <div className="mb-2">
-                    <label className="block text-white">Cast (comma separated)</label>
-                    <input
-                        type="text"
-                        name="cast"
-                        value={movieData.cast.join(", ")}
-                        onChange={(e) =>
-                            setMovieData({
-                                ...movieData,
-                                cast: e.target.value.split(", "),
-                            })
-                        }
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                </div>
-                <div className="mb-2">
                     <label className="block text-white">Image</label>
                     <input
                         type="file"
@@ -216,19 +273,31 @@ const UpdateMovie = () => {
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
+                <div className="mb-2">
+                    <label className="block text-white">Cover Image</label>
+                    <input
+                        type="file"
+                        name="coverImage"
+                        accept="image/*"
+                        onChange={handleCoverImageChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                </div>
                 <div className="flex justify-between py-2">
                     <button
                         type="button"
                         onClick={handleUpdateMovie}
-                        disabled={isUpdatingMovie || isUploadingImage}
+                        disabled={isUpdatingMovie || isUploadingImage || isUploadingCoverImage}
                         className="bg-blue-900 text-white px-4 py-2 rounded"
                     >
-                        {isUpdatingMovie || isUploadingImage ? "Updating..." : "Update Movie"}
+                        {isUpdatingMovie || isUploadingImage || isUploadingCoverImage
+                            ? "Updating..."
+                            : "Update Movie"}
                     </button>
                     <button
                         type="button"
                         onClick={handleDeleteMovie}
-                        className="bg-red-500 text-white px-4 py-2 rounded"
+                        className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer"
                         disabled={isDeletingMovie}
                     >
                         {isDeletingMovie ? "Deleting..." : "Delete Movie"}

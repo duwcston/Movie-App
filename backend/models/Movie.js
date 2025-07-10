@@ -34,6 +34,9 @@ const movieSchema = new mongoose.Schema({
     image: {
         type: String,
     },
+    coverImage: {
+        type: String,
+    },
     year: {
         type: Number,
         required: true,
@@ -52,7 +55,6 @@ const movieSchema = new mongoose.Schema({
     }],
     director: {
         type: String,
-        required: true,
     },
     reviews: [reviewSchema],
     numReviews: {

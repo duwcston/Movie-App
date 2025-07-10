@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
     return (
-        <div className="fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 shadow-2xl border-r border-gray-700">
+        <div className="fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 shadow-2xl border-r border-gray-700 pt-10">
             <aside className="flex flex-col h-full">
                 <div className="p-6 border-b border-gray-700">
                     <h2 className="text-xl font-bold text-white">Admin Panel</h2>

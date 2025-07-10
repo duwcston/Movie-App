@@ -1,3 +1,5 @@
+import { GenreProps } from "./genreTypes";
+
 interface ReviewProps {
     _id: string;
     movieId: string;
@@ -15,9 +17,10 @@ export interface MovieProps {
     name: string;
     detail: string;
     year: string;
-    genre: [];
+    genre: GenreProps[];
     rating: number;
     image: string;
+    coverImage: string;
     reviews: ReviewProps[];
     numReviews: number;
     createdAt: string;

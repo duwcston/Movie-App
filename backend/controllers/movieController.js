@@ -1,4 +1,3 @@
-import asyncHandler from "../middlewares/asyncHandler.js";
 import Movie from "../models/Movie.js";
 
 const createMovie = async (req, res) => {

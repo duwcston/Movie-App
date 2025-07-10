@@ -19,14 +19,18 @@ const CreateMovies = () => {
         detail: "",
         genre: [] as string[],
         image: null,
+        coverImage: null,
         director: "",
         cast: [] as string[],
         rating: 0,
     });
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [selectedCoverImage, setSelectedCoverImage] = useState<File | null>(null);
     const [createMovie, { isLoading: isCreatingMovie, error: createMovieError }] =
         useCreateMovieMutation();
     const [uploadMovieImage, { isLoading: isUploadingImage, error: uploadImageError }] =
+        useUploadMovieImageMutation();
+    const [uploadMovieCoverImage, { isLoading: isUploadingCoverImage }] =
         useUploadMovieImageMutation();
     const { refetch } = useGetAllMoviesQuery({});
     const { data: genres, isLoading: isLoadingGenres } = useGetGenresQuery({});
@@ -71,6 +75,13 @@ const CreateMovies = () => {
         }
     };
 
+    const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedCoverImage(file);
+        }
+    };
+
     const handleCreateMovie = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -79,19 +90,25 @@ const CreateMovies = () => {
                 !movieData.year ||
                 !movieData.detail ||
                 !movieData.cast ||
-                !selectedImage
+                !selectedImage ||
+                !selectedCoverImage
             ) {
                 console.error("All fields are required.");
                 toast.error("Please fill in all fields.");
                 return;
             }
             let uploadImagePath = null;
-            if (selectedImage) {
-                const formData = new FormData();
-                formData.append("image", selectedImage);
-                const uploadResponse = await uploadMovieImage(formData);
-                if (uploadResponse.data) {
+            let uploadCoverImagePath = null;
+            if (selectedImage && selectedCoverImage) {
+                const formData1 = new FormData();
+                const formData2 = new FormData();
+                formData1.append("image", selectedImage);
+                formData2.append("image", selectedCoverImage);
+                const uploadResponse = await uploadMovieImage(formData1);
+                const uploadCoverResponse = await uploadMovieCoverImage(formData2);
+                if (uploadResponse.data && uploadCoverResponse.data) {
                     uploadImagePath = uploadResponse.data.image;
+                    uploadCoverImagePath = uploadCoverResponse.data.image;
                 } else {
                     console.error("Image upload failed:", uploadResponse.error);
                     toast.error("Image upload failed.");
@@ -101,6 +118,7 @@ const CreateMovies = () => {
                 await createMovie({
                     ...movieData,
                     image: uploadImagePath,
+                    coverImage: uploadCoverImagePath,
                 });
                 navigate("/admin/movies-list");
                 refetch();
@@ -110,6 +128,7 @@ const CreateMovies = () => {
                     detail: "",
                     genre: [],
                     image: null,
+                    coverImage: null,
                     director: "",
                     cast: [],
                     rating: 0,
@@ -126,7 +145,7 @@ const CreateMovies = () => {
     return (
         <>
             <Sidebar />
-            <div className="container flex flex-col justify-center items-center mt-4">
+            <div className="container flex flex-col justify-center items-center mt-4 pt-12 min-w-screen">
                 <form onSubmit={handleCreateMovie} className="w-full max-w-md">
                     <h1 className="mb-4">Create Movie</h1>
                     <div className="mb-4">
@@ -161,7 +180,7 @@ const CreateMovies = () => {
                                 onChange={handleChange}
                                 className="border p-2 w-full bg-white text-black rounded-md"
                                 placeholder="Enter movie details"
-                                rows={2}
+                                rows={4}
                             ></textarea>
                         </label>
                         <label className="block mb-2 text-sm font-medium text-white">
@@ -273,13 +292,28 @@ const CreateMovies = () => {
                             />
                         </label>
                     </div>
-
+                    <div className="mb-4">
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            Cover Image
+                            <input
+                                type="file"
+                                accept="image/*"
+                                name="coverImage"
+                                onChange={handleCoverImageChange}
+                                className={`w-full p-2 border border-gray-300 rounded ${
+                                    !selectedCoverImage ? "text-gray-500" : "text-black"
+                                }`}
+                            />
+                        </label>
+                    </div>
                     <button
                         type="submit"
                         className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer"
-                        disabled={isCreatingMovie || isUploadingImage}
+                        disabled={isCreatingMovie || isUploadingImage || isUploadingCoverImage}
                     >
-                        {isCreatingMovie || isUploadingImage ? "Creating..." : "Create Movie"}
+                        {isCreatingMovie || isUploadingImage || isUploadingCoverImage
+                            ? "Creating..."
+                            : "Create Movie"}
                     </button>
                 </form>
             </div>

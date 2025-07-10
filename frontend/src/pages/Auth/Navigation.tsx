@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AiOutlineHome, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
 import { MdOutlineLocalMovies } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,24 +11,6 @@ import { RootState } from "../../redux/store";
 const Navigation = () => {
     const { userInfo } = useSelector((state: RootState) => state.auth);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const handleMouseMove = (event: MouseEvent) => {
-            let threshold = 100;
-            if (userInfo && userInfo.isAdmin) {
-                threshold = 250;
-            }
-            const isNearBottom = window.innerHeight - event.clientY <= threshold;
-            setIsVisible(isNearBottom);
-        };
-
-        window.addEventListener("mousemove", handleMouseMove);
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-        };
-    }, [userInfo]);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -53,134 +35,132 @@ const Navigation = () => {
     };
 
     return (
-        <div
-            className={`fixed bottom-10 rounded-lg bg-gray-800 text-white w-1/3 max-w-[800px] mx-auto p-4 z-50 transform -translate-x-1/2 left-1/2 transition-opacity duration-300 ${
-                isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-        >
-            <section className="flex justify-between items-center">
-                <div className="flex justify-between items-center">
-                    <Link
-                        to="/"
-                        className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
-                        onClick={() => setDropdownOpen(false)}
-                    >
-                        <AiOutlineHome size={26} />
-                        <span className="hidden nav-item-name mt-[3rem]">Home</span>
-                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-                            Home
-                        </span>
-                    </Link>
-
-                    <Link
-                        to="/movies"
-                        className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
-                        onClick={() => setDropdownOpen(false)}
-                    >
-                        <MdOutlineLocalMovies className="ml-2" size={26} />
-                        <span className="hidden nav-item-name mt-[3rem]">Movies</span>
-                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-                            Movies
-                        </span>
-                    </Link>
-                </div>
-                <div className="relative">
-                    <button
-                        onClick={toggleDropdown}
-                        className="text-gray-800 focus:outline-none flex items-center"
-                    >
-                        {userInfo ? <span className="text-white">{userInfo.username}</span> : <></>}
-
-                        {userInfo && (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className={`h-4 w-4 ml-1 ${dropdownOpen}`}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="white"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
-                                />
-                            </svg>
-                        )}
-                    </button>
-
-                    {dropdownOpen && userInfo && (
-                        <ul
-                            className={`absolute right-0 mt-2 mr-2 w-[8rem] space-y-2 bg-white text-gray-600 ${
-                                !userInfo.isAdmin ? "-top-24" : "-top-38"
-                            }`}
+        <div className="fixed top-0 left-0 right-0 bg-gray-800 opacity-80 text-white px-4 py-3 z-50 shadow-lg">
+            <div className="max-w-7xl mx-auto">
+                <section className="flex justify-between items-center">
+                    <div className="flex justify-between items-center">
+                        <Link
+                            to="/"
+                            className="flex items-center transition-transform transform hover:translate-y-1 group relative"
+                            onClick={() => setDropdownOpen(false)}
                         >
-                            {userInfo.isAdmin && (
-                                <>
-                                    <li>
-                                        <Link
-                                            to="/admin/movies/dashboard"
-                                            className="block px-4 py-2 hover:bg-gray-200"
-                                            onClick={() => setDropdownOpen(false)}
-                                        >
-                                            Dashboard
-                                        </Link>
-                                    </li>
-                                </>
+                            <AiOutlineHome size={26} />
+                            <span className="hidden nav-item-name mt-[3rem]">Home</span>
+                            <span className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                Home
+                            </span>
+                        </Link>
+
+                        <Link
+                            to="/movies"
+                            className="flex items-center transition-transform transform hover:translate-y-1 group relative"
+                            onClick={() => setDropdownOpen(false)}
+                        >
+                            <MdOutlineLocalMovies className="ml-4" size={26} />
+                            <span className="hidden nav-item-name mt-[3rem]">Movies</span>
+                            <span className="absolute top-full mt-2 ml-1 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                Movies
+                            </span>
+                        </Link>
+                    </div>
+                    <div className="relative">
+                        <button
+                            onClick={toggleDropdown}
+                            className="text-gray-800 focus:outline-none flex items-center"
+                        >
+                            {userInfo ? (
+                                <span className="text-white">{userInfo.username}</span>
+                            ) : (
+                                <></>
                             )}
 
-                            <li>
-                                <Link
-                                    to="/profile"
-                                    className="block px-4 py-2 hover:bg-gray-200"
-                                    onClick={() => setDropdownOpen(false)}
+                            {userInfo && (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className={`h-4 w-4 ml-1 ${dropdownOpen}`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="white"
                                 >
-                                    Profile
-                                </Link>
-                            </li>
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
+                                    />
+                                </svg>
+                            )}
+                        </button>
 
-                            <li>
-                                <button
-                                    onClick={logoutHandler}
-                                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                                >
-                                    Logout
-                                </button>
-                            </li>
-                        </ul>
-                    )}
+                        {dropdownOpen && userInfo && (
+                            <ul className="absolute right-0 top-full mt-2 w-[8rem] space-y-2 bg-white text-gray-600 rounded-lg shadow-lg">
+                                {userInfo.isAdmin && (
+                                    <>
+                                        <li>
+                                            <Link
+                                                to="/admin/movies/dashboard"
+                                                className="block px-4 py-2 hover:bg-gray-200 rounded-t-lg"
+                                                onClick={() => setDropdownOpen(false)}
+                                            >
+                                                Dashboard
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
 
-                    {!userInfo && (
-                        <ul className="flex justify-between items-center">
-                            <li>
-                                <Link
-                                    to="/login"
-                                    className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
-                                >
-                                    <AiOutlineLogin size={26} />
-                                    <span className="hidden nav-item-name">Login</span>
-                                    <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-                                        Login
-                                    </span>
-                                </Link>
-                            </li>
+                                <li>
+                                    <Link
+                                        to="/profile"
+                                        className="block px-4 py-2 hover:bg-gray-200"
+                                        onClick={() => setDropdownOpen(false)}
+                                    >
+                                        Profile
+                                    </Link>
+                                </li>
 
-                            <li>
-                                <Link
-                                    to="/register"
-                                    className="flex items-center transition-transform transform hover:-translate-y-2 group relative"
-                                >
-                                    <AiOutlineUserAdd className="ml-2" size={26} />
-                                    <span className="hidden nav-item-name">Register</span>
-                                    <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-                                        Register
-                                    </span>
-                                </Link>
-                            </li>
-                        </ul>
-                    )}
-                </div>
-            </section>
+                                <li>
+                                    <button
+                                        onClick={logoutHandler}
+                                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded-b-lg"
+                                    >
+                                        Logout
+                                    </button>
+                                </li>
+                            </ul>
+                        )}
+
+                        {!userInfo && (
+                            <ul className="flex justify-between items-center">
+                                <li>
+                                    <Link
+                                        to="/login"
+                                        className="flex items-center transition-transform transform hover:translate-y-1 group relative"
+                                    >
+                                        <AiOutlineLogin size={26} />
+                                        <span className="hidden nav-item-name">Login</span>
+                                        <span className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                            Login
+                                        </span>
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/register"
+                                        className="flex items-center transition-transform transform hover:translate-y-1 group relative"
+                                    >
+                                        <AiOutlineUserAdd className="ml-4" size={26} />
+                                        <span className="hidden nav-item-name">Register</span>
+                                        <span className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                            Register
+                                        </span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        )}
+                    </div>
+                </section>
+            </div>
         </div>
     );
 };
