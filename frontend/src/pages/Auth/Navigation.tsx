@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { AiOutlineHome, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
-import { MdOutlineLocalMovies } from "react-icons/md";
+import { AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
+// import { MdOutlineLocalMovies } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../redux/api/users";
@@ -41,26 +41,25 @@ const Navigation = () => {
                     <div className="flex justify-between items-center">
                         <Link
                             to="/"
-                            className="flex items-center transition-transform transform hover:translate-y-1 group relative"
+                            className="flex items-center transition-transform transform hover:-translate-y-1 group relative"
                             onClick={() => setDropdownOpen(false)}
                         >
-                            <AiOutlineHome size={26} />
-                            <span className="hidden nav-item-name mt-[3rem]">Home</span>
-                            <span className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-                                Home
-                            </span>
+                            <span className="nav-item-name">Home</span>
                         </Link>
 
                         <Link
                             to="/movies"
-                            className="flex items-center transition-transform transform hover:translate-y-1 group relative"
+                            className="flex items-center transition-transform transform hover:-translate-y-1 group relative"
                             onClick={() => setDropdownOpen(false)}
                         >
-                            <MdOutlineLocalMovies className="ml-4" size={26} />
-                            <span className="hidden nav-item-name mt-[3rem]">Movies</span>
-                            <span className="absolute top-full mt-2 ml-1 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-                                Movies
-                            </span>
+                            <span className="nav-item-name ml-10">Movies</span>
+                        </Link>
+                        <Link
+                            to="/requests"
+                            className="flex items-center transition-transform transform hover:-translate-y-1 group relative"
+                            onClick={() => setDropdownOpen(false)}
+                        >
+                            <span className="nav-item-name ml-10">Movie Request</span>
                         </Link>
                     </div>
                     <div className="relative">

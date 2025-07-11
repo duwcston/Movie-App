@@ -28,17 +28,13 @@
     input {
         @apply bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2.5 mt-1 w-full;
     }
-
-    /* button {
-        @apply bg-blue-600 text-white font-semibold py-2 px-4 rounded-md;
-    } */
 }
 
 @utility text-gradient {
     @apply bg-linear-to-r from-[#D6C7FF] to-[#AB8BFF] bg-clip-text text-transparent;
 }
 
-/* Line clamp utility */
+/* Line clamp utility for 3 lines */
 .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -46,3 +42,46 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* Line clamp utility for 1 line */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Add staggered animation to children */
+.animate-fadeIn > * {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fadeIn > *:nth-child(1) { animation-delay: 0.1s; }
+.animate-fadeIn > *:nth-child(2) { animation-delay: 0.15s; }
+.animate-fadeIn > *:nth-child(3) { animation-delay: 0.2s; }
+.animate-fadeIn > *:nth-child(4) { animation-delay: 0.25s; }
+.animate-fadeIn > *:nth-child(5) { animation-delay: 0.3s; }
+.animate-fadeIn > *:nth-child(6) { animation-delay: 0.35s; }
+.animate-fadeIn > *:nth-child(7) { animation-delay: 0.4s; }
+.animate-fadeIn > *:nth-child(8) { animation-delay: 0.45s; }
+.animate-fadeIn > *:nth-child(9) { animation-delay: 0.5s; }
+.animate-fadeIn > *:nth-child(10) { animation-delay: 0.55s; }
+.animate-fadeIn > *:nth-child(n+11) { animation-delay: 0.6s; }

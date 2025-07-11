@@ -4,62 +4,141 @@ import {
     useGetRandomMoviesQuery,
 } from "../../redux/api/movies";
 import SliderUtil from "../../components/SlideUtil";
+import { useEffect, useState } from "react";
 
 const MoviesContainerPage = () => {
-    const { data: newMovies } = useGetNewMoviesQuery({});
-    const { data: topMovies } = useGetTopMoviesQuery({});
-    const { data: randomMovies } = useGetRandomMoviesQuery({});
+    const { data: newMovies, isLoading: loadingNew } = useGetNewMoviesQuery({});
+    const { data: topMovies, isLoading: loadingTop } = useGetTopMoviesQuery({});
+    const { data: randomMovies, isLoading: loadingRandom } = useGetRandomMoviesQuery({});
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        setIsVisible(true);
+    }, []);
 
     return (
-        <div className="max-w-[1400px] mx-auto px-4 py-8 bg-gray-900">
-            <section className="space-y-12">
-                <div className="movie-section">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white">New Releases</h2>
-                        <a
-                            href="/movies"
-                            className="text-blue-400 hover:text-blue-300 text-sm md:text-base"
-                        >
-                            View All →
-                        </a>
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+                <section
+                    className={`space-y-10 transition-opacity duration-1000 ${
+                        isVisible ? "opacity-100" : "opacity-0"
+                    }`}
+                >
+                    <div className="movie-section transform transition-all duration-500">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-gray-700 pb-4">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white relative">
+                                <span className="absolute -left-4 top-0 bottom-0 w-1 bg-blue-500 rounded-full"></span>
+                                New Releases
+                            </h2>
+                            <a
+                                href="/movies"
+                                className="group flex items-center mt-2 sm:mt-0 text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-300"
+                            >
+                                View All
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 5l7 7-7 7"
+                                    />
+                                </svg>
+                            </a>
+                        </div>
+                        <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-xl hover:shadow-blue-900/20 transition-all duration-500">
+                            {loadingNew ? (
+                                <div className="flex justify-center items-center h-64">
+                                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                                </div>
+                            ) : (
+                                <SliderUtil data={newMovies || []} />
+                            )}
+                        </div>
                     </div>
-                    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-                        <SliderUtil data={newMovies || []} />
-                    </div>
-                </div>
 
-                <div className="movie-section">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white">Top Rated</h2>
-                        <a
-                            href="/movies"
-                            className="text-blue-400 hover:text-blue-300 text-sm md:text-base"
-                        >
-                            View All →
-                        </a>
+                    <div className="movie-section transform transition-all duration-500">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-gray-700 pb-4">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white relative">
+                                <span className="absolute -left-4 top-0 bottom-0 w-1 bg-orange-500 rounded-full"></span>
+                                Top Rated
+                            </h2>
+                            <a
+                                href="/movies"
+                                className="group flex items-center mt-2 sm:mt-0 text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-300"
+                            >
+                                View All
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 5l7 7-7 7"
+                                    />
+                                </svg>
+                            </a>
+                        </div>
+                        <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-xl hover:shadow-yellow-900/20 transition-all duration-500">
+                            {loadingTop ? (
+                                <div className="flex justify-center items-center h-64">
+                                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500"></div>
+                                </div>
+                            ) : (
+                                <SliderUtil data={topMovies || []} />
+                            )}
+                        </div>
                     </div>
-                    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-                        <SliderUtil data={topMovies || []} />
-                    </div>
-                </div>
 
-                <div className="movie-section">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white">
-                            Recommended For You
-                        </h2>
-                        <a
-                            href="/movies"
-                            className="text-blue-400 hover:text-blue-300 text-sm md:text-base"
-                        >
-                            View All →
-                        </a>
+                    <div className="movie-section transform transition-all duration-500">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-gray-700 pb-4">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white relative">
+                                <span className="absolute -left-4 top-0 bottom-0 w-1 bg-purple-500 rounded-full"></span>
+                                Recommended For You
+                            </h2>
+                            <a
+                                href="/movies"
+                                className="group flex items-center mt-2 sm:mt-0 text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-300"
+                            >
+                                View All
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 5l7 7-7 7"
+                                    />
+                                </svg>
+                            </a>
+                        </div>
+                        <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-xl hover:shadow-purple-900/20 transition-all duration-500">
+                            {loadingRandom ? (
+                                <div className="flex justify-center items-center h-64">
+                                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+                                </div>
+                            ) : (
+                                <SliderUtil data={randomMovies || []} />
+                            )}
+                        </div>
                     </div>
-                    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-                        <SliderUtil data={randomMovies || []} />
-                    </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     );
 };

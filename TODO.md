@@ -14,9 +14,10 @@
   - [ ] Implement movie data caching strategy
 
 - [ ] **Enhanced User Features**
+  - [ ] Request new movie form
   - [ ] Add user favorites/watchlist functionality
   - [x] Create rating and review system
-  - [ ] Implement user movie recommendations
+  - [ ] Implement user movie recommendations (AI?)
   - [ ] Add user profile picture upload (using multer)
 
 - [ ] **API Improvements**
@@ -28,10 +29,10 @@
 
 ### Frontend Development
 - [ ] **Core Movie Features**
-  - [ ] Implement functional movie search
+  - [x] Implement functional movie search
   - [x] Create movie card components
   - [x] Build movie details page
-  - [ ] Add movie filtering and sorting
+  - [x] Add movie filtering and sorting
   - [ ] Implement pagination for search results
 
 - [x] **User Interface**
@@ -40,11 +41,10 @@
   - [x] Add navigation menu/header component
   - [x] Implement loading states and error handling
 
-- [ ] **State Management**
+- [x] **State Management**
   - [x] Set up Redux store structure
   - [x] Create user authentication slice
   - [x] Add movie data management slice
-  - [ ] Implement favorites/watchlist slice
 
 ## 🔧 Medium Priority Tasks
 
@@ -63,17 +63,17 @@
   - [ ] Implement password reset functionality
 
 ### Frontend Polish
-- [ ] **Advanced UI Components**
+- [x] **Advanced UI Components**
   - [x] Create movie carousel/slider (using react-slick)
-  - [ ] Add image lazy loading
+  - [x] Add image lazy loading
   - [x] Implement infinite scroll
-  - [ ] Create advanced search filters modal
+  - [x] Create advanced search filters modal
   - [x] Add toast notifications (react-toastify)
 
 - [ ] **User Experience**
   - [ ] Add search history
   - [ ] Implement recently viewed movies
-  - [ ] Create personalized movie recommendations
+  - [ ] Create personalized movie recommendations (Integrate AI?)
   - [ ] Add dark/light theme toggle
   - [ ] Implement keyboard shortcuts
 
@@ -88,7 +88,7 @@
 - [ ] **Content Management**
   - [x] Admin panel for content management
   - [ ] Movie data synchronization
-  - [ ] Content moderation tools
+  - [x] Content moderation tools
   - [x] Analytics dashboard
 
 ### Technical Improvements

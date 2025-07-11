@@ -63,8 +63,8 @@ const MovieDetails = () => {
 
     return (
         <div className="min-h-screen bg-gray-900 text-white pb-16">
-            <div>
-                <div className="container mx-auto px-4 py-4 mb-10">
+            <div className="pt-14">
+                <div className="container mx-auto px-4">
                     <Link
                         to="/"
                         className="inline-flex items-center text-white bg-black/50 hover:bg-black/70 px-4 py-2 rounded-lg mb-4 transition duration-300"
@@ -86,10 +86,8 @@ const MovieDetails = () => {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 -mt-16 relative z-10">
-                {/* Movie Main Content */}
+            <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col md:flex-row gap-8">
-                    {/* Movie Poster */}
                     <div className="md:w-1/3 lg:w-1/4">
                         <img
                             src={movie?.image}
@@ -98,7 +96,6 @@ const MovieDetails = () => {
                         />
                     </div>
 
-                    {/* Movie Details */}
                     <div className="md:w-2/3 lg:w-3/4">
                         <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
                             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
@@ -119,7 +116,18 @@ const MovieDetails = () => {
                             <h3 className="text-xl font-semibold text-gray-300 mb-2">Overview</h3>
                             <p className="text-gray-300 mb-6 leading-relaxed">{movie?.detail}</p>
 
-                            <div className="mt-8">
+                            <div className="mt-4">
+                                <h3 className="text-xl font-semibold mb-3 text-gray-300">
+                                    Director
+                                </h3>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="bg-gray-700 px-3 py-1 rounded-full text-sm">
+                                        {movie?.director || "Unknown Director"}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="mt-4">
                                 <h3 className="text-xl font-semibold mb-3 text-gray-300">Cast</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {movie?.cast.map((actor: string, index: number) => (

@@ -33,9 +33,7 @@ const AdminMoviesList = () => {
                                         {movie.name}
                                     </h3>
                                     <p className="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-3">
-                                        {movie.detail.length > 120
-                                            ? `${movie.detail.substring(0, 120)}...`
-                                            : movie.detail}
+                                        {movie.detail}
                                     </p>
                                     <div className="mt-auto">
                                         <Link

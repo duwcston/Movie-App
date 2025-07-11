@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Header from "./Movies/Header";
 import MoviesContainerPage from "./Movies/MoviesContainerPage";
 
@@ -8,6 +9,7 @@ const Home = () => {
                 <Header />
             </div>
             <MoviesContainerPage />
+            <Footer />
         </div>
     );
 };

@@ -1,0 +1,37 @@
+/* Custom Slider Styling */
+.slider-container .slick-prev,
+.slider-container .slick-next {
+  z-index: 10;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.slider-container .slick-prev {
+  left: 3px;
+}
+
+.slider-container .slick-next {
+  right: 3px;
+}
+
+.slider-container .slick-prev:before,
+.slider-container .slick-next:before {
+  font-size: 40px;
+  opacity: 1;
+  color: white;
+}
+
+/* Make arrows always visible on desktop but hidden on mobile (handled by responsive settings) */
+@media (min-width: 768px) {
+  .slider-container .slick-prev,
+  .slider-container .slick-next {
+    opacity: 0.5;
+  }
+  
+  .slider-container:hover .slick-prev,
+  .slider-container:hover .slick-next {
+    opacity: 1;
+  }
+}

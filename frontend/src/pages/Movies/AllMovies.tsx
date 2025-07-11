@@ -8,7 +8,6 @@ import {
 import MovieCard from "./MovieCard";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import banner from "../../assets/banner.jpg";
 import {
     setMoviesFilter,
     setFilteredMovies,
@@ -18,11 +17,13 @@ import {
 import { RootState } from "../../redux/store";
 import { MovieProps } from "../../types/movieTypes";
 import { GenreProps } from "../../types/genreTypes";
+import Loader from "../../components/Loader";
+import Footer from "../../components/Footer";
 
 const AllMovies = () => {
     const dispatch = useDispatch();
-    const { data } = useGetAllMoviesQuery({});
-    const { data: genres } = useGetGenresQuery({});
+    const { data, isLoading } = useGetAllMoviesQuery({});
+    const { data: genres, isLoading: genresLoading } = useGetGenresQuery({});
     const { data: newMovies } = useGetNewMoviesQuery({});
     const { data: topMovies } = useGetTopMoviesQuery({});
     const { data: randomMovies } = useGetRandomMoviesQuery({});
@@ -35,7 +36,9 @@ const AllMovies = () => {
     useEffect(() => {
         if (data) {
             const movieYears = data.map((movie: MovieProps) => movie.year);
-            const uniqueYears = Array.from(new Set(movieYears));
+            const uniqueYears = Array.from(new Set(movieYears)).sort(
+                (a, b) => Number(b) - Number(a)
+            );
 
             dispatch(setFilteredMovies(data));
             dispatch(setMovieYears(movieYears));
@@ -43,130 +46,427 @@ const AllMovies = () => {
         }
     }, [data, dispatch]);
 
+    const applyAllFilters = () => {
+        if (!data) return;
+
+        let result = [...data];
+        const { searchTerm, selectedGenre, selectedYear } = moviesFilter;
+
+        // Apply search filter
+        if (searchTerm) {
+            result = result.filter((movie: MovieProps) =>
+                movie.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        // Apply genre filter
+        if (selectedGenre) {
+            result = result.filter((movie: { genre: string }) => movie.genre === selectedGenre);
+        }
+
+        // Apply year filter
+        if (selectedYear) {
+            result = result.filter((movie: { year: number }) => movie.year === +selectedYear);
+        }
+
+        // Apply sort
+        switch (moviesFilter.selectedSort) {
+            case "new":
+                result = newMovies || result;
+                break;
+            case "top":
+                result = topMovies || result;
+                break;
+            case "random":
+                result = randomMovies || result;
+                break;
+        }
+
+        dispatch(setFilteredMovies(result));
+    };
+
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(setMoviesFilter({ searchTerm: e.target.value }));
-
-        const filteredMovies = data.filter((movie: MovieProps) =>
-            movie.name.toLowerCase().includes(e.target.value.toLowerCase())
-        );
-
-        dispatch(setFilteredMovies(filteredMovies));
+        dispatch(setMoviesFilter({ ...moviesFilter, searchTerm: e.target.value }));
+        setTimeout(() => applyAllFilters(), 300);
     };
 
     const handleGenreClick = (genreId: string) => {
         dispatch(setMoviesFilter({ ...moviesFilter, selectedGenre: genreId }));
-        const filterByGenre = data.filter((movie: { genre: string }) => movie.genre === genreId);
-        dispatch(setFilteredMovies(filterByGenre));
+        setTimeout(() => applyAllFilters(), 100);
     };
 
     const handleYearChange = (year: string) => {
         dispatch(setMoviesFilter({ ...moviesFilter, selectedYear: year }));
-        const filterByYear = data.filter((movie: { year: number }) => movie.year === +year);
-        dispatch(setFilteredMovies(filterByYear));
+        setTimeout(() => applyAllFilters(), 100);
     };
 
     const handleSortChange = (sortOption: string) => {
         dispatch(setMoviesFilter({ ...moviesFilter, selectedSort: sortOption }));
-        switch (sortOption) {
-            case "new":
-                dispatch(setFilteredMovies(newMovies));
-                break;
-            case "top":
-                dispatch(setFilteredMovies(topMovies));
-                break;
-            case "random":
-                dispatch(setFilteredMovies(randomMovies));
-                break;
-            default:
-                dispatch(setFilteredMovies(data || []));
-                break;
-        }
+        setTimeout(() => applyAllFilters(), 100);
+    };
+
+    // Clear a specific filter
+    const clearFilter = (
+        filterType: "searchTerm" | "selectedGenre" | "selectedYear" | "selectedSort"
+    ) => {
+        dispatch(setMoviesFilter({ ...moviesFilter, [filterType]: "" }));
+        setTimeout(() => applyAllFilters(), 100);
+    };
+
+    // Reset all filters
+    const resetAllFilters = () => {
+        dispatch(
+            setMoviesFilter({
+                searchTerm: "",
+                selectedGenre: "",
+                selectedYear: "",
+                selectedSort: "",
+            })
+        );
+        setTimeout(() => data && dispatch(setFilteredMovies(data)), 100);
     };
 
     return (
-        <div className="min-h-screen bg-gray-900">
-            <div
-                className="relative h-[70vh] w-full flex items-center justify-center bg-cover bg-center"
-                style={{ backgroundImage: `url(${banner})` }}
-            >
-                <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-black opacity-70"></div>
-
-                <div className="relative z-10 text-center text-white px-4">
-                    <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-4">
-                        The Movies Hub
-                    </h1>
-                    <p className="text-lg md:text-2xl">
-                        Cinematic Odyssey: Unveiling the Magic of Movies
-                    </p>
-                </div>
-            </div>
-
-            <div className="bg-gray-800 py-6 px-4 shadow-lg sticky top-0 z-20">
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+            {/* Header with hero section */}
+            <div className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 py-10 px-4">
                 <div className="max-w-7xl mx-auto">
-                    <div className="mb-4 flex justify-center">
+                    <h1 className="text-3xl md:text-4xl font-bold text-center mt-3 mb-6 text-white">
+                        Discover Movies
+                    </h1>
+
+                    {/* Search Bar with Icon */}
+                    <div className="relative max-w-3xl mx-auto mb-6">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg
+                                className="w-5 h-5 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                ></path>
+                            </svg>
+                        </div>
                         <input
                             type="text"
-                            className="w-[100vh] border px-4 py-3 outline-none rounded-lg text-black bg-white"
-                            placeholder="Search Movie"
+                            className="block w-full pl-10 pr-4 py-3 border-2 border-indigo-500/50 rounded-xl bg-gray-800/80 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+                            placeholder="Search for movies..."
                             value={moviesFilter.searchTerm}
                             onChange={handleSearchChange}
                         />
-                    </div>
-                    <div className="flex flex-wrap gap-3 justify-center">
-                        <select
-                            className="border-2 p-2 rounded-lg bg-white text-black cursor-pointer"
-                            value={moviesFilter.selectedGenre}
-                            onChange={(e) => handleGenreClick(e.target.value)}
-                        >
-                            <option value="">All Genres</option>
-                            {genres?.map((genre: GenreProps) => (
-                                <option key={genre._id} value={genre._id}>
-                                    {genre.name}
-                                </option>
-                            ))}
-                        </select>
-
-                        <select
-                            className="border-2 p-2 rounded-lg bg-white text-black cursor-pointer"
-                            value={moviesFilter.selectedYear}
-                            onChange={(e) => handleYearChange(e.target.value)}
-                        >
-                            <option value="">All Years</option>
-                            {uniqueYears.map((year) => (
-                                <option key={year as string} value={year as string}>
-                                    {year as string}
-                                </option>
-                            ))}
-                        </select>
-
-                        <select
-                            className="border-2 p-2 rounded-lg bg-white text-black cursor-pointer"
-                            value={moviesFilter.selectedSort}
-                            onChange={(e) => handleSortChange(e.target.value)}
-                        >
-                            <option value="">Sort By</option>
-                            <option value="new">New Movies</option>
-                            <option value="top">Top Movies</option>
-                            <option value="random">Random Movies</option>
-                        </select>
+                        {moviesFilter.searchTerm && (
+                            <button
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white"
+                                onClick={() => clearFilter("searchTerm")}
+                            >
+                                <svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    ></path>
+                                </svg>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 py-8">
-                {filteredMovies && filteredMovies.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {filteredMovies.map((movie: MovieProps) => (
-                            <MovieCard key={movie._id} movie={movie} />
-                        ))}
+            {/* Filter section */}
+            <div className="bg-gray-800/90 shadow-xl z-30 border-b border-gray-700">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="py-4 flex flex-wrap md:flex-nowrap items-center justify-between gap-3">
+                        <div className="flex gap-3 flex-wrap md:flex-nowrap">
+                            {/* Genre Filter */}
+                            <div className="relative inline-block">
+                                <select
+                                    className="appearance-none pl-3 pr-10 py-2.5 rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    value={moviesFilter.selectedGenre}
+                                    onChange={(e) => handleGenreClick(e.target.value)}
+                                >
+                                    <option value="">All Genres</option>
+                                    {genres?.map((genre: GenreProps) => (
+                                        <option key={genre._id} value={genre._id}>
+                                            {genre.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                    <svg
+                                        className="w-4 h-4 text-gray-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M19 9l-7 7-7-7"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {/* Year Filter */}
+                            <div className="relative inline-block">
+                                <select
+                                    className="appearance-none pl-3 pr-10 py-2.5 rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    value={moviesFilter.selectedYear}
+                                    onChange={(e) => handleYearChange(e.target.value)}
+                                >
+                                    <option value="">All Years</option>
+                                    {uniqueYears
+                                        .sort((a, b) => Number(b) - Number(a))
+                                        .map((year) => (
+                                            <option key={year as string} value={year as string}>
+                                                {year as string}
+                                            </option>
+                                        ))}
+                                </select>
+                                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                    <svg
+                                        className="w-4 h-4 text-gray-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M19 9l-7 7-7-7"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Sort Options */}
+                        <div className="relative inline-block">
+                            <select
+                                className="appearance-none pl-3 pr-10 py-2.5 rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                value={moviesFilter.selectedSort}
+                                onChange={(e) => handleSortChange(e.target.value)}
+                            >
+                                <option value="">Sort Movies</option>
+                                <option value="new">New Releases</option>
+                                <option value="top">Top Rated</option>
+                                <option value="random">Newly added</option>
+                            </select>
+                            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <svg
+                                    className="w-4 h-4 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M19 9l-7 7-7-7"
+                                    ></path>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
+
+                    {/* Active Filters */}
+                    {(moviesFilter.selectedGenre ||
+                        moviesFilter.selectedYear ||
+                        moviesFilter.selectedSort) && (
+                        <div className="py-3 flex flex-wrap gap-2 border-t border-gray-700">
+                            {moviesFilter.selectedGenre && genres && (
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-200">
+                                    Genre:{" "}
+                                    {
+                                        genres.find(
+                                            (g: GenreProps) => g._id === moviesFilter.selectedGenre
+                                        )?.name
+                                    }
+                                    <button
+                                        onClick={() => clearFilter("selectedGenre")}
+                                        className="ml-2 text-indigo-300 hover:text-white"
+                                    >
+                                        <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M6 18L18 6M6 6l12 12"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </span>
+                            )}
+                            {moviesFilter.selectedYear && (
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-900/70 text-purple-200">
+                                    Year: {moviesFilter.selectedYear}
+                                    <button
+                                        onClick={() => clearFilter("selectedYear")}
+                                        className="ml-2 text-purple-300 hover:text-white"
+                                    >
+                                        <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M6 18L18 6M6 6l12 12"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </span>
+                            )}
+                            {moviesFilter.selectedSort && (
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-900/70 text-blue-200">
+                                    {moviesFilter.selectedSort === "new"
+                                        ? "New Releases"
+                                        : moviesFilter.selectedSort === "top"
+                                        ? "Top Rated"
+                                        : moviesFilter.selectedSort === "random"
+                                        ? "Discover New"
+                                        : ""}
+                                    <button
+                                        onClick={() => clearFilter("selectedSort")}
+                                        className="ml-2 text-blue-300 hover:text-white"
+                                    >
+                                        <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M6 18L18 6M6 6l12 12"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </span>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Movie Grid */}
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                {isLoading || genresLoading ? (
+                    <div className="flex justify-center items-center h-64">
+                        <Loader />
+                    </div>
+                ) : filteredMovies && filteredMovies.length > 0 ? (
+                    <>
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-gray-200">
+                                {filteredMovies.length}{" "}
+                                {filteredMovies.length === 1 ? "Movie" : "Movies"} Found
+                            </h2>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 animate-fadeIn">
+                            {filteredMovies.map((movie: MovieProps) => (
+                                <MovieCard key={movie._id} movie={movie} />
+                            ))}
+                        </div>
+                    </>
                 ) : (
-                    <div className="text-center text-white py-16">
-                        <h3 className="text-2xl font-semibold">No movies found</h3>
-                        <p className="mt-2">Try adjusting your search or filter criteria</p>
+                    <div className="bg-gray-800/50 rounded-xl text-center py-16 px-4 shadow-lg border border-gray-700/50">
+                        <svg
+                            className="w-16 h-16 mx-auto text-gray-500 mb-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="1.5"
+                                d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                            ></path>
+                        </svg>
+                        <h3 className="text-2xl font-semibold text-gray-300">No movies found</h3>
+                        <p className="mt-2 text-gray-400 max-w-md mx-auto">
+                            We couldn't find any movies matching your criteria. Try adjusting your
+                            filters or search terms.
+                        </p>
+                        <button
+                            className="mt-6 inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-300"
+                            onClick={resetAllFilters}
+                        >
+                            <svg
+                                className="w-5 h-5 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                ></path>
+                            </svg>
+                            Reset All Filters
+                        </button>
                     </div>
                 )}
             </div>
+
+            {/* Back to Top Button */}
+            <button
+                className="fixed bottom-8 right-8 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+                <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 10l7-7m0 0l7 7m-7-7v18"
+                    ></path>
+                </svg>
+            </button>
+            <Footer />
         </div>
     );
 };

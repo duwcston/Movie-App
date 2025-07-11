@@ -50,9 +50,9 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                 />
             </div>
 
-            <div className="relative h-full flex items-center justify-start px-12">
-                <div className="max-w-2xl p-8 md:p-12">
-                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+            <div className="relative h-full flex items-center justify-start px-[5rem]">
+                <div className="max-w-2xl p-8 md:p-12 bg-transparent bg-opacity-10 backdrop-blur-xs rounded-xl border border-white border-opacity-10">
+                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight drop-shadow-2xl">
                         {currentMovie.name}
                     </h1>
 
@@ -61,25 +61,27 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                             currentMovie.genre.map((g, index) => (
                                 <span
                                     key={index}
-                                    className="bg-gray-700 text-white px-3 py-1 rounded-full text-sm"
+                                    className="bg-gray-800 bg-opacity-80 text-white px-3 py-1 rounded-full text-sm border border-gray-600 backdrop-blur-sm"
                                 >
                                     {g._id}
                                 </span>
                             ))}
                     </div>
 
-                    <p className="text-gray-200 text-lg mb-6 leading-relaxed line-clamp-3">
+                    <p className="text-white text-lg mb-6 leading-relaxed line-clamp-3 drop-shadow-lg">
                         {currentMovie.detail}
                     </p>
 
                     <div className="flex items-center gap-4 mb-6">
-                        <span className="text-yellow-400 text-lg">
+                        <span className="text-yellow-400 text-lg font-semibold drop-shadow-lg">
                             ⭐ {currentMovie.rating || "N/A"}
                         </span>
-                        <span className="text-gray-300">{currentMovie.year}</span>
+                        <span className="text-gray-100 font-medium drop-shadow-lg">
+                            {currentMovie.year}
+                        </span>
                     </div>
 
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                    <button className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl border border-blue-500">
                         Watch Now
                     </button>
                 </div>
@@ -87,7 +89,7 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
 
             <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-3 rounded-full transition-all"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-10 hover:bg-opacity-30 text-white p-3 rounded-full transition-all"
             >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -101,7 +103,7 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
 
             <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-3 rounded-full transition-all"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-10 hover:bg-opacity-30 text-white p-3 rounded-full transition-all"
             >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
