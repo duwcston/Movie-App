@@ -12,6 +12,9 @@ const moviesSlice = createSlice({
         filteredMovies: [],
         movieYears: [],
         uniqueYears: [],
+        currentPage: 1,
+        moviesPerPage: 20,
+        totalMovies: 0,
     },
     reducers: {
         setMoviesFilter(state, action) {
@@ -26,6 +29,16 @@ const moviesSlice = createSlice({
         setUniqueYears(state, action) {
             state.uniqueYears = action.payload;
         },
+        setCurrentPage(state, action) {
+            state.currentPage = action.payload;
+        },
+        setMoviesPerPage(state, action) {
+            state.moviesPerPage = action.payload;
+            state.currentPage = 1; // Reset to first page when changing items per page
+        },
+        setTotalMovies(state, action) {
+            state.totalMovies = action.payload;
+        }
     },
 })
 
@@ -34,5 +47,8 @@ export const {
     setFilteredMovies,
     setMovieYears,
     setUniqueYears,
+    setCurrentPage,
+    setMoviesPerPage,
+    setTotalMovies,
 } = moviesSlice.actions;
 export default moviesSlice.reducer;

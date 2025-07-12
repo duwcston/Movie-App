@@ -19,7 +19,7 @@ const UpdateMovie = () => {
         name: "",
         year: 0,
         detail: "",
-        genre: "",
+        genre: [] as string[],
         image: null,
         coverImage: null,
         director: "",
@@ -46,7 +46,9 @@ const UpdateMovie = () => {
                 name: initialMovieData.name,
                 year: initialMovieData.year,
                 detail: initialMovieData.detail,
-                genre: initialMovieData.genre,
+                genre: Array.isArray(initialMovieData.genre)
+                    ? initialMovieData.genre.map((g: GenreProps) => g._id || g)
+                    : [],
                 image: initialMovieData.image,
                 coverImage: initialMovieData.coverImage,
                 director: initialMovieData.director,
@@ -76,7 +78,7 @@ const UpdateMovie = () => {
         if (name === "genre") {
             setMovieData((prevData) => ({
                 ...prevData,
-                genre: value,
+                genre: [value],
             }));
         } else {
             setMovieData((prevData) => ({
@@ -179,8 +181,8 @@ const UpdateMovie = () => {
     };
 
     return (
-        <div className="container flex flex-col items-center justify-center mt-4 w-full pt-12 min-w-screen">
-            <form>
+        <div className="container flex justify-center items-center min-h-screen mt-4 pt-12 overflow-hidden">
+            <form className="w-full max-w-md">
                 <h1 className="mb-2">Update Movie</h1>
                 <div className="mb-2">
                     <label className="block text-white">Name</label>
@@ -243,25 +245,65 @@ const UpdateMovie = () => {
                     />
                 </div>
                 <div className="mb-2">
-                    <label className="block mb-2 text-sm font-medium text-white">
-                        Genre:
-                        <select
-                            name="genre"
-                            value={movieData.genre}
-                            className="w-full p-2 border border-gray-300 rounded bg-white text-black"
-                            onChange={handleChange}
-                        >
-                            {isLoadingGenres ? (
-                                <option>Loading genres...</option>
-                            ) : (
-                                genres?.map((genre: GenreProps) => (
-                                    <option key={genre._id} value={genre._id}>
-                                        {genre.name}
-                                    </option>
-                                ))
-                            )}
-                        </select>
-                    </label>
+                    <label className="block mb-2 text-sm font-medium text-white">Genre:</label>
+                    <select
+                        name="genre"
+                        className="border p-1 w-full bg-white text-black rounded-md"
+                        onChange={(e) => {
+                            const selectedGenreId = e.target.value;
+                            const selectedGenre = genres?.find(
+                                (g: GenreProps) => g._id === selectedGenreId
+                            );
+                            if (selectedGenre && !movieData.genre.includes(selectedGenreId)) {
+                                setMovieData({
+                                    ...movieData,
+                                    genre: [
+                                        ...(Array.isArray(movieData.genre) ? movieData.genre : []),
+                                        selectedGenreId,
+                                    ],
+                                });
+                            }
+                        }}
+                    >
+                        {isLoadingGenres ? (
+                            <option>Loading genres...</option>
+                        ) : (
+                            genres?.map((genre: GenreProps) => (
+                                <option key={genre._id} value={genre._id}>
+                                    {genre.name}
+                                </option>
+                            ))
+                        )}
+                    </select>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                    {Array.isArray(movieData.genre) &&
+                        movieData.genre.map((genreId: string, index: number) => {
+                            console.log("Genre ID:", genreId);
+                            const genre = genres?.find((g: GenreProps) => g._id === genreId);
+                            return (
+                                <div
+                                    key={`${genreId}-${index}`}
+                                    className="bg-transparent border text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 mb-2"
+                                >
+                                    <span>{genre?.name || "Can't define"}</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setMovieData({
+                                                ...movieData,
+                                                genre: movieData.genre.filter(
+                                                    (id: string) => id !== genreId
+                                                ),
+                                            });
+                                        }}
+                                        className="bg-transparent hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                            );
+                        })}
                 </div>
                 <div className="mb-2">
                     <label className="block text-white">Image</label>

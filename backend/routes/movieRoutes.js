@@ -6,7 +6,7 @@ const router = express.Router();
 import {
     createMovie,
     getAllMovies,
-    getMovie,
+    getMovieById,
     updateMovie,
     deleteMovie,
     reviewMovie,
@@ -22,7 +22,7 @@ import checkId from '../middlewares/checkId.js';
 
 // Public Routes
 router.get('/all-movies', getAllMovies);
-router.get('/movie/:id', getMovie);
+router.get('/movie/:id', getMovieById);
 router.get('/new-movies', getNewMovies);
 router.get('/top-movies', getTopMovies);
 router.get('/random-movies', getRandomMovies);

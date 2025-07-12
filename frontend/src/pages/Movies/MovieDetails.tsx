@@ -6,6 +6,7 @@ import { useGetMovieByIdQuery, useAddMovieReviewMutation } from "../../redux/api
 import MovieTabs from "./MovieTabs";
 import { RootState } from "../../redux/store";
 import Loader from "../../components/Loader";
+import { GenreProps } from "../../types/genreTypes";
 
 const MovieDetails = () => {
     const { id: movieId } = useParams();
@@ -102,21 +103,29 @@ const MovieDetails = () => {
                                 {movie?.name}
                             </h1>
 
-                            <div className="flex flex-wrap items-center gap-4 mt-2 mb-6">
+                            <div className="flex flex-wrap items-center gap-4 my-6">
                                 <span className="bg-blue-600 text-sm px-3 py-1 rounded-full">
                                     {movie?.year}
                                 </span>
-                                {movie?.genre && (
-                                    <span className="bg-purple-600 text-sm px-3 py-1 rounded-full">
-                                        {movie?.genre}
-                                    </span>
-                                )}
+                                {movie.genre &&
+                                    movie.genre.map((g: GenreProps, index: number) => (
+                                        <span
+                                            key={index}
+                                            className="bg-gray-700 bg-opacity-80 text-white px-3 py-1 rounded-full text-sm border border-gray-600"
+                                        >
+                                            {g.name}
+                                        </span>
+                                    ))}
                             </div>
 
-                            <h3 className="text-xl font-semibold text-gray-300 mb-2">Overview</h3>
-                            <p className="text-gray-300 mb-6 leading-relaxed">{movie?.detail}</p>
+                            <div className="my-6">
+                                <h3 className="text-xl font-semibold text-gray-300 mb-2">
+                                    Overview
+                                </h3>
+                                <p className="text-gray-300 leading-relaxed">{movie?.detail}</p>
+                            </div>
 
-                            <div className="mt-4">
+                            <div className="my-6">
                                 <h3 className="text-xl font-semibold mb-3 text-gray-300">
                                     Director
                                 </h3>
@@ -127,7 +136,7 @@ const MovieDetails = () => {
                                 </div>
                             </div>
 
-                            <div className="mt-4">
+                            <div className="mt-6">
                                 <h3 className="text-xl font-semibold mb-3 text-gray-300">Cast</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {movie?.cast.map((actor: string, index: number) => (
@@ -135,7 +144,7 @@ const MovieDetails = () => {
                                             key={index}
                                             className="bg-gray-700 px-3 py-1 rounded-full text-sm"
                                         >
-                                            {actor}
+                                            {actor || "Unknown Actor"}
                                         </span>
                                     ))}
                                 </div>

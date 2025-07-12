@@ -61,9 +61,9 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                             currentMovie.genre.map((g, index) => (
                                 <span
                                     key={index}
-                                    className="bg-gray-800 bg-opacity-80 text-white px-3 py-1 rounded-full text-sm border border-gray-600 backdrop-blur-sm"
+                                    className="bg-gray-700 bg-opacity-80 text-white px-3 py-1 rounded-full text-sm border border-gray-600"
                                 >
-                                    {g._id}
+                                    {g.name}
                                 </span>
                             ))}
                     </div>

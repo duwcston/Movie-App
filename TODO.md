@@ -14,10 +14,9 @@
   - [ ] Implement movie data caching strategy
 
 - [ ] **Enhanced User Features**
-  - [ ] Request new movie form
+  - [ ] Request new movie form for user and send the result to admin dashboard
   - [ ] Add user favorites/watchlist functionality
   - [x] Create rating and review system
-  - [ ] Implement user movie recommendations (AI?)
   - [ ] Add user profile picture upload (using multer)
 
 - [ ] **API Improvements**
@@ -26,14 +25,15 @@
   - [x] Add request validation middleware
   - [ ] Create comprehensive error handling
   - [ ] Add API documentation (Swagger/OpenAPI)
+  - [ ] Implement Redis
 
 ### Frontend Development
-- [ ] **Core Movie Features**
+- [x] **Core Movie Features**
   - [x] Implement functional movie search
   - [x] Create movie card components
   - [x] Build movie details page
   - [x] Add movie filtering and sorting
-  - [ ] Implement pagination for search results
+  - [x] Implement pagination for search results
 
 - [x] **User Interface**
   - [x] Create user authentication pages (login/register)

@@ -1,52 +1,44 @@
 import { useGetAllMoviesQuery } from "../../redux/api/movies";
 import { useGetGenresQuery } from "../../redux/api/genre";
-import {
-    useGetNewMoviesQuery,
-    useGetTopMoviesQuery,
-    useGetRandomMoviesQuery,
-} from "../../redux/api/movies";
 import MovieCard from "./MovieCard";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     setMoviesFilter,
     setFilteredMovies,
     setMovieYears,
     setUniqueYears,
+    setCurrentPage,
+    setMoviesPerPage,
+    setTotalMovies,
 } from "../../redux/features/movies/moviesSlice";
 import { RootState } from "../../redux/store";
 import { MovieProps } from "../../types/movieTypes";
 import { GenreProps } from "../../types/genreTypes";
 import Loader from "../../components/Loader";
 import Footer from "../../components/Footer";
+import Pagination from "../../components/Pagination";
+import BackToTopButton from "../../components/BackToTopButton";
 
 const AllMovies = () => {
     const dispatch = useDispatch();
     const { data, isLoading } = useGetAllMoviesQuery({});
     const { data: genres, isLoading: genresLoading } = useGetGenresQuery({});
-    const { data: newMovies } = useGetNewMoviesQuery({});
-    const { data: topMovies } = useGetTopMoviesQuery({});
-    const { data: randomMovies } = useGetRandomMoviesQuery({});
 
-    const { moviesFilter, filteredMovies } = useSelector((state: RootState) => state.movies);
+    const { moviesFilter, filteredMovies, currentPage, moviesPerPage, totalMovies } = useSelector(
+        (state: RootState) => state.movies
+    );
+
+    // Calculate pagination
+    const totalPages = Math.ceil(totalMovies / moviesPerPage);
+    const startIndex = (currentPage - 1) * moviesPerPage;
+    const endIndex = startIndex + moviesPerPage;
+    const currentMovies = filteredMovies.slice(startIndex, endIndex);
 
     const movieYears = data?.map((movie: MovieProps) => movie.year);
     const uniqueYears = Array.from(new Set(movieYears));
 
-    useEffect(() => {
-        if (data) {
-            const movieYears = data.map((movie: MovieProps) => movie.year);
-            const uniqueYears = Array.from(new Set(movieYears)).sort(
-                (a, b) => Number(b) - Number(a)
-            );
-
-            dispatch(setFilteredMovies(data));
-            dispatch(setMovieYears(movieYears));
-            dispatch(setUniqueYears(uniqueYears));
-        }
-    }, [data, dispatch]);
-
-    const applyAllFilters = () => {
+    const applyAllFilters = useCallback(() => {
         if (!data) return;
 
         let result = [...data];
@@ -61,7 +53,10 @@ const AllMovies = () => {
 
         // Apply genre filter
         if (selectedGenre) {
-            result = result.filter((movie: { genre: string }) => movie.genre === selectedGenre);
+            result = result.filter(
+                (movie: MovieProps) =>
+                    movie.genre && movie.genre.some((genre: GenreProps) => genre._id === selectedGenre)
+            );
         }
 
         // Apply year filter
@@ -69,40 +64,80 @@ const AllMovies = () => {
             result = result.filter((movie: { year: number }) => movie.year === +selectedYear);
         }
 
-        // Apply sort
+        // Apply sort to the already filtered result
         switch (moviesFilter.selectedSort) {
             case "new":
-                result = newMovies || result;
+                // Sort by newest release date
+                result = result.sort((movieA: MovieProps, movieB: MovieProps) => {
+                    const dateA = new Date(movieA.createdAt || 0).getTime();
+                    const dateB = new Date(movieB.createdAt || 0).getTime();
+                    return dateB - dateA;
+                });
                 break;
             case "top":
-                result = topMovies || result;
+                // Sort by highest rating
+                result = result.sort((movieA: MovieProps, movieB: MovieProps) => {
+                    const ratingA = movieA.rating || 0;
+                    const ratingB = movieB.rating || 0;
+                    return ratingB - ratingA;
+                });
                 break;
             case "random":
-                result = randomMovies || result;
+                // Shuffle the array randomly
+                result = result.sort(() => Math.random() - 0.5);
                 break;
         }
 
         dispatch(setFilteredMovies(result));
+        dispatch(setTotalMovies(result.length));
+        dispatch(setCurrentPage(1)); // Reset to first page after filtering
+    }, [data, moviesFilter, dispatch]);
+
+    useEffect(() => {
+        if (data) {
+            const movieYears = data.map((movie: MovieProps) => movie.year);
+            const uniqueYears = Array.from(new Set(movieYears)).sort(
+                (a, b) => Number(b) - Number(a)
+            );
+
+            dispatch(setFilteredMovies(data));
+            dispatch(setMovieYears(movieYears));
+            dispatch(setUniqueYears(uniqueYears));
+            dispatch(setTotalMovies(data.length));
+            dispatch(setCurrentPage(1));
+        }
+    }, [data, dispatch]);
+
+    // Apply filters whenever filter values change
+    useEffect(() => {
+        if (data) {
+            applyAllFilters();
+        }
+    }, [data, applyAllFilters]);
+
+    const handlePageChange = (page: number) => {
+        dispatch(setCurrentPage(page));
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    const handleItemsPerPageChange = (items: number) => {
+        dispatch(setMoviesPerPage(items));
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setMoviesFilter({ ...moviesFilter, searchTerm: e.target.value }));
-        setTimeout(() => applyAllFilters(), 300);
     };
 
     const handleGenreClick = (genreId: string) => {
         dispatch(setMoviesFilter({ ...moviesFilter, selectedGenre: genreId }));
-        setTimeout(() => applyAllFilters(), 100);
     };
 
     const handleYearChange = (year: string) => {
         dispatch(setMoviesFilter({ ...moviesFilter, selectedYear: year }));
-        setTimeout(() => applyAllFilters(), 100);
     };
 
     const handleSortChange = (sortOption: string) => {
         dispatch(setMoviesFilter({ ...moviesFilter, selectedSort: sortOption }));
-        setTimeout(() => applyAllFilters(), 100);
     };
 
     // Clear a specific filter
@@ -110,7 +145,6 @@ const AllMovies = () => {
         filterType: "searchTerm" | "selectedGenre" | "selectedYear" | "selectedSort"
     ) => {
         dispatch(setMoviesFilter({ ...moviesFilter, [filterType]: "" }));
-        setTimeout(() => applyAllFilters(), 100);
     };
 
     // Reset all filters
@@ -123,7 +157,11 @@ const AllMovies = () => {
                 selectedSort: "",
             })
         );
-        setTimeout(() => data && dispatch(setFilteredMovies(data)), 100);
+        if (data) {
+            dispatch(setFilteredMovies(data));
+            dispatch(setTotalMovies(data.length));
+            dispatch(setCurrentPage(1));
+        }
     };
 
     return (
@@ -387,19 +425,32 @@ const AllMovies = () => {
                     <div className="flex justify-center items-center h-64">
                         <Loader />
                     </div>
-                ) : filteredMovies && filteredMovies.length > 0 ? (
+                ) : currentMovies && currentMovies.length > 0 ? (
                     <>
                         <div className="mb-6">
                             <h2 className="text-xl font-semibold text-gray-200">
-                                {filteredMovies.length}{" "}
-                                {filteredMovies.length === 1 ? "Movie" : "Movies"} Found
+                                {totalMovies} {totalMovies === 1 ? "Movie" : "Movies"} Found
+                                {totalPages > 1 && (
+                                    <span className="text-gray-400 ml-2">
+                                        (Page {currentPage} of {totalPages})
+                                    </span>
+                                )}
                             </h2>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 animate-fadeIn">
-                            {filteredMovies.map((movie: MovieProps) => (
+                            {currentMovies.map((movie: MovieProps) => (
                                 <MovieCard key={movie._id} movie={movie} />
                             ))}
                         </div>
+
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                            moviesPerPage={moviesPerPage}
+                            onMoviesPerPageChange={handleItemsPerPageChange}
+                            totalMovies={totalMovies}
+                        />
                     </>
                 ) : (
                     <div className="bg-gray-800/50 rounded-xl text-center py-16 px-4 shadow-lg border border-gray-700/50">
@@ -446,26 +497,7 @@ const AllMovies = () => {
                 )}
             </div>
 
-            {/* Back to Top Button */}
-            <button
-                className="fixed bottom-8 right-8 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-                <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 10l7-7m0 0l7 7m-7-7v18"
-                    ></path>
-                </svg>
-            </button>
+            <BackToTopButton />
             <Footer />
         </div>
     );

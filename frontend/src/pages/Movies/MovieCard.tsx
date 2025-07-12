@@ -50,7 +50,7 @@ const MovieCard = ({ movie }: { movie: MovieProps }) => {
                         <p className="text-sm text-gray-300 line-clamp-3 mb-3">
                             {movie.detail || "No description available"}
                         </p>
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-600/80 text-white">
+                        <span className="inline-flex items-center px-3 py-1 mb-2 rounded-full text-xs font-medium bg-indigo-600/80 text-white">
                             View Details
                             <svg
                                 className="w-3 h-3 ml-1"

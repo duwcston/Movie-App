@@ -14,17 +14,17 @@ const createMovie = async (req, res) => {
 
 const getAllMovies = async (req, res) => {
     try {
-        const movies = await Movie.find();
+        const movies = await Movie.find().populate('genre');
         res.status(200).json(movies);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
 };
 
-const getMovie = async (req, res) => {
+const getMovieById = async (req, res) => {
     try {
         const { id } = req.params;
-        const movie = await Movie.findById(id);
+        const movie = await Movie.findById(id).populate('genre');
         if (!movie) {
             return res.status(404).json({ message: "Movie not found" });
         }
@@ -122,7 +122,7 @@ const deleteComment = async (req, res) => {
 
 const getNewMovies = async (req, res) => {
     try {
-        const newMovies = await Movie.find().sort({ createdAt: -1 }).limit(10);
+        const newMovies = await Movie.find().populate('genre').sort({ createdAt: -1 }).limit(10);
         res.status(200).json(newMovies);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -131,7 +131,7 @@ const getNewMovies = async (req, res) => {
 
 const getTopMovies = async (req, res) => {
     try {
-        const topMovies = await Movie.find().sort({ rating: -1 }).limit(10);
+        const topMovies = await Movie.find().populate('genre').sort({ rating: -1 }).limit(10);
         res.status(200).json(topMovies);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -140,11 +140,21 @@ const getTopMovies = async (req, res) => {
 
 const getRandomMovies = async (req, res) => {
     try {
-        const randomMovies = await Movie.aggregate([{ $sample: { size: 10 } }]);
+        const randomMovies = await Movie.aggregate([
+            { $sample: { size: 10 } },
+            {
+                $lookup: {
+                    from: 'genres',
+                    localField: 'genre',
+                    foreignField: '_id',
+                    as: 'genre'
+                }
+            }
+        ]);
         res.json(randomMovies);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-export { createMovie, getAllMovies, getMovie, updateMovie, deleteMovie, reviewMovie, deleteComment, getNewMovies, getTopMovies, getRandomMovies };
+export { createMovie, getAllMovies, getMovieById, updateMovie, deleteMovie, reviewMovie, deleteComment, getNewMovies, getTopMovies, getRandomMovies };

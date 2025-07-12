@@ -27,3 +27,18 @@ export interface MovieProps {
     updatedAt: string;
     __v: number;
 }
+
+export interface MovieState {
+    moviesFilter: {
+        searchTerm: string;
+        selectedGenre: string;
+        selectedYear: string;
+        selectedSort: string;
+    };
+    filteredMovies: MovieProps[];
+    movieYears: string[];
+    uniqueYears: string[];
+    currentPage: number;
+    moviesPerPage: number;
+    totalMovies: number;
+}

@@ -145,7 +145,7 @@ const CreateMovies = () => {
     return (
         <>
             <Sidebar />
-            <div className="container flex flex-col justify-center items-center mt-4 pt-12 min-w-screen">
+            <div className="container flex justify-center items-center min-h-screen mt-4 pt-12 overflow-hidden">
                 <form onSubmit={handleCreateMovie} className="w-full max-w-md">
                     <h1 className="mb-4">Create Movie</h1>
                     <div className="mb-4">
@@ -237,7 +237,6 @@ const CreateMovies = () => {
                                 }
                             }}
                         >
-                            {/* <option value="">Select a genre</option> */}
                             {isLoadingGenres ? (
                                 <option>Loading genres...</option>
                             ) : (
@@ -251,11 +250,11 @@ const CreateMovies = () => {
                     </div>
                     <div className="flex flex-wrap gap-2">
                         {Array.isArray(movieData.genre) &&
-                            movieData.genre.map((genreId: string) => {
+                            movieData.genre.map((genreId: string, index: number) => {
                                 const genre = genres?.find((g: GenreProps) => g._id === genreId);
                                 return (
                                     <div
-                                        key={genreId}
+                                        key={`${genreId}-${index}`}
                                         className="bg-transparent border text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 mb-2"
                                     >
                                         <span>{genre?.name}</span>
@@ -308,7 +307,7 @@ const CreateMovies = () => {
                     </div>
                     <button
                         type="submit"
-                        className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer"
+                        className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer mt-2 mb-6"
                         disabled={isCreatingMovie || isUploadingImage || isUploadingCoverImage}
                     >
                         {isCreatingMovie || isUploadingImage || isUploadingCoverImage
