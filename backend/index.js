@@ -5,10 +5,11 @@ import path from 'path';
 
 // Files
 import connectDB from './config/db.js';
-import userRoutes from './routes/userRoutes.js';
-import genreRoutes from './routes/genreRoutes.js';
-import movieRoutes from './routes/movieRoutes.js';
-import uploadRoutes from './routes/uploadRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
+import genreRoutes from './src/routes/genreRoutes.js';
+import movieRoutes from './src/routes/movieRoutes.js';
+import uploadRoutes from './src/routes/uploadRoutes.js';
+import swaggerDocs from './src/docs/swagger.js';
 
 // Configuration
 dotenv.config();
@@ -31,6 +32,9 @@ app.use('/api/v1/uploads', uploadRoutes);
 
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
+// Swagger documentation
+swaggerDocs(app);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

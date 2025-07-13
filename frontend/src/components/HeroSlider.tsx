@@ -39,6 +39,7 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
     }
 
     const currentMovie = data[currentSlide];
+    console.log("Current Movie:", currentMovie.reviews.forEach(review => console.log(review.rating)));
 
     return (
         <div className="relative h-80 sm:h-96 md:h-[450px] lg:h-[550px] xl:h-[650px] rounded-lg overflow-hidden">
@@ -53,7 +54,7 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
             <div className="relative h-full flex items-center justify-start px-[5rem]">
                 <div className="max-w-2xl p-8 md:p-12 bg-transparent bg-opacity-10 backdrop-blur-xs rounded-xl border border-white border-opacity-10">
                     <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight drop-shadow-2xl">
-                        {currentMovie.name}
+                        {currentMovie.name} ({currentMovie.year})
                     </h1>
 
                     <div className="flex flex-wrap gap-2 mb-4">
@@ -76,9 +77,9 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                         <span className="text-yellow-400 text-lg font-semibold drop-shadow-lg">
                             ⭐ {currentMovie.rating || "N/A"}
                         </span>
-                        <span className="text-gray-100 font-medium drop-shadow-lg">
+                        {/* <span className="text-gray-100 font-medium drop-shadow-lg">
                             {currentMovie.year}
-                        </span>
+                        </span> */}
                     </div>
 
                     <button className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl border border-blue-500">
