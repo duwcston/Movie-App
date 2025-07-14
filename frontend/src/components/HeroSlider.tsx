@@ -33,8 +33,10 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
 
     if (!data || data.length === 0) {
         return (
-            <div className="relative h-96 bg-transparent rounded-lg flex items-center justify-center">
-                <h2 className="text-white text-2xl">Loading movies...</h2>
+            <div className="relative h-64 sm:h-80 md:h-96 bg-transparent rounded-lg flex items-center justify-center">
+                <h2 className="text-white text-xl sm:text-2xl px-4 text-center">
+                    Loading movies...
+                </h2>
             </div>
         );
     }
@@ -46,7 +48,7 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
     };
 
     return (
-        <div className="relative h-80 sm:h-96 md:h-[450px] lg:h-[550px] xl:h-[650px] rounded-lg overflow-hidden">
+        <div className="relative h-64 sm:h-80 md:h-96 lg:h-[450px] xl:h-[550px] 2xl:h-[650px] rounded-lg overflow-hidden">
             <div className="absolute inset-0">
                 <img
                     src={currentMovie.coverImage}
@@ -55,40 +57,40 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                 />
             </div>
 
-            <div className="relative h-full flex items-center justify-start px-[5rem]">
-                <div className="max-w-2xl p-8 md:p-12 bg-transparent bg-opacity-10 backdrop-blur-xs rounded-xl border border-white border-opacity-10">
-                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight drop-shadow-2xl">
+            {/* Gradient overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent sm:from-black/60 sm:via-black/20"></div>
+
+            <div className="relative h-full flex items-center justify-start px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+                <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl p-4 sm:p-6 md:p-8 lg:p-12 bg-transparent bg-opacity-10 backdrop-blur-sm rounded-xl border border-white border-opacity-10">
+                    <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight drop-shadow-2xl">
                         {currentMovie.name} ({currentMovie.year})
                     </h1>
 
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3 md:mb-4">
                         {currentMovie.genre &&
-                            currentMovie.genre.map((g, index) => (
+                            currentMovie.genre.slice(0, 3).map((g, index) => (
                                 <span
                                     key={index}
-                                    className="bg-gray-700 bg-opacity-80 text-white px-3 py-1 rounded-full text-sm border border-gray-600"
+                                    className="bg-gray-700 bg-opacity-80 text-white px-2 py-1 sm:px-3 rounded-full text-xs sm:text-sm border border-gray-600"
                                 >
                                     {g.name}
                                 </span>
                             ))}
                     </div>
 
-                    <p className="text-white text-lg mb-6 leading-relaxed line-clamp-3 drop-shadow-lg">
+                    <p className="text-white text-sm sm:text-base md:text-lg mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-2 sm:line-clamp-3 drop-shadow-lg">
                         {currentMovie.detail}
                     </p>
 
-                    <div className="flex items-center gap-4 mb-6">
-                        <span className="text-yellow-400 text-lg font-semibold drop-shadow-lg">
+                    <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-4 md:mb-6">
+                        <span className="text-yellow-400 text-sm sm:text-base md:text-lg font-semibold drop-shadow-lg">
                             ⭐ {currentMovie.rating || "N/A"}
                         </span>
-                        {/* <span className="text-gray-100 font-medium drop-shadow-lg">
-                            {currentMovie.year}
-                        </span> */}
                     </div>
 
                     <Link to={`/movies/player/${currentMovie?._id}`}>
                         <button
-                            className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+                            className="bg-blue-700 hover:bg-blue-800 text-white px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl text-sm sm:text-base"
                             onClick={handleWatchNow}
                         >
                             Watch Now
@@ -97,11 +99,17 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                 </div>
             </div>
 
+            {/* Navigation buttons - hidden on very small screens */}
             <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-10 hover:bg-opacity-30 text-white p-3 rounded-full transition-all"
+                className="hidden sm:block absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-40 text-white p-2 md:p-3 rounded-full transition-all"
             >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                    className="w-4 h-4 md:w-6 md:h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -113,9 +121,14 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
 
             <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-10 hover:bg-opacity-30 text-white p-3 rounded-full transition-all"
+                className="hidden sm:block absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-40 text-white p-2 md:p-3 rounded-full transition-all"
             >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                    className="w-4 h-4 md:w-6 md:h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -125,18 +138,49 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                 </svg>
             </button>
 
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+            {/* Slide indicators */}
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex gap-1 sm:gap-2">
                 {data.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${
+                        className={`w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full transition-all ${
                             index === currentSlide
                                 ? "bg-white"
                                 : "bg-white bg-opacity-50 hover:bg-opacity-70"
                         }`}
                     />
                 ))}
+            </div>
+
+            {/* Mobile swipe indicators */}
+            <div className="sm:hidden absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4">
+                <button
+                    onClick={prevSlide}
+                    className="bg-black bg-opacity-30 text-white p-2 rounded-full"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
+                        />
+                    </svg>
+                </button>
+                <button
+                    onClick={nextSlide}
+                    className="bg-black bg-opacity-30 text-white p-2 rounded-full"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                        />
+                    </svg>
+                </button>
             </div>
         </div>
     );

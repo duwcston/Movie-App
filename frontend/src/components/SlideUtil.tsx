@@ -11,7 +11,7 @@ const SliderUtil = ({ data }: { data: MovieProps[] }) => {
         lazyLoad: "ondemand" as const,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 5,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 4000,
@@ -26,10 +26,17 @@ const SliderUtil = ({ data }: { data: MovieProps[] }) => {
         arrows: true,
         responsive: [
             {
+                breakpoint: 1920,
+                settings: {
+                    slidesToShow: 5,
+                    slidesToScroll: 1,
+                },
+            },
+            {
                 breakpoint: 1536,
                 settings: {
                     slidesToShow: 4,
-                    slidesToScroll: 2,
+                    slidesToScroll: 1,
                 },
             },
             {
@@ -42,8 +49,9 @@ const SliderUtil = ({ data }: { data: MovieProps[] }) => {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 3,
                     slidesToScroll: 1,
+                    dots: true,
                 },
             },
             {
@@ -52,14 +60,27 @@ const SliderUtil = ({ data }: { data: MovieProps[] }) => {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                     arrows: false,
+                    dots: true,
                 },
             },
             {
                 breakpoint: 640,
                 settings: {
+                    slidesToShow: 1.3,
+                    slidesToScroll: 1,
+                    arrows: false,
+                    dots: true,
+                    centerMode: true,
+                    centerPadding: "25px",
+                },
+            },
+            {
+                breakpoint: 480,
+                settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     arrows: false,
+                    dots: true,
                     centerMode: true,
                     centerPadding: "20px",
                 },
@@ -69,16 +90,16 @@ const SliderUtil = ({ data }: { data: MovieProps[] }) => {
 
     return (
         <div className="slider-container relative">
-            <div className="relative overflow-hidden rounded-xl">
+            <div className="relative overflow-hidden rounded-lg sm:rounded-xl">
                 {data.length === 0 ? (
-                    <div className="flex justify-center items-center h-64 bg-gray-800/50 rounded-xl">
-                        <p className="text-gray-400">No movies available</p>
+                    <div className="flex justify-center items-center h-32 sm:h-48 md:h-64 bg-gray-800/50 rounded-lg sm:rounded-xl">
+                        <p className="text-gray-400 text-sm sm:text-base">No movies available</p>
                     </div>
                 ) : (
                     <Slider {...settings}>
                         {data.map((movie: MovieProps) => (
-                            <div key={movie._id} className="px-3 py-2 focus:outline-none">
-                                <div className="transform transition-all duration-1000 hover:scale-110 hover:z-10 relative ease-in-out">
+                            <div key={movie._id} className="px-2 sm:px-3 py-2 focus:outline-none">
+                                <div className="transform transition-all duration-1000 hover:scale-105 sm:hover:scale-110 hover:z-10 relative ease-in-out">
                                     <MovieCard movie={movie} />
                                 </div>
                             </div>

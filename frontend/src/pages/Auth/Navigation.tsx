@@ -72,7 +72,7 @@ const Navigation = () => {
                         >
                             <AiOutlineGithub className="mr-[1rem]" size={26} />
                             <span className="hidden nav-item-name">Github</span>
-                            <span className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                            <span className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 -ml-2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
                                 Github
                             </span>
                         </a>

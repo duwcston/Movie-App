@@ -148,11 +148,14 @@ const CreateMovies = () => {
     return (
         <>
             <Sidebar />
-            <div className="container flex justify-center min-h-screen overflow-hidden pt-4">
-                <form onSubmit={handleCreateMovie} className="w-full max-w-md">
-                    <h1 className="mb-4">Create Movie</h1>
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-medium text-white">
+            <div className="container flex justify-center min-h-screen overflow-hidden pt-2 sm:pt-4 px-3 sm:px-0">
+                <form
+                    onSubmit={handleCreateMovie}
+                    className="w-full max-w-xs sm:max-w-sm md:max-w-md"
+                >
+                    <h1 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-4">Create Movie</h1>
+                    <div className="mb-3 sm:mb-4">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             Name:
                             <input
                                 type="text"
@@ -160,10 +163,10 @@ const CreateMovies = () => {
                                 value={movieData.name}
                                 onChange={handleChange}
                                 placeholder="Enter movie name"
-                                className="border p-2 w-full"
+                                className="border p-1.5 sm:p-2 w-full text-sm sm:text-base"
                             />
                         </label>
-                        <label className="block mb-2 text-sm font-medium text-white">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             TMDB ID:
                             <input
                                 type="number"
@@ -171,10 +174,10 @@ const CreateMovies = () => {
                                 value={movieData.tmdbId}
                                 onChange={handleChange}
                                 placeholder="Enter TMDB ID"
-                                className="border p-2 w-full"
+                                className="border p-1.5 sm:p-2 w-full text-sm sm:text-base"
                             />
                         </label>
-                        <label className="block mb-2 text-sm font-medium text-white">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             Year:
                             <input
                                 type="number"
@@ -183,21 +186,21 @@ const CreateMovies = () => {
                                 onChange={handleChange}
                                 min="2000"
                                 max="2030"
-                                className="border p-1 w-full"
+                                className="border p-1 sm:p-1.5 w-full text-sm sm:text-base"
                             />
                         </label>
-                        <label className="block mb-2 text-sm font-medium text-white">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             Detail:
                             <textarea
                                 name="detail"
                                 value={movieData.detail}
                                 onChange={handleChange}
-                                className="border p-2 w-full bg-white text-black rounded-md"
+                                className="border p-1.5 sm:p-2 w-full bg-white text-black rounded-md text-sm sm:text-base"
                                 placeholder="Enter movie details"
                                 rows={4}
                             ></textarea>
                         </label>
-                        <label className="block mb-2 text-sm font-medium text-white">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             Director:
                             <input
                                 type="text"
@@ -209,11 +212,11 @@ const CreateMovies = () => {
                                         director: e.target.value,
                                     })
                                 }
-                                className="border p-2 w-full"
+                                className="border p-1.5 sm:p-2 w-full text-sm sm:text-base"
                                 placeholder="Enter director's name"
                             />
                         </label>
-                        <label className="block mb-2 text-sm font-medium text-white">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             Cast:
                             <input
                                 type="text"
@@ -226,13 +229,15 @@ const CreateMovies = () => {
                                         cast: e.target.value.split(", "),
                                     })
                                 }
-                                className="border p-2 w-full"
+                                className="border p-1.5 sm:p-2 w-full text-sm sm:text-base"
                             />
                         </label>
-                        <label className="block mb-2 text-sm font-medium text-white">Genres:</label>
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
+                            Genres:
+                        </label>
                         <select
                             name="genre"
-                            className="border p-1 w-full bg-white text-black rounded-md"
+                            className="border p-1 sm:p-1.5 w-full bg-white text-black rounded-md text-sm sm:text-base"
                             onChange={(e) => {
                                 const selectedGenreId = e.target.value;
                                 const selectedGenre = genres?.find(
@@ -262,14 +267,14 @@ const CreateMovies = () => {
                             )}
                         </select>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mt-2">
                         {Array.isArray(movieData.genre) &&
                             movieData.genre.map((genreId: string, index: number) => {
                                 const genre = genres?.find((g: GenreProps) => g._id === genreId);
                                 return (
                                     <div
                                         key={`${genreId}-${index}`}
-                                        className="bg-transparent border text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 mb-2"
+                                        className="bg-transparent border text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2"
                                     >
                                         <span>{genre?.name}</span>
                                         <button
@@ -282,7 +287,7 @@ const CreateMovies = () => {
                                                     ),
                                                 });
                                             }}
-                                            className="bg-transparent hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                                            className="bg-transparent hover:bg-red-600 text-white rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center text-xs"
                                         >
                                             X
                                         </button>
@@ -291,29 +296,29 @@ const CreateMovies = () => {
                             })}
                     </div>
 
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-medium text-white">
+                    <div className="mb-2 sm:mb-4">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             Image
                             <input
                                 type="file"
                                 accept="image/*"
                                 name="image"
                                 onChange={handleImageChange}
-                                className={`w-full p-2 border border-gray-300 rounded ${
+                                className={`w-full p-1.5 sm:p-2 border border-gray-300 rounded text-xs sm:text-sm ${
                                     !selectedImage ? "text-gray-500" : "text-black"
                                 }`}
                             />
                         </label>
                     </div>
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-medium text-white">
+                    <div className="mb-2 sm:mb-4">
+                        <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
                             Cover Image
                             <input
                                 type="file"
                                 accept="image/*"
                                 name="coverImage"
                                 onChange={handleCoverImageChange}
-                                className={`w-full p-2 border border-gray-300 rounded ${
+                                className={`w-full p-1.5 sm:p-2 border border-gray-300 rounded text-xs sm:text-sm ${
                                     !selectedCoverImage ? "text-gray-500" : "text-black"
                                 }`}
                             />
@@ -321,7 +326,7 @@ const CreateMovies = () => {
                     </div>
                     <button
                         type="submit"
-                        className="bg-blue-900 text-white px-4 py-2 rounded cursor-pointer mt-2 mb-6"
+                        className="bg-blue-900 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded cursor-pointer mt-2 mb-4 sm:mb-6 text-sm sm:text-base"
                         disabled={isCreatingMovie || isUploadingImage || isUploadingCoverImage}
                     >
                         {isCreatingMovie || isUploadingImage || isUploadingCoverImage

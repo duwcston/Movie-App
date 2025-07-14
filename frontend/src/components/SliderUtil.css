@@ -2,36 +2,90 @@
 .slider-container .slick-prev,
 .slider-container .slick-next {
   z-index: 10;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .slider-container .slick-prev {
-  left: 3px;
+  left: -5px;
 }
 
 .slider-container .slick-next {
-  right: 3px;
+  right: -5px;
 }
 
 .slider-container .slick-prev:before,
 .slider-container .slick-next:before {
-  font-size: 40px;
-  opacity: 1;
+  font-size: 24px;
+  opacity: 0.8;
   color: white;
 }
 
-/* Make arrows always visible on desktop but hidden on mobile (handled by responsive settings) */
+/* Make arrows visible on hover but sized properly for each screen */
 @media (min-width: 768px) {
   .slider-container .slick-prev,
   .slider-container .slick-next {
+    width: 35px;
+    height: 35px;
     opacity: 0.5;
+  }
+
+  .slider-container .slick-prev {
+    left: 0;
+  }
+  
+  .slider-container .slick-next {
+    right: 0;
+  }
+  
+  .slider-container .slick-prev:before,
+  .slider-container .slick-next:before {
+    font-size: 30px;
   }
   
   .slider-container:hover .slick-prev,
   .slider-container:hover .slick-next {
-    opacity: 1;
+    opacity: 0.9;
+  }
+}
+
+@media (min-width: 1024px) {
+  .slider-container .slick-prev {
+    left: 5px;
+  }
+  
+  .slider-container .slick-next {
+    right: 5px;
+  }
+
+  .slider-container .slick-prev:before,
+  .slider-container .slick-next:before {
+    font-size: 40px;
+  }
+}
+
+/* Improve dots responsiveness */
+.slider-container .slick-dots {
+  bottom: -25px;
+}
+
+.slider-container .slick-dots li {
+  margin: 0 2px;
+}
+
+.slider-container .slick-dots li button:before {
+  font-size: 8px;
+}
+
+@media (min-width: 640px) {
+  .slider-container .slick-dots {
+    bottom: -30px;
+  }
+  
+  .slider-container .slick-dots li button:before {
+    font-size: 10px;
   }
 }

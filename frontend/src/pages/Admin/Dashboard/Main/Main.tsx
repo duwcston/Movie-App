@@ -20,10 +20,10 @@ const Main = () => {
     );
 
     return (
-        <div>
-            <section className="flex justify-around">
-                <div className="ml-[16rem] pt-4">
-                    <div className="-translate-x-4 flex">
+        <div className="min-h-screen bg-gray-900">
+            <section className="flex flex-col md:flex-row">
+                <div className="w-full md:ml-[16rem] p-4 md:pt-6 lg:pt-8">
+                    <div className="flex flex-wrap gap-3 md:gap-4">
                         <SecondaryCard
                             pill="Users"
                             content={visitors?.length}
@@ -49,24 +49,26 @@ const Main = () => {
                             gradient="from-green-500 to-teal-400"
                         />
                     </div>
-                    <div className="flex justify-between w-[90%] text-white mt-10 font-bold">
-                        <h3 className="text-bold">Top Content</h3>
-                        <h3 className="text-bold">Comments</h3>
+                    <div className="flex justify-between w-full md:w-[90%] text-white mt-6 md:mt-8 lg:mt-10 font-bold px-2">
+                        <h3 className="text-base md:text-lg">Top Content</h3>
+                        <h3 className="text-base md:text-lg">Comments</h3>
                     </div>
 
-                    {topMovies?.map((movie: MovieProps) => (
-                        <VideoCard
-                            key={movie._id}
-                            image={movie.image}
-                            title={movie.name}
-                            rating={movie.rating}
-                            date={movie.year}
-                            commentsNumber={movie.numReviews}
-                        />
-                    ))}
+                    <div className="mt-4">
+                        {topMovies?.map((movie: MovieProps) => (
+                            <VideoCard
+                                key={movie._id}
+                                image={movie.image}
+                                title={movie.name}
+                                rating={movie.rating}
+                                date={movie.year}
+                                commentsNumber={movie.numReviews}
+                            />
+                        ))}
+                    </div>
                 </div>
 
-                <div>
+                <div className="w-full md:w-auto mt-6 md:mt-0 p-4 md:p-6">
                     <RealtimeCard />
                 </div>
             </section>

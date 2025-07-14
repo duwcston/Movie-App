@@ -184,66 +184,68 @@ const UpdateMovie = () => {
     };
 
     return (
-        <div className="container flex justify-center items-center min-h-screen mt-4 pt-4 overflow-hidden">
-            <form className="w-full max-w-md">
-                <h1 className="mb-2">Update Movie</h1>
-                <div className="mb-2">
-                    <label className="block text-white">Name</label>
+        <div className="container flex justify-center items-center min-h-screen mt-2 sm:mt-4 pt-2 sm:pt-4 overflow-hidden px-3 sm:px-0">
+            <form className="w-full max-w-xs sm:max-w-sm md:max-w-md">
+                <h1 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-4">Update Movie</h1>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">Name</label>
                     <input
                         type="text"
                         name="name"
                         value={movieData.name}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded text-sm sm:text-base"
                         required
                     />
                 </div>
-                <div className="mb-2">
-                    <label className="block text-white">TMDB ID</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">TMDB ID</label>
                     <input
                         type="number"
                         name="tmdbId"
                         value={movieData.tmdbId}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded text-sm sm:text-base"
                         required
                     />
                 </div>
-                <div className="mb-2">
-                    <label className="block text-white">Year</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">Year</label>
                     <input
                         type="number"
                         name="year"
                         value={movieData.year}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded text-sm sm:text-base"
                         required
                     />
                 </div>
-                <div className="mb-2">
-                    <label className="block text-white">Detail</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">Detail</label>
                     <textarea
                         value={movieData.detail}
                         name="detail"
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded bg-white text-black"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded bg-white text-black text-sm sm:text-base"
                         rows={4}
                         required
                     />
                 </div>
-                <div className="mb-2">
-                    <label className="block text-white">Director</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">Director</label>
                     <input
                         type="text"
                         name="director"
                         value={movieData.director}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded text-sm sm:text-base"
                         required
                     />
                 </div>
-                <div className="mb-2">
-                    <label className="block text-white">Cast (comma separated)</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">
+                        Cast (comma separated)
+                    </label>
                     <input
                         type="text"
                         name="cast"
@@ -254,15 +256,17 @@ const UpdateMovie = () => {
                                 cast: e.target.value.split(", "),
                             })
                         }
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded text-sm sm:text-base"
                         required
                     />
                 </div>
-                <div className="mb-2">
-                    <label className="block mb-2 text-sm font-medium text-white">Genre:</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-white">
+                        Genre:
+                    </label>
                     <select
                         name="genre"
-                        className="border p-1 w-full bg-white text-black rounded-md"
+                        className="border p-1 sm:p-1.5 w-full bg-white text-black rounded-md text-sm sm:text-base"
                         onChange={(e) => {
                             const selectedGenreId = e.target.value;
                             const selectedGenre = genres?.find(
@@ -290,15 +294,14 @@ const UpdateMovie = () => {
                         )}
                     </select>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3">
                     {Array.isArray(movieData.genre) &&
                         movieData.genre.map((genreId: string, index: number) => {
-                            console.log("Genre ID:", genreId);
                             const genre = genres?.find((g: GenreProps) => g._id === genreId);
                             return (
                                 <div
                                     key={`${genreId}-${index}`}
-                                    className="bg-transparent border text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 mb-2"
+                                    className="bg-transparent border text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2"
                                 >
                                     <span>{genre?.name || "Can't define"}</span>
                                     <button
@@ -311,7 +314,7 @@ const UpdateMovie = () => {
                                                 ),
                                             });
                                         }}
-                                        className="bg-transparent hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                                        className="bg-transparent hover:bg-red-600 text-white rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center text-xs"
                                     >
                                         X
                                     </button>
@@ -319,32 +322,32 @@ const UpdateMovie = () => {
                             );
                         })}
                 </div>
-                <div className="mb-2">
-                    <label className="block text-white">Image</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">Image</label>
                     <input
                         type="file"
                         name="image"
                         accept="image/*"
                         onChange={handleImageChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded text-xs sm:text-sm"
                     />
                 </div>
-                <div className="mb-2">
-                    <label className="block text-white">Cover Image</label>
+                <div className="mb-2 sm:mb-3">
+                    <label className="block text-white text-sm sm:text-base">Cover Image</label>
                     <input
                         type="file"
                         name="coverImage"
                         accept="image/*"
                         onChange={handleCoverImageChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1.5 sm:p-2 border border-gray-300 rounded text-xs sm:text-sm"
                     />
                 </div>
-                <div className="flex justify-between py-2">
+                <div className="flex flex-col sm:flex-row justify-between py-2 gap-2 sm:gap-0">
                     <button
                         type="button"
                         onClick={handleUpdateMovie}
                         disabled={isUpdatingMovie || isUploadingImage || isUploadingCoverImage}
-                        className="bg-blue-900 text-white px-4 py-2 rounded"
+                        className="bg-blue-900 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base"
                     >
                         {isUpdatingMovie || isUploadingImage || isUploadingCoverImage
                             ? "Updating..."
@@ -353,12 +356,12 @@ const UpdateMovie = () => {
                     <button
                         type="button"
                         onClick={handleDeleteMovie}
-                        className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer"
+                        className="bg-red-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded cursor-pointer text-sm sm:text-base"
                         disabled={isDeletingMovie}
                     >
                         {isDeletingMovie ? "Deleting..." : "Delete Movie"}
                     </button>
-                    {isLoadingMovie && <p>Loading movie data...</p>}
+                    {isLoadingMovie && <p className="text-xs sm:text-sm">Loading movie data...</p>}
                 </div>
             </form>
         </div>

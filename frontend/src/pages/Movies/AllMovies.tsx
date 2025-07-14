@@ -168,17 +168,17 @@ const AllMovies = () => {
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
             {/* Header with hero section */}
-            <div className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 py-5 px-4">
+            <div className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 py-4 sm:py-5 px-3 sm:px-4">
                 <div className="max-w-7xl mx-auto">
-                    <h1 className="text-3xl md:text-4xl font-bold text-center mb-6 text-white">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4 sm:mb-6 text-white">
                         Discover Movies
                     </h1>
 
                     {/* Search Bar with Icon */}
-                    <div className="relative max-w-3xl mx-auto mb-6">
+                    <div className="relative max-w-3xl mx-auto mb-4 sm:mb-6">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg
-                                className="w-5 h-5 text-gray-400"
+                                className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -194,7 +194,7 @@ const AllMovies = () => {
                         </div>
                         <input
                             type="text"
-                            className="block w-full pl-10 pr-4 py-3 border-2 border-indigo-500/50 rounded-xl bg-gray-800/80 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+                            className="block w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 border-2 border-indigo-500/50 rounded-lg sm:rounded-xl bg-gray-800/80 text-white text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                             placeholder="Search for movies..."
                             value={moviesFilter.searchTerm}
                             onChange={handleSearchChange}
@@ -205,7 +205,7 @@ const AllMovies = () => {
                                 onClick={() => clearFilter("searchTerm")}
                             >
                                 <svg
-                                    className="w-5 h-5"
+                                    className="w-4 h-4 sm:w-5 sm:h-5"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -226,13 +226,13 @@ const AllMovies = () => {
 
             {/* Filter section */}
             <div className="bg-gray-800/90 shadow-xl z-30 border-b border-gray-700">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="py-4 flex flex-wrap md:flex-nowrap items-center justify-between gap-3">
-                        <div className="flex gap-3 flex-wrap md:flex-nowrap">
+                <div className="max-w-7xl mx-auto px-3 sm:px-4">
+                    <div className="py-3 sm:py-4 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+                        <div className="flex gap-2 sm:gap-3 flex-wrap w-full sm:w-auto mb-2 sm:mb-0">
                             {/* Genre Filter */}
-                            <div className="relative inline-block">
+                            <div className="relative inline-block flex-1 sm:flex-none min-w-[120px]">
                                 <select
-                                    className="appearance-none pl-3 pr-10 py-2.5 rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="appearance-none w-full pl-2 sm:pl-3 pr-8 sm:pr-10 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     value={moviesFilter.selectedGenre}
                                     onChange={(e) => handleGenreClick(e.target.value)}
                                 >
@@ -245,7 +245,7 @@ const AllMovies = () => {
                                 </select>
                                 <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                     <svg
-                                        className="w-4 h-4 text-gray-400"
+                                        className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -262,9 +262,9 @@ const AllMovies = () => {
                             </div>
 
                             {/* Year Filter */}
-                            <div className="relative inline-block">
+                            <div className="relative inline-block flex-1 sm:flex-none min-w-[120px]">
                                 <select
-                                    className="appearance-none pl-3 pr-10 py-2.5 rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="appearance-none w-full pl-2 sm:pl-3 pr-8 sm:pr-10 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     value={moviesFilter.selectedYear}
                                     onChange={(e) => handleYearChange(e.target.value)}
                                 >
@@ -279,7 +279,7 @@ const AllMovies = () => {
                                 </select>
                                 <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                     <svg
-                                        className="w-4 h-4 text-gray-400"
+                                        className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -297,9 +297,9 @@ const AllMovies = () => {
                         </div>
 
                         {/* Sort Options */}
-                        <div className="relative inline-block">
+                        <div className="relative inline-block w-full sm:w-auto">
                             <select
-                                className="appearance-none pl-3 pr-10 py-2.5 rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="appearance-none w-full pl-2 sm:pl-3 pr-8 sm:pr-10 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg bg-gray-700 border border-gray-600 text-white cursor-pointer hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 value={moviesFilter.selectedSort}
                                 onChange={(e) => handleSortChange(e.target.value)}
                             >
@@ -310,7 +310,7 @@ const AllMovies = () => {
                             </select>
                             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                 <svg
-                                    className="w-4 h-4 text-gray-400"
+                                    className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -331,9 +331,9 @@ const AllMovies = () => {
                     {(moviesFilter.selectedGenre ||
                         moviesFilter.selectedYear ||
                         moviesFilter.selectedSort) && (
-                        <div className="py-3 flex flex-wrap gap-2 border-t border-gray-700">
+                        <div className="py-2 sm:py-3 flex flex-wrap gap-1 sm:gap-2 border-t border-gray-700">
                             {moviesFilter.selectedGenre && genres && (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-200">
+                                <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-indigo-900/70 text-indigo-200">
                                     Genre:{" "}
                                     {
                                         genres.find(
@@ -342,10 +342,10 @@ const AllMovies = () => {
                                     }
                                     <button
                                         onClick={() => clearFilter("selectedGenre")}
-                                        className="ml-2 text-indigo-300 hover:text-white"
+                                        className="ml-1 sm:ml-2 text-indigo-300 hover:text-white"
                                     >
                                         <svg
-                                            className="w-4 h-4"
+                                            className="w-3 h-3 sm:w-4 sm:h-4"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -362,14 +362,14 @@ const AllMovies = () => {
                                 </span>
                             )}
                             {moviesFilter.selectedYear && (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-900/70 text-purple-200">
+                                <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-purple-900/70 text-purple-200">
                                     Year: {moviesFilter.selectedYear}
                                     <button
                                         onClick={() => clearFilter("selectedYear")}
-                                        className="ml-2 text-purple-300 hover:text-white"
+                                        className="ml-1 sm:ml-2 text-purple-300 hover:text-white"
                                     >
                                         <svg
-                                            className="w-4 h-4"
+                                            className="w-3 h-3 sm:w-4 sm:h-4"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -386,7 +386,7 @@ const AllMovies = () => {
                                 </span>
                             )}
                             {moviesFilter.selectedSort && (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-900/70 text-blue-200">
+                                <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-900/70 text-blue-200">
                                     {moviesFilter.selectedSort === "new"
                                         ? "New Releases"
                                         : moviesFilter.selectedSort === "top"
@@ -396,10 +396,10 @@ const AllMovies = () => {
                                         : ""}
                                     <button
                                         onClick={() => clearFilter("selectedSort")}
-                                        className="ml-2 text-blue-300 hover:text-white"
+                                        className="ml-1 sm:ml-2 text-blue-300 hover:text-white"
                                     >
                                         <svg
-                                            className="w-4 h-4"
+                                            className="w-3 h-3 sm:w-4 sm:h-4"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -421,24 +421,24 @@ const AllMovies = () => {
             </div>
 
             {/* Movie Grid */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-8">
                 {isLoading || genresLoading ? (
-                    <div className="flex justify-center items-center h-64">
+                    <div className="flex justify-center items-center h-40 sm:h-64">
                         <Loader />
                     </div>
                 ) : currentMovies && currentMovies.length > 0 ? (
                     <>
-                        <div className="mb-6">
-                            <h2 className="text-xl font-semibold text-gray-200">
+                        <div className="mb-4 sm:mb-6">
+                            <h2 className="text-base sm:text-xl font-semibold text-gray-200">
                                 {totalMovies} {totalMovies === 1 ? "Movie" : "Movies"} Found
                                 {totalPages > 1 && (
-                                    <span className="text-gray-400 ml-2">
+                                    <span className="text-gray-400 ml-2 text-sm sm:text-base">
                                         (Page {currentPage} of {totalPages})
                                     </span>
                                 )}
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 animate-fadeIn">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5 animate-fadeIn">
                             {currentMovies.map((movie: MovieProps) => (
                                 <MovieCard key={movie._id} movie={movie} />
                             ))}
@@ -454,9 +454,9 @@ const AllMovies = () => {
                         />
                     </>
                 ) : (
-                    <div className="bg-gray-800/50 rounded-xl text-center py-16 px-4 shadow-lg border border-gray-700/50">
+                    <div className="bg-gray-800/50 rounded-lg sm:rounded-xl text-center py-10 sm:py-16 px-3 sm:px-4 shadow-lg border border-gray-700/50">
                         <svg
-                            className="w-16 h-16 mx-auto text-gray-500 mb-4"
+                            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-500 mb-3 sm:mb-4"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -469,13 +469,15 @@ const AllMovies = () => {
                                 d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
                             ></path>
                         </svg>
-                        <h3 className="text-2xl font-semibold text-gray-300">No movies found</h3>
-                        <p className="mt-2 text-gray-400 max-w-md mx-auto">
+                        <h3 className="text-xl sm:text-2xl font-semibold text-gray-300">
+                            No movies found
+                        </h3>
+                        <p className="mt-2 text-sm sm:text-base text-gray-400 max-w-md mx-auto">
                             We couldn't find any movies matching your criteria. Try adjusting your
                             filters or search terms.
                         </p>
                         <button
-                            className="mt-6 inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-300"
+                            className="mt-4 sm:mt-6 inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-300"
                             onClick={resetAllFilters}
                         >
                             <svg

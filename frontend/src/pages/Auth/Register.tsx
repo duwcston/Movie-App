@@ -6,7 +6,7 @@ import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { RootState } from "../../redux/store";
-import registerImage from "../../assets/register.png";
+// import registerImage from "../../assets/register.png";
 
 const Register = () => {
     const [username, setUsername] = useState("");
@@ -52,8 +52,8 @@ const Register = () => {
 
     return (
         <div>
-            <section className="lg:pl-[10rem] pl-8 flex flex-col lg:flex-row items-center min-h-screen">
-                <div className="w-full lg:w-1/2 lg:mr-[4rem] flex flex-col justify-center items-center">
+            <section className="lg:pl-10 pl-8 pt-8 flex flex-col lg:flex-row items-center justify-center">
+                <div className="w-full lg:w-1/2 lg:mr-[4rem] flex flex-col justify-center items-center max-w-xs sm:max-w-sm md:max-w-md">
                     <div className="w-full max-w-[40rem]">
                         <h1 className="mb-4">Register</h1>
 
@@ -153,13 +153,13 @@ const Register = () => {
                 </div>
 
                 {/* Image container - hidden on mobile, half screen on larger devices */}
-                <div className="hidden lg:flex lg:w-1/2 h-screen items-center justify-center">
+                {/* <div className="hidden lg:flex lg:w-1/2 h-screen items-center justify-center">
                     <img
                         src={registerImage}
                         alt="Register illustration"
                         className="max-w-full max-h-full object-contain"
                     />
-                </div>
+                </div> */}
             </section>
         </div>
     );

@@ -81,17 +81,19 @@ const GenreList = () => {
     return (
         <>
             <Sidebar />
-            <div className="ml-[10rem] flex flex-col items-center justify-center md:flex-row pt-4">
-                <div className="md:w-3/4 p-3">
-                    <h1 className="h-12">Manage Genres</h1>
+            <div className="ml-0 md:ml-[10rem] flex flex-col items-center justify-center pt-4 px-3 sm:px-4">
+                <div className="w-full md:w-3/4 p-2 sm:p-3">
+                    <h1 className="h-8 sm:h-12 text-xl sm:text-2xl font-bold mb-2 sm:mb-4">
+                        Manage Genres
+                    </h1>
                     <GenreForm value={name} setValue={setName} handleSubmit={handleCreateGenre} />
                     <br />
-                    <div className="flex flex-wrap">
+                    <div className="flex flex-wrap justify-center sm:justify-start">
                         {genres &&
                             genres.map((genre: GenreProps) => (
                                 <div key={genre._id}>
                                     <button
-                                        className="bg-gray-200 text-black py-2 px-4 rounded-lg m-2 hover:bg-gray-300 transition-colors"
+                                        className="bg-gray-200 text-black py-1 sm:py-2 px-3 sm:px-4 rounded-lg m-1 sm:m-2 hover:bg-gray-300 transition-colors text-xs sm:text-sm md:text-base"
                                         onClick={() => {
                                             setModalVisible(true);
                                             setSelectedGenre(genre._id);
