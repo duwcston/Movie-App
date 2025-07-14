@@ -110,6 +110,19 @@ const Sidebar = () => {
                         >
                             <span className="text-lg font-medium">All Comments</span>
                         </NavLink>
+                        <NavLink
+                            to="/admin/movies/requests"
+                            className={({ isActive }) =>
+                                `flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:shadow-md ${
+                                    isActive
+                                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                                        : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                                }`
+                            }
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <span className="text-lg font-medium">All Requests</span>
+                        </NavLink>
                     </nav>
                 </aside>
             </div>

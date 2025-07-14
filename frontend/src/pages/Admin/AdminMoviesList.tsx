@@ -9,7 +9,7 @@ const AdminMoviesList = () => {
     return (
         <div className="flex">
             <Sidebar />
-            <div className="flex-1 p-6 lg:ml-64 pt-16 lg:pt-12">
+            <div className="flex-1 p-6 lg:ml-64 lg:pt-2">
                 <div className="p-3">
                     <div className="text-xl font-bold text-white mb-6">
                         Movies List ({movies?.length})

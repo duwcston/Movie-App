@@ -15,6 +15,7 @@ interface ReviewProps {
 export interface MovieProps {
     _id: string;
     name: string;
+    tmdbId: number;
     detail: string;
     year: string;
     genre: GenreProps[];

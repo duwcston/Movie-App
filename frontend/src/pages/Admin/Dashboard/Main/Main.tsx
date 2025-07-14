@@ -4,12 +4,14 @@ import RealtimeCard from "./RealtimeCard";
 
 import { useGetTopMoviesQuery, useGetAllMoviesQuery } from "../../../../redux/api/movies";
 import { useGetUsersQuery } from "../../../../redux/api/users";
+import { useGetAllRequestsQuery } from "../../../../redux/api/requests";
 import { MovieProps } from "../../../../types/movieTypes";
 
 const Main = () => {
     const { data: topMovies } = useGetTopMoviesQuery({});
     const { data: visitors } = useGetUsersQuery({});
     const { data: allMovies } = useGetAllMoviesQuery({});
+    const { data: allRequests } = useGetAllRequestsQuery({});
 
     const totalCommentsLength = allMovies?.map((movie: MovieProps) => movie.numReviews);
     const sumOfCommentsLength = totalCommentsLength?.reduce(
@@ -20,7 +22,7 @@ const Main = () => {
     return (
         <div>
             <section className="flex justify-around">
-                <div className="ml-[16rem] mt-10">
+                <div className="ml-[16rem] pt-4">
                     <div className="-translate-x-4 flex">
                         <SecondaryCard
                             pill="Users"
@@ -39,6 +41,12 @@ const Main = () => {
                             content={allMovies?.length}
                             info=""
                             gradient="from-orange-500 to-red-400"
+                        />
+                        <SecondaryCard
+                            pill="Requests"
+                            content={allRequests?.length}
+                            info=""
+                            gradient="from-green-500 to-teal-400"
                         />
                     </div>
                     <div className="flex justify-between w-[90%] text-white mt-10 font-bold">

@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar/Sidebar";
 
 const AdminDashBoard = () => {
     return (
-        <div className="pt-8">
+        <div>
             <Sidebar />
             <Main />
         </div>

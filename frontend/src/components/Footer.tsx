@@ -5,7 +5,7 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-gray-900 text-white py-4 px-6">
+        <footer className="bg-gray-900 text-white py-4 px-6 border-t border-gray-800">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
@@ -22,6 +22,14 @@ const Footer = () => {
                                     className="hover:text-red-500 transition duration-300"
                                 >
                                     Movies
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/request"
+                                    className="hover:text-red-500 transition duration-300"
+                                >
+                                    Movie Request
                                 </Link>
                             </li>
                             {/* <li>
@@ -62,7 +70,7 @@ const Footer = () => {
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                                     />
                                 </svg>
-                                <span>support@movieapp.com</span>
+                                <span>dtoan.nguyen03@gmail.com</span>
                             </li>
                             <li className="flex items-center">
                                 <svg
@@ -147,7 +155,10 @@ const Footer = () => {
                 </div>
 
                 <div className="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
-                    <p>© {currentYear} Movie App. All rights reserved.</p>
+                    <p>
+                        © {currentYear} Movie App. All rights reserved. Created for educational
+                        purposes!
+                    </p>
                     {/* <div className="mt-4 md:mt-0">
                         <ul className="flex space-x-4">
                             <li>

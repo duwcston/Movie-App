@@ -22,7 +22,8 @@ const AllComments = () => {
     return (
         <div>
             <Sidebar />
-            <div className="text-center text-2xl font-bold mt-4 pt-12"></div>
+            <div className="text-center text-2xl font-bold">All Comments</div>
+            <div className="text-center text-2xl font-bold"></div>
             {movie?.map((movie: MovieProps) => (
                 <section key={movie._id} className="flex flex-col justify-center items-center">
                     {movie?.reviews.map((review) => (

@@ -24,6 +24,9 @@ import PrivateRoute from "./pages/Auth/PrivateRoute.tsx";
 import Profile from "./pages/User/Profile.tsx";
 import AllMovies from "./pages/Movies/AllMovies.tsx";
 import MovieDetails from "./pages/Movies/MovieDetails.tsx";
+import MovieRequest from "./pages/Movies/MovieRequest.tsx";
+import AllRequest from "./pages/Admin/AllRequest.tsx";
+import MoviePlayer from "./pages/Movies/MoviePlayer.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -33,8 +36,10 @@ const router = createBrowserRouter(
             <Route path="/register" element={<Register />} />
             <Route path="/movies" element={<AllMovies />} />
             <Route path="/movies/:id" element={<MovieDetails />} />
+            <Route path="/movies/player/:id" element={<MoviePlayer />} />
             <Route path="" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/request" element={<MovieRequest />} />
             </Route>
 
             <Route path="" element={<AdminRoute />}>
@@ -44,6 +49,7 @@ const router = createBrowserRouter(
                 <Route path="/admin/movies/update/:id" element={<UpdateMovie />} />
                 <Route path="/admin/movies/comments" element={<AllComments />} />
                 <Route path="/admin/movies/dashboard" element={<AdminDashBoard />} />
+                <Route path="/admin/movies/requests" element={<AllRequest />} />
             </Route>
         </Route>
     )

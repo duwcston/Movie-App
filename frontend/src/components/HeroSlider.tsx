@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { MovieProps } from "../types/movieTypes";
+import { Link } from "react-router-dom";
 
 interface HeroSliderProps {
     data: MovieProps[];
@@ -39,7 +40,10 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
     }
 
     const currentMovie = data[currentSlide];
-    console.log("Current Movie:", currentMovie.reviews.forEach(review => console.log(review.rating)));
+
+    const handleWatchNow = () => {
+        window.location.href = `/movies/player/${currentMovie._id}`;
+    };
 
     return (
         <div className="relative h-80 sm:h-96 md:h-[450px] lg:h-[550px] xl:h-[650px] rounded-lg overflow-hidden">
@@ -82,9 +86,14 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
                         </span> */}
                     </div>
 
-                    <button className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl border border-blue-500">
-                        Watch Now
-                    </button>
+                    <Link to={`/movies/player/${currentMovie?._id}`}>
+                        <button
+                            className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+                            onClick={handleWatchNow}
+                        >
+                            Watch Now
+                        </button>
+                    </Link>
                 </div>
             </div>
 

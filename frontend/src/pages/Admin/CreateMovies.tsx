@@ -15,6 +15,7 @@ const CreateMovies = () => {
 
     const [movieData, setMovieData] = useState({
         name: "",
+        tmdbId: 0,
         year: 2000,
         detail: "",
         genre: [] as string[],
@@ -87,6 +88,7 @@ const CreateMovies = () => {
         try {
             if (
                 !movieData.name ||
+                !movieData.tmdbId ||
                 !movieData.year ||
                 !movieData.detail ||
                 !movieData.cast ||
@@ -124,6 +126,7 @@ const CreateMovies = () => {
                 refetch();
                 setMovieData({
                     name: "",
+                    tmdbId: 0,
                     year: 0,
                     detail: "",
                     genre: [],
@@ -145,7 +148,7 @@ const CreateMovies = () => {
     return (
         <>
             <Sidebar />
-            <div className="container flex justify-center items-center min-h-screen mt-4 pt-12 overflow-hidden">
+            <div className="container flex justify-center min-h-screen overflow-hidden pt-4">
                 <form onSubmit={handleCreateMovie} className="w-full max-w-md">
                     <h1 className="mb-4">Create Movie</h1>
                     <div className="mb-4">
@@ -157,6 +160,17 @@ const CreateMovies = () => {
                                 value={movieData.name}
                                 onChange={handleChange}
                                 placeholder="Enter movie name"
+                                className="border p-2 w-full"
+                            />
+                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">
+                            TMDB ID:
+                            <input
+                                type="number"
+                                name="tmdbId"
+                                value={movieData.tmdbId}
+                                onChange={handleChange}
+                                placeholder="Enter TMDB ID"
                                 className="border p-2 w-full"
                             />
                         </label>

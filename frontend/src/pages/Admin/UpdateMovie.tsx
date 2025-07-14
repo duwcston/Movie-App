@@ -17,6 +17,7 @@ const UpdateMovie = () => {
 
     const [movieData, setMovieData] = useState({
         name: "",
+        tmdbId: 0,
         year: 0,
         detail: "",
         genre: [] as string[],
@@ -44,6 +45,7 @@ const UpdateMovie = () => {
         if (initialMovieData) {
             setMovieData({
                 name: initialMovieData.name,
+                tmdbId: initialMovieData.tmdbId,
                 year: initialMovieData.year,
                 detail: initialMovieData.detail,
                 genre: Array.isArray(initialMovieData.genre)
@@ -106,6 +108,7 @@ const UpdateMovie = () => {
         try {
             if (
                 !movieData.name ||
+                !movieData.tmdbId ||
                 !movieData.year ||
                 !movieData.detail ||
                 !movieData.genre ||
@@ -181,7 +184,7 @@ const UpdateMovie = () => {
     };
 
     return (
-        <div className="container flex justify-center items-center min-h-screen mt-4 pt-12 overflow-hidden">
+        <div className="container flex justify-center items-center min-h-screen mt-4 pt-4 overflow-hidden">
             <form className="w-full max-w-md">
                 <h1 className="mb-2">Update Movie</h1>
                 <div className="mb-2">
@@ -190,6 +193,17 @@ const UpdateMovie = () => {
                         type="text"
                         name="name"
                         value={movieData.name}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                    />
+                </div>
+                <div className="mb-2">
+                    <label className="block text-white">TMDB ID</label>
+                    <input
+                        type="number"
+                        name="tmdbId"
+                        value={movieData.tmdbId}
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded"
                         required

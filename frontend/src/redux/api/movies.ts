@@ -53,7 +53,6 @@ export const moviesApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-
         uploadMovieImage: builder.mutation({
             query: (formData) => ({
                 url: `${UPLOADS_URL}`,
@@ -61,7 +60,6 @@ export const moviesApiSlice = apiSlice.injectEndpoints({
                 body: formData,
             }),
         }),
-
         addMovieReview: builder.mutation({
             query: ({ id, rating, comment }) => ({
                 url: `${MOVIES_URL}/${id}/review`,

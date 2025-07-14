@@ -81,7 +81,7 @@ const GenreList = () => {
     return (
         <>
             <Sidebar />
-            <div className="ml-[10rem] flex flex-col items-center justify-center md:flex-row pt-12">
+            <div className="ml-[10rem] flex flex-col items-center justify-center md:flex-row pt-4">
                 <div className="md:w-3/4 p-3">
                     <h1 className="h-12">Manage Genres</h1>
                     <GenreForm value={name} setValue={setName} handleSubmit={handleCreateGenre} />

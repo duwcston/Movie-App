@@ -139,7 +139,7 @@ npm run frontend   # Starts Vite dev server on port 5173
 ### **Phase 2: Core Features** 🔄
 - [x] Movie data model and API integration
 - [x] Search functionality implementation
-- [ ] Video streaming capabilities
+- [x] Video streaming capabilities
 - [x] User interface components
 - [x] State management with Redux
 

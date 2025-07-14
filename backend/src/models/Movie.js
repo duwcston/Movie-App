@@ -31,6 +31,10 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    tmdbId: {
+        type: Number,
+        required: true,
+    },
     image: {
         type: String,
     },
