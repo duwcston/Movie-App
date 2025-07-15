@@ -2,6 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import path from 'path';
+import cors from 'cors';
 
 // Files
 import connectDB from './config/db';
@@ -19,7 +20,10 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(express.json());
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://movie-app-frontend-wzq8.onrender.com'], // Add your deployed frontend URL
+  credentials: true
+}));app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
