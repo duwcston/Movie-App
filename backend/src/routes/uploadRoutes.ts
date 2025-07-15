@@ -1,5 +1,5 @@
 import path from "path";
-import express from "express";
+import express, { Request } from "express";
 import multer from "multer";
 
 const router = express.Router();
@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const filetypes = /jpe?g|png|webp/;
   const mimetypes = /image\/jpe?g|image\/png||image\/webp/;
 
@@ -32,7 +32,7 @@ const fileFilter = (req, file, cb) => {
   if (filetypes.test(extname) && mimetypes.test(mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Images only"), false);
+    cb(null, false);
   }
 };
 

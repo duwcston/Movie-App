@@ -1,6 +1,7 @@
+import { Request, Response } from "express";
 import Movie from "../models/Movie.js";
 
-const createMovie = async (req, res) => {
+const createMovie = async (req: Request, res: Response) => {
     try {
         const newMovie = new Movie(req.body);
         const savedMovie = await newMovie.save();
@@ -11,8 +12,7 @@ const createMovie = async (req, res) => {
     }
 };
 
-
-const getAllMovies = async (req, res) => {
+const getAllMovies = async (req: Request, res: Response) => {
     try {
         const movies = await Movie.find().populate('genre');
         movies.forEach(movie => {
@@ -24,11 +24,11 @@ const getAllMovies = async (req, res) => {
     }
 };
 
-const getMovieById = async (req, res) => {
+const getMovieById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const movie = await Movie.findById(id).populate('genre');
-        movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
+        movie!.rating = movie!.reviews.reduce((acc, item) => item.rating + acc, 0) / movie!.reviews.length;
         if (!movie) {
             return res.status(404).json({ message: "Movie not found" });
         }
@@ -38,7 +38,7 @@ const getMovieById = async (req, res) => {
     }
 };
 
-const updateMovie = async (req, res) => {
+const updateMovie = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
@@ -51,7 +51,7 @@ const updateMovie = async (req, res) => {
     }
 };
 
-const deleteMovie = async (req, res) => {
+const deleteMovie = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const deletedMovie = await Movie.findByIdAndDelete(id);
@@ -64,7 +64,7 @@ const deleteMovie = async (req, res) => {
     }
 };
 
-const reviewMovie = async (req, res) => {
+const reviewMovie = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { rating, comment } = req.body;
@@ -99,7 +99,7 @@ const reviewMovie = async (req, res) => {
     }
 };
 
-const deleteComment = async (req, res) => {
+const deleteComment = async (req: Request, res: Response) => {
     try {
         const { movieId, commentId } = req.body;
 
@@ -124,7 +124,7 @@ const deleteComment = async (req, res) => {
     }
 };
 
-const getNewMovies = async (req, res) => {
+const getNewMovies = async (req: Request, res: Response) => {
     try {
         const newMovies = await Movie.find().populate('genre').sort({ createdAt: -1 }).limit(10);
         newMovies.forEach(movie => {
@@ -136,7 +136,7 @@ const getNewMovies = async (req, res) => {
     }
 };
 
-const getTopMovies = async (req, res) => {
+const getTopMovies = async (req: Request, res: Response) => {
     try {
         const topMovies = await Movie.find().populate('genre').sort({ rating: -1 }).limit(10);
         topMovies.forEach(movie => {
@@ -148,7 +148,7 @@ const getTopMovies = async (req, res) => {
     }
 };
 
-const getRandomMovies = async (req, res) => {
+const getRandomMovies = async (req: Request, res: Response) => {
     try {
         const randomMovies = await Movie.aggregate([
             { $sample: { size: 10 } },
@@ -162,10 +162,10 @@ const getRandomMovies = async (req, res) => {
             }
         ]);
         randomMovies.forEach(movie => {
-            movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
+            movie.rating = movie.reviews.reduce((acc: any, item: { rating: any; }) => item.rating + acc, 0) / movie.reviews.length;
         });
         res.json(randomMovies);
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
 };

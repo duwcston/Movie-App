@@ -4,13 +4,13 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 // Files
-import connectDB from './config/db.js';
-import userRoutes from './src/routes/userRoutes.js';
-import genreRoutes from './src/routes/genreRoutes.js';
-import movieRoutes from './src/routes/movieRoutes.js';
-import uploadRoutes from './src/routes/uploadRoutes.js';
-import swaggerDocs from './src/docs/swagger.js';
-import requestRoutes from './src/routes/requestRoutes.js';
+import connectDB from './config/db';
+import userRoutes from './routes/userRoutes';
+import genreRoutes from './routes/genreRoutes';
+import movieRoutes from './routes/movieRoutes';
+import uploadRoutes from './routes/uploadRoutes';
+import swaggerDocs from './docs/swagger';
+import movieRequestRoutes from './routes/movieRequestRoutes';
 
 // Configuration
 dotenv.config();
@@ -30,7 +30,7 @@ app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/genre', genreRoutes)
 app.use('/api/v1/movies', movieRoutes);
 app.use('/api/v1/uploads', uploadRoutes);
-app.use('/api/v1/requests', requestRoutes);;
+app.use('/api/v1/requests', movieRequestRoutes);;
 
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
