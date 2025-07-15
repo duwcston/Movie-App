@@ -188,9 +188,8 @@ npm run build    # Build production frontend
 -   [x] API documentation with Swagger
 -   [x] Rating and review system
 -   [ ] User watchlist and favorites
--   [ ] Data crawling implementation
--   [ ] Content recommendation engine
 -   [ ] Performance optimization and caching
+-   [ ] Configure Docker containers
 -   [ ] Testing and deployment
 
 ## 🎓 Learning Resources & References
