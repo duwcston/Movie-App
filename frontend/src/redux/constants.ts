@@ -1,4 +1,6 @@
-export const BASE_URL = ""
+export const BASE_URL = import.meta.env.PROD 
+  ? "https://movie-app-backend-ufe6.onrender.com" 
+  : ""
 export const USERS_URL = "/api/v1/users"
 export const GENRE_URL = "/api/v1/genre"
 export const MOVIES_URL = "/api/v1/movies"

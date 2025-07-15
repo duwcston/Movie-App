@@ -10,8 +10,8 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      "/api/": "https://movie-app-backend-ufe6.onrender.com",
-      "/uploads/": "https://movie-app-backend-ufe6.onrender.com",
+      "/api/": "http://localhost:3000",
+      "/uploads/": "http://localhost:3000",
     }
   }
 })
