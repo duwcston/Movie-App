@@ -2,8 +2,9 @@ import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import asyncHandler from '../middlewares/asyncHandler.js';
 import createToken from '../utils/createToken.js';
+import { Request, Response } from 'express';
 
-const createUser = asyncHandler(async (req, res) => {
+const createUser = asyncHandler(async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
@@ -43,7 +44,7 @@ const createUser = asyncHandler(async (req, res) => {
     }
 });
 
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const userExists = await User.findOne({ email })
@@ -68,7 +69,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 })
 
-const logoutCurrentUser = asyncHandler(async (req, res) => {
+const logoutCurrentUser = asyncHandler(async (req: Request, res: Response) => {
     res.cookie('jwt', '', {
         httpOnly: true,
         expires: new Date(0)
@@ -77,12 +78,12 @@ const logoutCurrentUser = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Logged out successfully" })
 })
 
-const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
     const users = await User.find({})
     res.json(users)
 })
 
-const getCurrentUserProfile = asyncHandler(async (req, res) => {
+const getCurrentUserProfile = asyncHandler(async (req: Request, res: Response) => {
     const user = await User.findById(req.user._id)
 
     if (user) {
@@ -97,7 +98,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
     }
 })
 
-const updateCurrentUserProfile = asyncHandler(async (req, res) => {
+const updateCurrentUserProfile = asyncHandler(async (req: Request, res: Response) => {
     const user = await User.findById(req.user._id)
 
     if (user) {

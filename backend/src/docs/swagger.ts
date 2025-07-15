@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+import { Express } from 'express-serve-static-core';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
@@ -26,14 +28,14 @@ const options = {
             }
         }
     },
-    apis: ['./backend/src/routes/*.js'], // Path to the API docs relative from project root
+    apis: ['./src/routes/*.ts'], // Path to the API docs relative from project root
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
-function swaggerDocs(app) {
+function swaggerDocs(app: Express) {
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    app.get('/docs.json', (req, res) => {
+    app.get('/docs.json', (req: Request, res: Response) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(swaggerSpec);
     });

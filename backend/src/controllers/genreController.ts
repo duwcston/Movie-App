@@ -1,7 +1,8 @@
+import { Request, Response } from "express";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Genre from "../models/Genre.js";
 
-const createGenre = asyncHandler(async (req, res) => {
+const createGenre = asyncHandler(async (req: Request, res: Response) => {
     try {
         const { name } = req.body;
 
@@ -29,7 +30,7 @@ const createGenre = asyncHandler(async (req, res) => {
     }
 })
 
-const updateGenre = asyncHandler(async (req, res) => {
+const updateGenre = asyncHandler(async (req: Request, res: Response) => {
     try {
         const { name } = req.body;
         const { id } = req.params;
@@ -55,7 +56,7 @@ const updateGenre = asyncHandler(async (req, res) => {
     }
 })
 
-const deleteGenre = asyncHandler(async (req, res) => {
+const deleteGenre = asyncHandler(async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
@@ -71,7 +72,7 @@ const deleteGenre = asyncHandler(async (req, res) => {
     }
 })
 
-const listGenres = asyncHandler(async (req, res) => {
+const listGenres = asyncHandler(async (req: Request, res: Response) => {
     try {
         const allGenres = await Genre.find({}).sort({ name: 1 });
         res.status(200).json(allGenres);
@@ -81,7 +82,7 @@ const listGenres = asyncHandler(async (req, res) => {
     }
 })
 
-const readGenre = asyncHandler(async (req, res) => {
+const readGenre = asyncHandler(async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 

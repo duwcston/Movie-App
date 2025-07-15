@@ -7,7 +7,7 @@ import {
     createRequest,
     getAllRequests,
     deleteRequest
-} from '../controllers/requestController.js';
+} from '../controllers/movieRequestController.js';
 
 // Middleware
 import { authenticated, authorizeAdmin } from '../middlewares/authMiddleware.js';
