@@ -7,7 +7,7 @@ const MovieCard = ({ movie }: { movie: MovieProps }) => {
             <Link to={`/movies/${movie._id}`} className="block h-full">
                 <div className="aspect-[2/3] overflow-hidden">
                     <img
-                        src={movie.image}
+                        src={movie.imageUrl}
                         alt={movie.name}
                         className="w-full h-full object-cover transition-all duration-500 transform group-hover:scale-105 sm:group-hover:scale-110"
                         loading="lazy"

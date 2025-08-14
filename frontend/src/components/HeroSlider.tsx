@@ -51,7 +51,7 @@ const HeroSlider = ({ data }: HeroSliderProps) => {
         <div className="relative h-64 sm:h-80 md:h-96 lg:h-[450px] xl:h-[550px] 2xl:h-[650px] rounded-lg overflow-hidden">
             <div className="absolute inset-0">
                 <img
-                    src={currentMovie.coverImage}
+                    src={currentMovie.coverImageUrl}
                     alt={currentMovie.name}
                     className="w-full h-full object-cover object-center"
                 />

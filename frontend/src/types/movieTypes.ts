@@ -20,8 +20,8 @@ export interface MovieProps {
     year: string;
     genre: GenreProps[];
     rating: number;
-    image: string;
-    coverImage: string;
+    imageUrl: string;
+    coverImageUrl: string;
     reviews: ReviewProps[];
     numReviews: number;
     createdAt: string;

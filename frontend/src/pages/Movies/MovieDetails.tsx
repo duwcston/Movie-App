@@ -65,7 +65,7 @@ const MovieDetails = () => {
                 <div className="flex flex-col md:flex-row gap-8">
                     <div className="md:w-1/3 lg:w-1/4">
                         <img
-                            src={movie?.image}
+                            src={movie?.imageUrl}
                             alt={movie?.name}
                             className="w-full rounded-lg shadow-2xl object-cover"
                         />

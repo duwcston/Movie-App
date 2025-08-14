@@ -22,7 +22,7 @@ const AdminMoviesList = () => {
                             >
                                 <div className="relative">
                                     <img
-                                        src={movie.image}
+                                        src={movie.imageUrl}
                                         alt={movie.name}
                                         className="w-full h-40 sm:h-56 md:h-64 lg:h-72 object-cover"
                                     />
