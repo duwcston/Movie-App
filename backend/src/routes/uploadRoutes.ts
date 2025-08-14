@@ -9,13 +9,6 @@ dotenv.config();
 
 const router = express.Router();
 
-/**
- * @swagger
- * tags:
- *   name: Uploads
- *   description: File upload endpoints
- */
-
 // Configure AWS S3 Client
 const s3Client = new S3Client({
   region: process.env.AWS_REGION!,

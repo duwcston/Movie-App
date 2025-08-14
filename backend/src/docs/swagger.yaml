@@ -1,0 +1,1055 @@
+openapi: 3.0.0
+info:
+    title: Movie Application REST API
+    version: 1.0.0
+    description: API documentation for the Movie Application
+    license:
+        name: MIT
+        url: https://opensource.org/licenses/MIT
+
+servers:
+    - url: http://localhost:3000/api/v1
+      description: Development server
+    # - url: https://api.movieapp.com/api/v1
+    #   description: Production server
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+            description: Enter JWT token
+
+    schemas:
+        User:
+            type: object
+            required:
+                - username
+                - email
+                - password
+            properties:
+                _id:
+                    type: string
+                    description: The auto-generated id of the user
+                username:
+                    type: string
+                    description: The user's username
+                    minLength: 3
+                    maxLength: 50
+                email:
+                    type: string
+                    format: email
+                    description: The user's email
+                password:
+                    type: string
+                    description: The user's password
+                    minLength: 6
+                isAdmin:
+                    type: boolean
+                    description: Whether the user is an admin
+                    default: false
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        UserInput:
+            type: object
+            required:
+                - username
+                - email
+                - password
+            properties:
+                username:
+                    type: string
+                    minLength: 3
+                    maxLength: 50
+                email:
+                    type: string
+                    format: email
+                password:
+                    type: string
+                    minLength: 6
+
+        LoginInput:
+            type: object
+            required:
+                - email
+                - password
+            properties:
+                email:
+                    type: string
+                    format: email
+                password:
+                    type: string
+
+        Genre:
+            type: object
+            required:
+                - name
+            properties:
+                _id:
+                    type: string
+                    description: The auto-generated id of the genre
+                name:
+                    type: string
+                    description: The genre's name
+                    minLength: 2
+                    maxLength: 50
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        GenreInput:
+            type: object
+            required:
+                - name
+            properties:
+                name:
+                    type: string
+                    minLength: 2
+                    maxLength: 50
+
+        Review:
+            type: object
+            required:
+                - user
+                - rating
+                - comment
+                - name
+            properties:
+                _id:
+                    type: string
+                user:
+                    type: string
+                    description: User ID who wrote the review
+                rating:
+                    type: number
+                    minimum: 1
+                    maximum: 5
+                    description: Rating from 1 to 5 stars
+                comment:
+                    type: string
+                    description: Review comment
+                    minLength: 10
+                    maxLength: 1000
+                name:
+                    type: string
+                    description: Name of the reviewer
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        ReviewInput:
+            type: object
+            required:
+                - rating
+                - comment
+            properties:
+                rating:
+                    type: number
+                    minimum: 1
+                    maximum: 5
+                comment:
+                    type: string
+                    minLength: 10
+                    maxLength: 1000
+
+        Movie:
+            type: object
+            required:
+                - name
+                - tmdbId
+                - year
+                - detail
+                - genre
+            properties:
+                _id:
+                    type: string
+                    description: The auto-generated id of the movie
+                name:
+                    type: string
+                    description: Movie title
+                tmdbId:
+                    type: number
+                    description: TMDB (The Movie Database) ID
+                image:
+                    type: string
+                    description: Movie poster image key/URL
+                coverImage:
+                    type: string
+                    description: Movie cover/backdrop image key/URL
+                year:
+                    type: number
+                    minimum: 1900
+                    maximum: 2100
+                    description: Release year
+                detail:
+                    type: string
+                    description: Movie description/plot
+                genre:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Genre"
+                    description: Movie genres
+                cast:
+                    type: array
+                    items:
+                        type: string
+                    description: Cast members
+                director:
+                    type: string
+                    description: Movie director
+                reviews:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Review"
+                rating:
+                    type: number
+                    minimum: 0
+                    maximum: 5
+                    description: Average rating
+                numReviews:
+                    type: number
+                    minimum: 0
+                    description: Total number of reviews
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        MovieInput:
+            type: object
+            required:
+                - name
+                - tmdbId
+                - year
+                - detail
+                - genre
+            properties:
+                name:
+                    type: string
+                tmdbId:
+                    type: number
+                image:
+                    type: string
+                coverImage:
+                    type: string
+                year:
+                    type: number
+                    minimum: 1900
+                    maximum: 2100
+                detail:
+                    type: string
+                genre:
+                    type: array
+                    items:
+                        type: string
+                    description: Array of genre IDs
+                cast:
+                    type: array
+                    items:
+                        type: string
+                director:
+                    type: string
+
+        MovieRequest:
+            type: object
+            required:
+                - user
+                - name
+                - movieTitle
+            properties:
+                _id:
+                    type: string
+                user:
+                    $ref: "#/components/schemas/User"
+                name:
+                    type: string
+                    description: Name of the requester
+                movieTitle:
+                    type: string
+                    description: Requested movie title
+                detail:
+                    type: string
+                    description: Additional details about the request
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        MovieRequestInput:
+            type: object
+            required:
+                - name
+                - movieTitle
+            properties:
+                name:
+                    type: string
+                movieTitle:
+                    type: string
+                detail:
+                    type: string
+
+        UploadResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+                image:
+                    type: string
+                    description: S3 key for the uploaded image
+                key:
+                    type: string
+                    description: S3 key for the uploaded image
+
+        DeleteCommentInput:
+            type: object
+            required:
+                - movieId
+                - reviewId
+            properties:
+                movieId:
+                    type: string
+                reviewId:
+                    type: string
+
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                error:
+                    type: string
+                stack:
+                    type: string
+
+    responses:
+        UnauthorizedError:
+            description: Authentication information is missing or invalid
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        ForbiddenError:
+            description: Access forbidden - Admin rights required
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        NotFoundError:
+            description: Resource not found
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        BadRequestError:
+            description: Bad request - Invalid input
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+tags:
+    - name: Users
+      description: User management endpoints
+    - name: Movies
+      description: Movie management endpoints
+    - name: Genres
+      description: Genre management endpoints
+    - name: Movie Requests
+      description: Movie request management endpoints
+    - name: Uploads
+      description: File upload endpoints
+
+paths:
+    # User endpoints
+    /users:
+        post:
+            summary: Create a new user (Register)
+            tags: [Users]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/UserInput"
+            responses:
+                "201":
+                    description: User created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+
+        get:
+            summary: Get all users (Admin only)
+            tags: [Users]
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: List of all users
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/User"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+
+    /users/auth:
+        post:
+            summary: Authenticate user (Login)
+            tags: [Users]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/LoginInput"
+            responses:
+                "200":
+                    description: User authenticated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    _id:
+                                        type: string
+                                    username:
+                                        type: string
+                                    email:
+                                        type: string
+                                    isAdmin:
+                                        type: boolean
+                                    token:
+                                        type: string
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+
+    /users/logout:
+        post:
+            summary: Logout current user
+            tags: [Users]
+            responses:
+                "200":
+                    description: User logged out successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+
+    /users/profile:
+        get:
+            summary: Get current user profile
+            tags: [Users]
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: User profile retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+
+        put:
+            summary: Update current user profile
+            tags: [Users]
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                "200":
+                    description: Profile updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+
+    # Movie endpoints
+    /movies/all-movies:
+        get:
+            summary: Get all movies
+            tags: [Movies]
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                      type: integer
+                      minimum: 1
+                      default: 1
+                - name: limit
+                  in: query
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 100
+                      default: 10
+            responses:
+                "200":
+                    description: List of all movies
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    movies:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Movie"
+                                    pagination:
+                                        type: object
+                                        properties:
+                                            page:
+                                                type: integer
+                                            limit:
+                                                type: integer
+                                            total:
+                                                type: integer
+                                            pages:
+                                                type: integer
+
+    /movies/movie/{id}:
+        get:
+            summary: Get movie by ID
+            tags: [Movies]
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Movie ID
+            responses:
+                "200":
+                    description: Movie details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Movie"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+    /movies/new-movies:
+        get:
+            summary: Get new movies
+            tags: [Movies]
+            responses:
+                "200":
+                    description: List of new movies
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Movie"
+
+    /movies/top-movies:
+        get:
+            summary: Get top rated movies
+            tags: [Movies]
+            responses:
+                "200":
+                    description: List of top rated movies
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Movie"
+
+    /movies/random-movies:
+        get:
+            summary: Get random movies
+            tags: [Movies]
+            responses:
+                "200":
+                    description: List of random movies
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Movie"
+
+    /movies/{id}/review:
+        post:
+            summary: Add a review to a movie
+            tags: [Movies]
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Movie ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ReviewInput"
+            responses:
+                "201":
+                    description: Review added successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Movie"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+    /movies/create-movie:
+        post:
+            summary: Create a new movie (Admin only)
+            tags: [Movies]
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/MovieInput"
+            responses:
+                "201":
+                    description: Movie created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Movie"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+
+    /movies/update-movie/{id}:
+        put:
+            summary: Update a movie (Admin only)
+            tags: [Movies]
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Movie ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/MovieInput"
+            responses:
+                "200":
+                    description: Movie updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Movie"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+    /movies/delete-movie/{id}:
+        delete:
+            summary: Delete a movie (Admin only)
+            tags: [Movies]
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Movie ID
+            responses:
+                "200":
+                    description: Movie deleted successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+    /movies/delete-comment:
+        delete:
+            summary: Delete a comment (Admin only)
+            tags: [Movies]
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/DeleteCommentInput"
+            responses:
+                "200":
+                    description: Comment deleted successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+    # Genre endpoints
+    /genre:
+        post:
+            summary: Create a new genre (Admin only)
+            tags: [Genres]
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/GenreInput"
+            responses:
+                "201":
+                    description: Genre created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Genre"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+
+    /genre/{id}:
+        get:
+            summary: Get genre by ID
+            tags: [Genres]
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Genre ID
+            responses:
+                "200":
+                    description: Genre details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Genre"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+        put:
+            summary: Update a genre (Admin only)
+            tags: [Genres]
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Genre ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/GenreInput"
+            responses:
+                "200":
+                    description: Genre updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Genre"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+        delete:
+            summary: Delete a genre (Admin only)
+            tags: [Genres]
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Genre ID
+            responses:
+                "200":
+                    description: Genre deleted successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+    /genre/genres:
+        get:
+            summary: Get all genres
+            tags: [Genres]
+            responses:
+                "200":
+                    description: List of all genres
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Genre"
+
+    # Movie Request endpoints
+    /movie-requests/create-request:
+        post:
+            summary: Create a new movie request
+            tags: [Movie Requests]
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/MovieRequestInput"
+            responses:
+                "201":
+                    description: Movie request created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/MovieRequest"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+
+    /movie-requests/all-requests:
+        get:
+            summary: Get all movie requests (Admin only)
+            tags: [Movie Requests]
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: List of all movie requests
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/MovieRequest"
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+
+    /movie-requests/delete-request/{id}:
+        delete:
+            summary: Delete a movie request (Admin only)
+            tags: [Movie Requests]
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Movie request ID
+            responses:
+                "200":
+                    description: Movie request deleted successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                "401":
+                    $ref: "#/components/responses/UnauthorizedError"
+                "403":
+                    $ref: "#/components/responses/ForbiddenError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+    # Upload endpoints
+    /uploads:
+        post:
+            summary: Upload an image file to S3
+            tags: [Uploads]
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                image:
+                                    type: string
+                                    format: binary
+                                    description: Image file (JPEG, PNG, WebP only, max 1MB)
+            responses:
+                "200":
+                    description: Image uploaded successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/UploadResponse"
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+
+        get:
+            summary: Get/stream an image from S3
+            tags: [Uploads]
+            parameters:
+                - name: key
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                  description: S3 key of the image to retrieve
+            responses:
+                "200":
+                    description: Image data
+                    content:
+                        image/jpeg:
+                            schema:
+                                type: string
+                                format: binary
+                        image/png:
+                            schema:
+                                type: string
+                                format: binary
+                        image/webp:
+                            schema:
+                                type: string
+                                format: binary
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
+
+        delete:
+            summary: Delete an image from S3
+            tags: [Uploads]
+            parameters:
+                - name: key
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                  description: S3 key of the image to delete
+            responses:
+                "200":
+                    description: Image deleted successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                    key:
+                                        type: string
+                "400":
+                    $ref: "#/components/responses/BadRequestError"
+                "404":
+                    $ref: "#/components/responses/NotFoundError"
