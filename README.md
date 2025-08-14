@@ -40,6 +40,7 @@ This project serves as a comprehensive learning platform for:
 -   ✅ Rating and review system
 -   ✅ Movie request system for users
 -   ✅ Video streaming capabilities
+-   ✅ AWS S3 integration for image uploads and storage
 
 ### **Planned Features**
 
@@ -68,7 +69,8 @@ This project serves as a comprehensive learning platform for:
 -   **MongoDB** with Mongoose 8 ODM
 -   **JWT** for authentication
 -   **bcryptjs** for password hashing
--   **Multer** for file uploads
+-   **Multer** with **multer-s3** for file uploads to AWS S3
+-   **AWS SDK v3** for S3 integration and presigned URLs
 -   **Swagger/OpenAPI** for API documentation
 -   **Cookie Parser** for session management
 
@@ -139,6 +141,10 @@ MONGO_URI=your_mongodb_connection_string
 PORT=3000
 JWT_SECRET=your_secret_key
 NODE_ENV=development
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_REGION=your_aws_region
+S3_BUCKET_NAME=your_s3_bucket_name
 ```
 
 ### **Installation & Running**
@@ -183,10 +189,11 @@ npm run build    # Build production frontend
 -   [x] Admin dashboard for content management
 -   [x] User movie request system
 
-### **Phase 3: Advanced Features** �
+### **Phase 3: Advanced Features** 🔄
 
 -   [x] API documentation with Swagger
 -   [x] Rating and review system
+-   [x] AWS S3 integration for scalable image storage
 -   [ ] User watchlist and favorites
 -   [ ] Performance optimization and caching
 -   [ ] Configure Docker containers
@@ -233,14 +240,21 @@ This project is created for educational purposes!
 
 ---
 
-## 🎯 Current Focus (July 2025)
+## 🎯 Current Focus (August 2025)
 
-**Learning Objective**: Building a complete understanding of full-stack TypeScript web development while creating a functional video streaming platform.
+**Learning Objective**: Building a complete understanding of full-stack TypeScript web development with cloud integration while creating a functional video streaming platform.
+
+**Recent Achievements**:
+
+-   ✅ Successfully integrated AWS S3 for scalable image uploads and storage
+-   ✅ Implemented presigned URLs for secure image access
+-   ✅ Enhanced admin panel with cloud-based file management
 
 **Next Steps**:
 
 1. Complete the user watchlist and favorites feature
 2. Explore data crawling for content aggregation
 3. Add Redis for caching and performance optimization
+4. Implement AI-powered movie recommendations
 
 _This project represents a journey through modern web development technologies and practices. Each feature implemented contributes to a deeper understanding of the MERN stack ecosystem with TypeScript._

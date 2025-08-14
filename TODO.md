@@ -1,10 +1,15 @@
 # Movie Application TODO List
 
-_Last Updated: July 15, 2025_
+_Last Updated: August 14, 2025_
 
 _Created by: Claude Sonnet 4_
 
-## 🚀 Basic Features
+-   **Content Delivery**
+
+    -   [x] Set up image file storage (AWS S3) with presigned URLs
+    -   [x] Implement secure file upload with multer-s3
+    -   [x] Add image optimization and validation
+    -   [ ] Video file streaming optimization
 
 ### Backend Development
 
@@ -16,11 +21,11 @@ _Created by: Claude Sonnet 4_
     -   [x] Add movie routes (search, details, trending, popular)
     -   [x] Implement movie data caching strategy
 
--   [ ] **Enhanced User Features**
+-   [x] **Enhanced User Features**
 
     -   [x] Request new movie form for user and send the result to admin dashboard
     -   [x] Create rating and review system
-    -   [ ] Add user profile picture upload (using multer)
+    -   [x] Add user profile picture upload (using multer with AWS S3)
     -   [ ] Add user notification system for new movies/updates
 
 -   [ ] **API Improvements**
@@ -130,6 +135,7 @@ _Created by: Claude Sonnet 4_
 -   [x] Resolve ESLint warnings
 -   [x] Test cross-browser compatibility
 -   [x] Fix mobile responsiveness issues
+-   [x] Optimize AWS S3 image uploads and delivery
 -   [ ] Optimize bundle size
 -   [ ] Fix memory leaks in video player
 -   [ ] Improve initial page load performance
@@ -146,10 +152,12 @@ _Created by: Claude Sonnet 4_
 **Database**: ✅ MongoDB with Mongoose, User/Movie/Genre models implemented  
 **Authentication**: ✅ JWT-based auth system with secure session management  
 **Admin Panel**: ✅ Complete admin dashboard for content management  
-**API Documentation**: ✅ Swagger/OpenAPI integration
+**API Documentation**: ✅ Swagger/OpenAPI integration  
+**Cloud Storage**: ✅ AWS S3 integration for scalable image storage with presigned URLs
 
 ### Next Major Milestones
 
 1. **User Favorites/Watchlist** - Essential user engagement feature
 2. **AI-Powered Recommendations** - Modern personalization feature
-3. **Production Deployment** - Making the app publicly accessible
+3. **Performance Optimization** - Redis caching and image optimization
+4. **Production Deployment** - Making the app publicly accessible
