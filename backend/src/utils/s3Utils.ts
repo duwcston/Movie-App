@@ -46,7 +46,6 @@ export const generateBulkPresignedUrls = async (
           presignedUrls[key] = presignedUrl;
         } catch (error) {
           console.error(`Error generating presigned URL for key ${key}:`, error);
-          // Continue with other keys even if one fails
         }
       }
     }

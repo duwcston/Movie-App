@@ -25,8 +25,8 @@
     "mongoose": "^8.13.2",
     "multer": "^1.4.5-lts.2",
     "multer-s3": "^3.0.1",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
@@ -35,8 +35,8 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/multer-s3": "^3.0.3",
-    "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "@types/yamljs": "^0.2.34",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
