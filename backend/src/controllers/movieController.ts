@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Movie from "../models/Movie.js";
+import { addPresignedUrlsToMovie, addPresignedUrlsToMovies, deleteImageFromS3 } from "../utils/s3Utils.js";
 
 const createMovie = async (req: Request, res: Response) => {
     try {
@@ -18,7 +19,9 @@ const getAllMovies = async (req: Request, res: Response) => {
         movies.forEach(movie => {
             movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
         });
-        res.status(200).json(movies);
+        
+        const moviesWithUrls = await addPresignedUrlsToMovies(movies);
+        res.status(200).json(moviesWithUrls);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -28,11 +31,14 @@ const getMovieById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const movie = await Movie.findById(id).populate('genre');
-        movie!.rating = movie!.reviews.reduce((acc, item) => item.rating + acc, 0) / movie!.reviews.length;
         if (!movie) {
             return res.status(404).json({ message: "Movie not found" });
         }
-        res.status(200).json(movie);
+        
+        movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
+        
+        const movieWithUrls = await addPresignedUrlsToMovie(movie);
+        res.status(200).json(movieWithUrls);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -55,6 +61,7 @@ const deleteMovie = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const deletedMovie = await Movie.findByIdAndDelete(id);
+        await deleteImageFromS3(deletedMovie);
         if (!deletedMovie) {
             return res.status(404).json({ message: "Movie not found" });
         }
@@ -130,7 +137,10 @@ const getNewMovies = async (req: Request, res: Response) => {
         newMovies.forEach(movie => {
             movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
         });
-        res.status(200).json(newMovies);
+        
+        // Add presigned URLs to movies
+        const moviesWithUrls = await addPresignedUrlsToMovies(newMovies);
+        res.status(200).json(moviesWithUrls);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -142,7 +152,10 @@ const getTopMovies = async (req: Request, res: Response) => {
         topMovies.forEach(movie => {
             movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
         });
-        res.status(200).json(topMovies);
+        
+        // Add presigned URLs to movies
+        const moviesWithUrls = await addPresignedUrlsToMovies(topMovies);
+        res.status(200).json(moviesWithUrls);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -164,7 +177,10 @@ const getRandomMovies = async (req: Request, res: Response) => {
         randomMovies.forEach(movie => {
             movie.rating = movie.reviews.reduce((acc: any, item: { rating: any; }) => item.rating + acc, 0) / movie.reviews.length;
         });
-        res.json(randomMovies);
+        
+        // Add presigned URLs to movies
+        const moviesWithUrls = await addPresignedUrlsToMovies(randomMovies);
+        res.json(moviesWithUrls);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }

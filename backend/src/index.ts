@@ -21,7 +21,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://movie-app-frontend-wzq8.onrender.com'], // Add your deployed frontend URL
+  origin: ['http://localhost:5173'], // Add your deployed frontend URL
   credentials: true
 }));app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,10 +34,10 @@ app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/genre', genreRoutes)
 app.use('/api/v1/movies', movieRoutes);
 app.use('/api/v1/uploads', uploadRoutes);
-app.use('/api/v1/requests', movieRequestRoutes);;
+app.use('/api/v1/requests', movieRequestRoutes);
 
-const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+// const __dirname = path.resolve();
+// app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // Swagger documentation
 swaggerDocs(app);

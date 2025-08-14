@@ -58,7 +58,7 @@ const Main = () => {
                         {topMovies?.map((movie: MovieProps) => (
                             <VideoCard
                                 key={movie._id}
-                                image={movie.image}
+                                image={movie.imageUrl}
                                 title={movie.name}
                                 rating={movie.rating}
                                 date={movie.year}
