@@ -10,15 +10,8 @@ This project serves as a comprehensive learning platform for:
 
 -   **MongoDB**: Database design, schema modeling, and data relationships
 -   **Express.js**: RESTful API development, middleware implementation, and server architecture
--   **React**: Component-based UI development, state management with Redux Toolkit, and modern hooks
--   **Node.js**: Server-side JavaScript, TypeScript integration, and package management
-
-### **Data Crawling & Web Scraping**
-
--   Learning web scraping techniques to gather movie/video content data
--   Understanding data extraction, cleaning, and normalization processes
--   Implementing automated data collection pipelines
--   Working with external APIs for content metadata
+-   **React**: Component-based UI development, state management with Redux Toolkit
+-   **Node.js**: Server-side, TypeScript integration, and package management
 
 ### **Full-Stack Integration**
 
@@ -33,8 +26,6 @@ This project serves as a comprehensive learning platform for:
 
 -   ✅ User authentication system (register, login, logout)
 -   ✅ JWT-based secure session management
--   ✅ Modern responsive UI with Tailwind CSS v4
--   ✅ Component-based React 19 architecture
 -   ✅ Movie search and discovery
 -   ✅ Admin movie management dashboard
 -   ✅ Rating and review system
@@ -46,9 +37,7 @@ This project serves as a comprehensive learning platform for:
 
 -   🔄 User watchlists and favorites
 -   🔄 Movie recommendations AI system
--   🔄 Enhanced user profiles
--   🔄 Movie request status for each user
--   🔄 Data crawling for content aggregation
+-   🔄 Enhanced user profiles and login methods
 
 ## 🛠 Tech Stack
 
@@ -65,12 +54,10 @@ This project serves as a comprehensive learning platform for:
 ### **Backend**
 
 -   **Node.js** with Express.js 5 framework
--   **TypeScript** for type safety
--   **MongoDB** with Mongoose 8 ODM
 -   **JWT** for authentication
 -   **bcryptjs** for password hashing
 -   **Multer** with **multer-s3** for file uploads to AWS S3
--   **AWS SDK v3** for S3 integration and presigned URLs
+-   **AWS SDK** for S3 integration and presigned URLs
 -   **Swagger/OpenAPI** for API documentation
 -   **Cookie Parser** for session management
 
@@ -175,29 +162,28 @@ npm run build    # Build production frontend
 
 -   [x] Project setup and folder structure
 -   [x] Express.js server with TypeScript configuration
--   [x] MongoDB connection and User model
+-   [x] MongoDB connection
 -   [x] JWT authentication system
 -   [x] React 19 app with TypeScript setup
 -   [x] Tailwind CSS v4 styling system
 
 ### **Phase 2: Core Features** ✅
 
--   [x] Movie data model and API implementation
+-   [x] Movie data and API implementation
 -   [x] Search functionality with filters
 -   [x] User interface components and pages
 -   [x] State management with Redux Toolkit
 -   [x] Admin dashboard for content management
--   [x] User movie request system
 
 ### **Phase 3: Advanced Features** 🔄
 
 -   [x] API documentation with Swagger
 -   [x] Rating and review system
 -   [x] AWS S3 integration for scalable image storage
--   [ ] User watchlist and favorites
--   [ ] Performance optimization and caching
+-   [ ] Performance optimization and caching (Redis)
 -   [ ] Configure Docker containers
--   [ ] Testing and deployment
+-   [ ] Setup CICD, Github Actions
+-   [ ] Testing and deployment (AWS EC2)
 
 ## 🎓 Learning Resources & References
 
@@ -209,10 +195,8 @@ npm run build    # Build production frontend
 -   [Node.js Documentation](https://nodejs.org/)
 -   [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
 
-### **Data Crawling & APIs**
+### **APIs**
 
--   [Puppeteer for Web Scraping](https://pptr.dev/)
--   [Cheerio for HTML Parsing](https://cheerio.js.org/)
 -   [TMDB API](https://www.themoviedb.org/documentation/api)
 
 ### **Modern Frontend Development**
@@ -221,18 +205,6 @@ npm run build    # Build production frontend
 -   [Tailwind CSS v4 Documentation](https://tailwindcss.com/docs)
 -   [Redux Toolkit Documentation](https://redux-toolkit.js.org/)
 -   [React Router v7 Documentation](https://reactrouter.com/en/main)
-
-## 🤝 Contributing & Development
-
-This is a learning project!
-
-### **Development Workflow**
-
-1. Check the `TODO.md` for current tasks
-2. Create feature branches for new functionality
-3. Follow the existing code structure and TypeScript conventions
-4. Ensure type safety across the codebase
-5. Test changes before committing
 
 ## 📄 License
 
@@ -253,8 +225,7 @@ This project is created for educational purposes!
 **Next Steps**:
 
 1. Complete the user watchlist and favorites feature
-2. Explore data crawling for content aggregation
-3. Add Redis for caching and performance optimization
-4. Implement AI-powered movie recommendations
+2. Add Redis for caching and performance optimization
+3. Implement AI-powered movie recommendations and descriptions generated
 
 _This project represents a journey through modern web development technologies and practices. Each feature implemented contributes to a deeper understanding of the MERN stack ecosystem with TypeScript._
