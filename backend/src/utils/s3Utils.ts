@@ -94,7 +94,7 @@ export const addPresignedUrlsToMovies = async (movies: any[]): Promise<any[]> =>
 
 export const deleteImageFromS3 = async (movie: any): Promise<void> => {
   try {
-    const key = movie.image || movie.coverImage;
+    const key = movie;
     
     if (!key) {
       throw new Error("Key is required");

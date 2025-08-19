@@ -61,7 +61,8 @@ const deleteMovie = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const deletedMovie = await Movie.findByIdAndDelete(id);
-        await deleteImageFromS3(deletedMovie);
+        await deleteImageFromS3(deletedMovie!.image);
+        await deleteImageFromS3(deletedMovie!.coverImage);
         if (!deletedMovie) {
             return res.status(404).json({ message: "Movie not found" });
         }
