@@ -3,17 +3,18 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-// Files
-import connectDB from './config/db';
+// Routes
 import userRoutes from './routes/userRoutes';
 import genreRoutes from './routes/genreRoutes';
 import movieRoutes from './routes/movieRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import movieRequestRoutes from './routes/movieRequestRoutes';
 
-// Libraries
+// Config
+import connectDB from './config/db';
 import swaggerDocs from './config/swagger';
 import { connectRedisClient } from './config/redis';
+import { rateLimiter } from './middlewares/rateLimiter';
 
 // Configuration
 dotenv.config();
@@ -24,9 +25,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173'], // Add your deployed frontend URL
+  origin: ['http://localhost:5173'], // Add deployed frontend URL
   credentials: true
 }));
+app.use(rateLimiter(100, 15 * 60 * 1000)); // 100 requests per 15 minutes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

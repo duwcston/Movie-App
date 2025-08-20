@@ -1,4 +1,5 @@
 import { createClient } from "redis";
+import { CacheKeys } from "../types/cacheKeys";
 
 const client = createClient({
     url: process.env.REDIS_URL || "redis://localhost:6379"
@@ -22,4 +23,15 @@ const connectRedisClient = async() => {
     }
 }
 
-export {connectRedisClient, client as redisClient};
+const deleteMoviesCache = async () => {
+    try {
+        await client.del(CacheKeys.ALL_MOVIES);
+        await client.del(CacheKeys.TOP_MOVIES);
+        await client.del(CacheKeys.RANDOM_MOVIES);
+        await client.del(CacheKeys.NEW_MOVIES);
+    } catch (error) {
+        console.error("Error deleting movie cache:", error);
+    }
+}
+
+export {connectRedisClient, deleteMoviesCache, client as redisClient};

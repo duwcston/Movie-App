@@ -184,7 +184,7 @@ const CreateMovies = () => {
                                 name="year"
                                 value={movieData.year}
                                 onChange={handleChange}
-                                min="2000"
+                                min="1900"
                                 max="2030"
                                 className="border p-1 sm:p-1.5 w-full text-sm sm:text-base"
                             />

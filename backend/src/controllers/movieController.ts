@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
 import Movie from "../models/Movie.js";
 import { addPresignedUrlsToMovie, addPresignedUrlsToMovies, deleteImageFromS3 } from "../utils/s3Utils.js";
-import { redisClient } from "../config/redis.js";
+import { deleteMoviesCache, redisClient } from "../config/redis.js";
+import { CacheKeys } from "../types/cacheKeys.js";
 
-const cacheExpiration = 3600;
+const cacheExpiration = 3600; // 1 hour
 
 const createMovie = async (req: Request, res: Response) => {
     try {
         const newMovie = new Movie(req.body);
         const savedMovie = await newMovie.save();
+        await deleteMoviesCache();
         res.status(201).json(savedMovie);
-
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -18,7 +19,7 @@ const createMovie = async (req: Request, res: Response) => {
 
 const getAllMovies = async (req: Request, res: Response) => {
     try {
-        const cacheKey = 'allMovies';
+        const cacheKey = CacheKeys.ALL_MOVIES;
 
         // Check if movies are cached in Redis
         const cachedMovies = await redisClient.get(cacheKey);
@@ -45,7 +46,7 @@ const getAllMovies = async (req: Request, res: Response) => {
 const getMovieById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const cacheKey = `movie:${id}`;
+        const cacheKey = CacheKeys.MOVIE_BY_ID(id);
 
         const cachedMovie = await redisClient.get(cacheKey);
         if (cachedMovie) {
@@ -74,6 +75,8 @@ const updateMovie = async (req: Request, res: Response) => {
         if (!updatedMovie) {
             return res.status(404).json({ message: "Movie not found" });
         }
+        await redisClient.setEx(CacheKeys.MOVIE_BY_ID(id), cacheExpiration, JSON.stringify(updatedMovie));
+        await redisClient.deleteMoviesCache();
         res.status(200).json(updatedMovie);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -89,6 +92,9 @@ const deleteMovie = async (req: Request, res: Response) => {
         if (!deletedMovie) {
             return res.status(404).json({ message: "Movie not found" });
         }
+        // Update Redis cache
+        await redisClient.del(CacheKeys.MOVIE_BY_ID(id));
+        await deleteMoviesCache();
         res.status(200).json({ message: "Movie deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -119,6 +125,7 @@ const reviewMovie = async (req: Request, res: Response) => {
             movie.numReviews = movie.reviews.length;
             movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
             await movie.save();
+            await deleteMoviesCache();
             res.status(201).json({ message: "Review added successfully", review });
         }
 
@@ -149,6 +156,7 @@ const deleteComment = async (req: Request, res: Response) => {
         movie.numReviews = movie.reviews.length;
         movie.rating = movie.reviews.length > 0 ? movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length : 0;
         await movie.save();
+        await deleteMoviesCache();
         res.status(200).json({ message: "Comment deleted successfully", reviews: movie.reviews });
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -157,7 +165,7 @@ const deleteComment = async (req: Request, res: Response) => {
 
 const getNewMovies = async (req: Request, res: Response) => {
     try {
-        const cacheKey = 'newMovies';
+        const cacheKey = CacheKeys.NEW_MOVIES;
         const cachedMovies = await redisClient.get(cacheKey);
         if (cachedMovies) {
             return res.status(200).json(JSON.parse(cachedMovies));
@@ -177,7 +185,7 @@ const getNewMovies = async (req: Request, res: Response) => {
 
 const getTopMovies = async (req: Request, res: Response) => {
     try {
-        const cacheKey = 'topMovies';
+        const cacheKey = CacheKeys.TOP_MOVIES;
         const cachedMovies = await redisClient.get(cacheKey);
         if (cachedMovies) {
             return res.status(200).json(JSON.parse(cachedMovies));
@@ -197,7 +205,7 @@ const getTopMovies = async (req: Request, res: Response) => {
 
 const getRandomMovies = async (req: Request, res: Response) => {
     try {
-        const cacheKey = 'randomMovies';
+        const cacheKey = CacheKeys.RANDOM_MOVIES;
         const cachedMovies = await redisClient.get(cacheKey);
         if (cachedMovies) {
             return res.status(200).json(JSON.parse(cachedMovies));
