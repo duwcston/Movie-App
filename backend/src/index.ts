@@ -1,7 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import path from 'path';
 import cors from 'cors';
 
 // Files
@@ -10,12 +9,16 @@ import userRoutes from './routes/userRoutes';
 import genreRoutes from './routes/genreRoutes';
 import movieRoutes from './routes/movieRoutes';
 import uploadRoutes from './routes/uploadRoutes';
-import swaggerDocs from './docs/swagger';
 import movieRequestRoutes from './routes/movieRequestRoutes';
+
+// Libraries
+import swaggerDocs from './config/swagger';
+import { connectRedisClient } from './config/redis';
 
 // Configuration
 dotenv.config();
 connectDB();
+connectRedisClient()
 
 const app = express();
 
@@ -23,7 +26,8 @@ const app = express();
 app.use(cors({
   origin: ['http://localhost:5173'], // Add your deployed frontend URL
   credentials: true
-}));app.use(express.json());
+}));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
@@ -35,9 +39,6 @@ app.use('/api/v1/genre', genreRoutes)
 app.use('/api/v1/movies', movieRoutes);
 app.use('/api/v1/uploads', uploadRoutes);
 app.use('/api/v1/requests', movieRequestRoutes);
-
-// const __dirname = path.resolve();
-// app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // Swagger documentation
 swaggerDocs(app);

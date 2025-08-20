@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import Movie from "../models/Movie.js";
 import { addPresignedUrlsToMovie, addPresignedUrlsToMovies, deleteImageFromS3 } from "../utils/s3Utils.js";
+import { redisClient } from "../config/redis.js";
+
+const cacheExpiration = 3600;
 
 const createMovie = async (req: Request, res: Response) => {
     try {
@@ -15,14 +18,26 @@ const createMovie = async (req: Request, res: Response) => {
 
 const getAllMovies = async (req: Request, res: Response) => {
     try {
+        const cacheKey = 'allMovies';
+
+        // Check if movies are cached in Redis
+        const cachedMovies = await redisClient.get(cacheKey);
+        if (cachedMovies) {
+            return res.status(200).json(JSON.parse(cachedMovies));
+        }
+
         const movies = await Movie.find().populate('genre');
         movies.forEach(movie => {
             movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
         });
         
         const moviesWithUrls = await addPresignedUrlsToMovies(movies);
+
+        // Cache the movies in Redis
+        await redisClient.setEx(cacheKey, cacheExpiration, JSON.stringify(moviesWithUrls));
         res.status(200).json(moviesWithUrls);
     } catch (error) {
+        console.error("Error fetching movies:", error);
         res.status(500).json({ message: "Server Error" });
     }
 };
@@ -30,6 +45,13 @@ const getAllMovies = async (req: Request, res: Response) => {
 const getMovieById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
+        const cacheKey = `movie:${id}`;
+
+        const cachedMovie = await redisClient.get(cacheKey);
+        if (cachedMovie) {
+            return res.status(200).json(JSON.parse(cachedMovie));
+        }
+
         const movie = await Movie.findById(id).populate('genre');
         if (!movie) {
             return res.status(404).json({ message: "Movie not found" });
@@ -38,6 +60,7 @@ const getMovieById = async (req: Request, res: Response) => {
         movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
         
         const movieWithUrls = await addPresignedUrlsToMovie(movie);
+        await redisClient.setEx(cacheKey, cacheExpiration, JSON.stringify(movieWithUrls));
         res.status(200).json(movieWithUrls);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -134,13 +157,18 @@ const deleteComment = async (req: Request, res: Response) => {
 
 const getNewMovies = async (req: Request, res: Response) => {
     try {
+        const cacheKey = 'newMovies';
+        const cachedMovies = await redisClient.get(cacheKey);
+        if (cachedMovies) {
+            return res.status(200).json(JSON.parse(cachedMovies));
+        }
         const newMovies = await Movie.find().populate('genre').sort({ createdAt: -1 }).limit(10);
         newMovies.forEach(movie => {
             movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
         });
         
-        // Add presigned URLs to movies
         const moviesWithUrls = await addPresignedUrlsToMovies(newMovies);
+        await redisClient.setEx(cacheKey, cacheExpiration, JSON.stringify(moviesWithUrls));
         res.status(200).json(moviesWithUrls);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -149,13 +177,18 @@ const getNewMovies = async (req: Request, res: Response) => {
 
 const getTopMovies = async (req: Request, res: Response) => {
     try {
+        const cacheKey = 'topMovies';
+        const cachedMovies = await redisClient.get(cacheKey);
+        if (cachedMovies) {
+            return res.status(200).json(JSON.parse(cachedMovies));
+        }
         const topMovies = await Movie.find().populate('genre').sort({ rating: -1 }).limit(10);
         topMovies.forEach(movie => {
             movie.rating = movie.reviews.reduce((acc, item) => item.rating + acc, 0) / movie.reviews.length;
         });
         
-        // Add presigned URLs to movies
         const moviesWithUrls = await addPresignedUrlsToMovies(topMovies);
+        await redisClient.setEx(cacheKey, cacheExpiration, JSON.stringify(moviesWithUrls));
         res.status(200).json(moviesWithUrls);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
@@ -164,6 +197,11 @@ const getTopMovies = async (req: Request, res: Response) => {
 
 const getRandomMovies = async (req: Request, res: Response) => {
     try {
+        const cacheKey = 'randomMovies';
+        const cachedMovies = await redisClient.get(cacheKey);
+        if (cachedMovies) {
+            return res.status(200).json(JSON.parse(cachedMovies));
+        }
         const randomMovies = await Movie.aggregate([
             { $sample: { size: 10 } },
             {
@@ -181,6 +219,7 @@ const getRandomMovies = async (req: Request, res: Response) => {
         
         // Add presigned URLs to movies
         const moviesWithUrls = await addPresignedUrlsToMovies(randomMovies);
+        await redisClient.setEx(cacheKey, cacheExpiration, JSON.stringify(moviesWithUrls));
         res.json(moviesWithUrls);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
